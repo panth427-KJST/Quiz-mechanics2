@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>กำลัง (Power) — ฟิสิกส์ ม.5 | KJST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1F44;
+  --blue:#1E3A8A;
+  --blue2:#2563EB;
+  --gold:#F59E0B;
+  --gold-soft:#FCD34D;
+  --red:#DC2626;
+  --green:#059669;
+  --ink:#0F172A;
+  --paper:#F8FAFC;
+  --line:rgba(30,58,138,.12);
+  --shadow:0 10px 40px rgba(10,31,68,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Sarabun',sans-serif;
+  background:radial-gradient(circle at 20% 10%,#12306b 0%,var(--navy) 55%,#061530 100%);
+  color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+.stage{
+  position:relative;
+  width:min(100vw,177.78vh);
+  height:min(56.25vw,100vh);
+  background:var(--paper);
+  overflow:hidden;
+  box-shadow:0 30px 90px rgba(0,0,0,.5);
+}
+/* ---------- slides ---------- */
+.slide{
+  position:absolute;inset:0;
+  padding:4.2vh 5vw;
+  display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;
+  transform:translateX(30px);
+  transition:opacity .5s ease,transform .5s ease,visibility .5s;
+}
+.slide.active{opacity:1;visibility:visible;transform:translateX(0)}
+h1,h2,h3,.eyebrow,.chip,.qnum,.btn,.opt-label{font-family:'Prompt',sans-serif}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.6em;
+  font-size:1.7vh;font-weight:600;letter-spacing:.14em;
+  color:var(--gold);text-transform:uppercase;margin-bottom:1.4vh;
+}
+.eyebrow::before{content:"";width:2.6vh;height:2px;background:var(--gold)}
+h1{font-size:6vh;font-weight:700;color:var(--navy);line-height:1.05}
+h2{font-size:4.2vh;font-weight:700;color:var(--navy);line-height:1.1;margin-bottom:.6vh}
+h3{font-size:2.7vh;font-weight:600;color:var(--blue)}
+p{font-size:2.3vh;line-height:1.55}
+
+/* ---------- title slide ---------- */
+#s0{justify-content:center;align-items:flex-start;
+  background:radial-gradient(circle at 78% 20%,#12306b 0%,var(--navy) 50%,#061530 100%);
+  color:#fff}
+#s0 .eyebrow{color:var(--gold-soft)}
+#s0 h1{color:#fff;font-size:8.5vh;letter-spacing:-.01em}
+#s0 .sub{font-family:'Prompt';font-size:3.4vh;font-weight:300;color:var(--gold-soft);margin-top:1vh}
+#s0 .meta{margin-top:5vh;font-size:2vh;color:rgba(255,255,255,.65);display:flex;gap:3vw;flex-wrap:wrap}
+#s0 .meta b{color:#fff;font-weight:600}
+#s0 .formula-hero{
+  position:absolute;right:5vw;bottom:6vh;font-family:'Prompt';
+  font-size:12vh;font-weight:700;color:rgba(245,158,11,.15);letter-spacing:.02em}
+#s0 .formula-hero .frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;font-size:6vh;margin-left:.3em}
+#s0 .formula-hero .frac span:first-child{border-bottom:4px solid rgba(245,158,11,.15);padding:0 .2em}
+
+/* ---------- content layout ---------- */
+.slide-head{margin-bottom:2.4vh}
+.body-grid{flex:1;display:grid;gap:2.4vw;min-height:0}
+.two-col{grid-template-columns:1fr 1fr}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:2.6vh 2.2vw;box-shadow:var(--shadow);
+  display:flex;flex-direction:column}
+.card.accent{border-top:5px solid var(--gold)}
+.card.blue{background:linear-gradient(160deg,#fff, #f1f5ff);border-top:5px solid var(--blue2)}
+
+.formula-box{
+  display:flex;align-items:center;justify-content:center;gap:.4em;
+  font-family:'Prompt';font-weight:700;color:var(--navy);
+  background:linear-gradient(135deg,#EFF6FF,#DBEAFE);
+  border:1px solid var(--line);border-radius:14px;
+  padding:2.4vh 1vw;font-size:4.4vh;margin:1.4vh 0}
+.frac{display:inline-flex;flex-direction:column;text-align:center;line-height:1.05;vertical-align:middle}
+.frac span:first-child{border-bottom:3px solid var(--navy);padding:0 .25em}
+.unit-pill{display:inline-block;background:var(--gold);color:var(--navy);
+  font-family:'Prompt';font-weight:600;padding:.3em .9em;border-radius:999px;font-size:1.9vh;margin:.3vh .3vh}
+
+ul.tick{list-style:none;margin-top:1vh}
+ul.tick li{position:relative;padding-left:2.4vw;margin-bottom:1.5vh;font-size:2.25vh;line-height:1.5}
+ul.tick li::before{content:"";position:absolute;left:0;top:.55em;
+  width:1.1vh;height:1.1vh;border-radius:50%;background:var(--gold)}
+ul.tick li b{color:var(--blue)}
+
+.callout{background:#FFFBEB;border-left:5px solid var(--gold);
+  border-radius:0 12px 12px 0;padding:1.8vh 1.6vw;font-size:2.1vh}
+.callout b{color:var(--navy)}
+
+.eqmark{font-family:'Prompt';color:var(--red);font-weight:600}
+
+/* ---------- interactive sim: race ---------- */
+.sim-wrap{flex:1;display:flex;flex-direction:column;min-height:0}
+.race-canvas{flex:1;background:linear-gradient(180deg,#EFF6FF 0%,#fff 100%);
+  border:1px solid var(--line);border-radius:16px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.race-svg{width:100%;height:100%;display:block}
+.controls{display:flex;align-items:center;gap:1.4vw;flex-wrap:wrap;margin-top:1.8vh}
+.btn{
+  font-family:'Prompt';font-weight:600;font-size:2.1vh;cursor:pointer;
+  border:none;border-radius:12px;padding:1.2vh 2vw;color:#fff;
+  background:var(--blue2);transition:transform .12s,box-shadow .2s,background .2s;
+  box-shadow:0 6px 18px rgba(37,99,235,.35)}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn.gold{background:var(--gold);color:var(--navy);box-shadow:0 6px 18px rgba(245,158,11,.4)}
+.btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue2);box-shadow:none}
+.btn.small{padding:.9vh 1.4vw;font-size:1.9vh}
+.readout{display:flex;gap:1.2vw;margin-left:auto;flex-wrap:wrap}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1vh 1.4vw;text-align:center;min-width:8vw;box-shadow:var(--shadow)}
+.stat .k{font-family:'Prompt';font-size:1.5vh;color:#64748b;font-weight:500}
+.stat .v{font-family:'Prompt';font-size:2.9vh;font-weight:700}
+.stat.a .v{color:var(--blue2)}
+.stat.b .v{color:var(--gold)}
+.winner-badge{font-family:'Prompt';font-weight:700;font-size:2.1vh;padding:.5vh 1vw;border-radius:999px;opacity:0;transition:opacity .3s}
+.winner-badge.show{opacity:1}
+
+.slider-row{display:flex;align-items:center;gap:1vw;font-family:'Prompt';font-size:1.9vh;font-weight:500;color:var(--navy)}
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:#CBD5E1;outline:none;width:9vw}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:2.4vh;height:2.4vh;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+input[type=range]::-moz-range-thumb{width:2.4vh;height:2.4vh;border:none;border-radius:50%;background:var(--gold);cursor:pointer}
+
+/* ---------- Fv sim ---------- */
+.fv-panel{display:grid;grid-template-columns:1.1fr .9fr;gap:2vw;flex:1;min-height:0}
+.fv-visual{background:linear-gradient(180deg,#EFF6FF,#fff);border:1px solid var(--line);border-radius:16px;position:relative;overflow:hidden;box-shadow:var(--shadow)}
+.fv-controls{display:flex;flex-direction:column;justify-content:center;gap:2.6vh}
+.fv-big{font-family:'Prompt';text-align:center;background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border:1px solid var(--line);border-radius:16px;padding:2.4vh;box-shadow:var(--shadow)}
+.fv-big .val{font-size:6.5vh;font-weight:700;color:var(--navy);line-height:1}
+.fv-big .lbl{font-size:2vh;color:#64748b;font-weight:500;margin-top:.5vh}
+.fv-slider{display:flex;flex-direction:column;gap:.8vh}
+.fv-slider label{font-family:'Prompt';font-weight:600;font-size:2vh;color:var(--navy);display:flex;justify-content:space-between}
+.fv-slider label span{color:var(--blue2)}
+.fv-slider input[type=range]{width:100%}
+
+/* ---------- quiz ---------- */
+#quiz{justify-content:flex-start}
+.quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2vh}
+.progress-dots{display:flex;gap:.6vw}
+.dot{width:1.4vh;height:1.4vh;border-radius:50%;background:#CBD5E1;transition:background .3s,transform .3s}
+.dot.done{background:var(--green)}
+.dot.current{background:var(--gold);transform:scale(1.35)}
+.qcard{flex:1;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:3.2vh 3vw;display:flex;flex-direction:column;min-height:0}
+.qnum{font-family:'Prompt';font-weight:600;color:var(--gold);font-size:2vh;letter-spacing:.08em;margin-bottom:1vh}
+.qtext{font-family:'Prompt';font-weight:600;font-size:3vh;color:var(--navy);line-height:1.35;margin-bottom:2.4vh}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:1.4vh 1.6vw}
+.opt{display:flex;align-items:center;gap:1vw;background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:1.6vh 1.4vw;cursor:pointer;transition:all .18s;font-size:2.2vh}
+.opt:hover{border-color:var(--blue2);background:#EFF6FF}
+.opt-label{width:3.4vh;height:3.4vh;flex:none;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:2vh}
+.opt.correct{border-color:var(--green);background:#ECFDF5}
+.opt.correct .opt-label{background:var(--green)}
+.opt.wrong{border-color:var(--red);background:#FEF2F2}
+.opt.wrong .opt-label{background:var(--red)}
+.explain{margin-top:2vh;background:#FFFBEB;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.8vh 1.6vw;font-size:2.1vh;opacity:0;max-height:0;overflow:hidden;transition:opacity .35s,max-height .45s;line-height:1.55}
+.explain.show{opacity:1;max-height:40vh}
+.explain b{color:var(--navy)}
+.quiz-nav{display:flex;gap:1.2vw;margin-top:2vh;align-items:center}
+
+#quiz-done{text-align:center;align-items:center;justify-content:center}
+#quiz-done .score{font-family:'Prompt';font-size:9vh;font-weight:700;color:var(--gold);line-height:1}
+
+/* ---------- global nav ---------- */
+.nav{position:absolute;bottom:2.4vh;right:2.4vw;display:flex;align-items:center;gap:1vw;z-index:50}
+.nav .btn.small{padding:1vh 1.6vw}
+.pageno{position:absolute;bottom:2.4vh;left:2.4vw;font-family:'Prompt';font-size:1.8vh;color:#94a3b8;z-index:50}
+.pageno b{color:var(--navy)}
+.brand{position:absolute;top:2.4vh;right:3vw;font-family:'Prompt';font-weight:700;font-size:1.8vh;color:var(--navy);letter-spacing:.1em;z-index:50;opacity:.55}
+#s0 .brand{color:var(--gold-soft);opacity:.9}
+.fs-btn{position:absolute;top:2.2vh;left:3vw;z-index:60;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:var(--navy);font-family:'Prompt';font-size:1.6vh;padding:.7vh 1.2vw;border-radius:8px;cursor:pointer;backdrop-filter:blur(4px)}
+.slide:not(#s0) .fs-btn{color:var(--blue);background:#EFF6FF;border-color:var(--line)}
+
+@media (max-width:640px){
+  h1{font-size:5vh}#s0 h1{font-size:6vh}
+  .opts{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+
+  <!-- 0 · TITLE -->
+  <section class="slide active" id="s0">
+    <button class="fs-btn" onclick="toggleFS()">⛶ เต็มจอ</button>
+    <div class="brand">KJST · PHYSICS</div>
+    <div class="eyebrow">ฟิสิกส์ ม.5 · บทงานและพลังงาน</div>
+    <h1>กำลัง</h1>
+    <div class="sub">Power — อัตราการทำงาน</div>
+    <div class="meta">
+      <div>วิชา <b>กลศาสตร์ 2</b></div>
+      <div>ตามหลักสูตร <b>สสวท. ฟิสิกส์ 2</b></div>
+      <div>ครูผู้สอน <b>ธนพันธ์ เพ็งสวัสดิ์</b></div>
+    </div>
+    <div class="formula-hero">P =<span class="frac"><span>W</span><span>t</span></span></div>
+  </section>
+
+  <!-- 1 · นิยาม -->
+  <section class="slide" id="s1">
+    <div class="brand">KJST · PHYSICS</div>
+    <div class="slide-head">
+      <div class="eyebrow">แนวคิดหลัก</div>
+      <h2>กำลังคืออะไร?</h2>
+    </div>
+    <div class="body-grid two-col">
+      <div class="card accent">
+        <h3>นิยาม</h3>
+        <p style="margin-top:1.2vh">กำลัง (Power) คือ <b>อัตราการทำงาน</b> หรือปริมาณงานที่ทำได้ในหนึ่งหน่วยเวลา</p>
+        <div class="formula-box">P =<span class="frac"><span>W</span><span>t</span></span></div>
+        <p style="font-size:2vh;color:#475569">เมื่อ <b>W</b> = งาน (จูล, J) &nbsp; <b>t</b> = เวลา (วินาที, s)</p>
+        <div style="margin-top:1.6vh">
+          <span class="unit-pill">หน่วย SI : วัตต์ (W)</span>
+          <span class="unit-pill">1 W = 1 J/s</span>
+        </div>
+      </div>
+      <div class="card blue">
+        <h3>ทำไมต้องมี “กำลัง”?</h3>
+        <ul class="tick">
+          <li>งานเท่ากัน แต่ <b>ใช้เวลาต่างกัน</b> → กำลังต่างกัน</li>
+          <li>ทำงานเสร็จ<b>เร็ว</b> = มีกำลัง<b>มาก</b></li>
+          <li>บอกว่าเครื่องยนต์/คน ทำงานได้ “แรง” แค่ไหนต่อเวลา</li>
+        </ul>
+        <div class="callout" style="margin-top:auto">
+          <b>เทียบง่าย ๆ:</b> ยกของขึ้นชั้น 3 เท่ากัน — คนที่ขึ้นถึงก่อนใช้กำลังมากกว่า แม้ทำงานเท่ากัน
+        </div>
+      </div>
+    </div>
+    <div class="pageno">หน้า <b>2</b> / 8</div>
+  </section>
+
+  <!-- 2 · หน่วยและ P=Fv -->
+  <section class="slide" id="s2">
+    <div class="brand">KJST · PHYSICS</div>
+    <div class="slide-head">
+      <div class="eyebrow">สูตรและหน่วย</div>
+      <h2>กำลังในรูปแรงและความเร็ว</h2>
+    </div>
+    <div class="body-grid two-col">
+      <div class="card accent">
+        <h3>P = F·v มาจากไหน?</h3>
+        <p style="margin-top:1vh;font-size:2.05vh">งาน <b>W = F·s</b> เมื่อหารด้วยเวลา t :</p>
+        <div class="formula-box" style="font-size:3.6vh">P =<span class="frac"><span>F·s</span><span>t</span></span>= F·<span class="frac"><span>s</span><span>t</span></span>= F·v</div>
+        <p style="font-size:2.05vh;color:#475569">เมื่อวัตถุเคลื่อนที่ด้วยความเร็ว v คงตัว ภายใต้แรง F ในทิศเดียวกัน</p>
+        <div class="callout" style="margin-top:1.4vh"><b>ใช้เมื่อ:</b> รถวิ่งด้วยความเร็วคงที่ เครื่องยนต์ออกแรงคงที่</div>
+      </div>
+      <div class="card blue">
+        <h3>หน่วยของกำลัง</h3>
+        <ul class="tick" style="margin-top:.5vh">
+          <li><b>วัตต์ (Watt, W)</b> = จูลต่อวินาที (J/s) — หน่วยมาตรฐาน SI</li>
+          <li><b>กิโลวัตต์ (kW)</b> = 1,000 W</li>
+          <li><b>แรงม้า (hp)</b> : 1 hp ≈ <b>746 W</b></li>
+        </ul>
+        <div class="callout" style="margin-top:1vh">
+          <b>เกร็ด:</b> หลอดไฟ 60 W ใช้พลังงาน 60 จูลทุกวินาที · แอร์ 1 แรงม้า ≈ 746 W
+        </div>
+      </div>
+    </div>
+    <div class="pageno">หน้า <b>3</b> / 8</div>
+  </section>
+
+  <!-- 3 · SIM: RACE -->
+  <section class="slide" id="s3">
+    <div class="brand">KJST · PHYSICS</div>
+    <div class="slide-head">
+      <div class="eyebrow">แบบจำลองที่ 1 · โต้ตอบได้</div>
+      <h2>ใครมีกำลังมากกว่า? — การแข่งยกกล่อง</h2>
+    </div>
+    <div class="sim-wrap">
+      <div class="race-canvas">
+        <svg class="race-svg" viewBox="0 0 1000 380" preserveAspectRatio="xMidYMid meet">
+          <!-- floor & shelf -->
+          <line x1="0" y1="350" x2="1000" y2="350" stroke="#94a3b8" stroke-width="3"/>
+          <line x1="0" y1="60" x2="1000" y2="60" stroke="#F59E0B" stroke-width="3" stroke-dasharray="8 8"/>
+          <text x="14" y="50" font-family="Prompt" font-size="20" fill="#F59E0B" font-weight="600">เส้นชัย (สูง 6 m · งานเท่ากัน)</text>
+          <!-- lane A -->
+          <g id="laneA">
+            <rect id="boxA" x="230" y="310" width="60" height="40" rx="6" fill="#2563EB"/>
+            <text id="boxA-t" x="260" y="335" font-family="Prompt" font-size="18" fill="#fff" text-anchor="middle" font-weight="600">A</text>
+          </g>
+          <text x="260" y="378" font-family="Prompt" font-size="19" fill="#1E3A8A" text-anchor="middle" font-weight="600">คน A</text>
+          <!-- lane B -->
+          <g id="laneB">
+            <rect id="boxB" x="680" y="310" width="60" height="40" rx="6" fill="#F59E0B"/>
+            <text id="boxB-t" x="710" y="335" font-family="Prompt" font-size="18" fill="#0A1F44" text-anchor="middle" font-weight="600">B</text>
+          </g>
+          <text x="710" y="378" font-family="Prompt" font-size="19" fill="#B45309" text-anchor="middle" font-weight="600">คน B</text>
+        </svg>
+      </div>
+      <div class="controls">
+        <button class="btn gold" id="playBtn" onclick="toggleRace()">▶ เล่น</button>
+        <button class="btn ghost small" onclick="resetRace()">↺ เริ่มใหม่</button>
+        <div class="slider-row">
+          <span>เวลา A: <b id="tA-lbl">4</b> s</span>
+          <input type="range" id="tA" min="2" max="10" step="1" value="4" oninput="onSlider()">
+        </div>
+        <div class="slider-row">
+          <span>เวลา B: <b id="tB-lbl">8</b> s</span>
+          <input type="range" id="tB" min="2" max="10" step="1" value="8" oninput="onSlider()">
+        </div>
+        <div class="readout">
+          <div class="stat a"><div class="k">กำลัง A</div><div class="v" id="pA">750 W</div></div>
+          <div class="stat b"><div class="k">กำลัง B</div><div class="v" id="pB">375 W</div></div>
+          <div class="stat" style="border-color:var(--gold)"><div class="k">ผู้ชนะ</div><div class="v"><span class="winner-badge" id="win" style="background:#ECFDF5;color:var(--green)">A</span></div></div>
+        </div>
+      </div>
+      <p style="font-size:1.85vh;color:#64748b;margin-top:1.2vh;text-align:center">
+        งานเท่ากัน (W = mgh = 3,000 J สำหรับกล่อง 50 kg ยกสูง 6 m) — ใครใช้<b>เวลาน้อยกว่า</b> ย่อมมี<b>กำลังมากกว่า</b>
+      </p>
+    </div>
+    <div class="pageno">หน้า <b>4</b> / 8</div>
+  </section>
+
+  <!-- 4 · SIM: P=Fv -->
+  <section class="slide" id="s4">
+    <div class="brand">KJST · PHYSICS</div>
+    <div class="slide-head">
+      <div class="eyebrow">แบบจำลองที่ 2 · ปรับค่าได้</div>
+      <h2>สำรวจ P = F · v</h2>
+    </div>
+    <div class="fv-panel">
+      <div class="fv-visual">
+        <svg id="fvSvg" viewBox="0 0 560 340" preserveAspectRatio="xMidYMid meet" style="width:100%;height:100%">
+          <line x1="0" y1="250" x2="560" y2="250" stroke="#94a3b8" stroke-width="3"/>
+          <!-- dashes to imply speed -->
+          <g id="speedlines" stroke="#CBD5E1" stroke-width="4" stroke-linecap="round"></g>
+          <!-- car -->
+          <g id="car">
+            <rect x="150" y="200" width="120" height="40" rx="10" fill="#1E3A8A"/>
+            <rect x="175" y="180" width="70" height="28" rx="8" fill="#2563EB"/>
+            <circle cx="180" cy="245" r="16" fill="#0A1F44" stroke="#F59E0B" stroke-width="3"/>
+            <circle cx="245" cy="245" r="16" fill="#0A1F44" stroke="#F59E0B" stroke-width="3"/>
+          </g>
+          <!-- force arrow -->
+          <g id="forceArrow">
+            <line id="fLine" x1="270" y1="210" x2="360" y2="210" stroke="#DC2626" stroke-width="7" stroke-linecap="round"/>
+            <polygon id="fHead" points="360,200 380,210 360,220" fill="#DC2626"/>
+            <text x="315" y="195" font-family="Prompt" font-size="20" fill="#DC2626" font-weight="700" text-anchor="middle">F</text>
+          </g>
+        </svg>
+      </div>
+      <div class="fv-controls">
+        <div class="fv-big">
+          <div class="val"><span id="pVal">4500</span> W</div>
+          <div class="lbl">กำลัง P = F × v = <span id="fEcho">1500</span> N × <span id="vEcho">3.0</span> m/s</div>
+        </div>
+        <div class="fv-slider">
+          <label>แรง F <span><b id="fLbl">1500</b> N</span></label>
+          <input type="range" id="fRange" min="200" max="4000" step="100" value="1500" oninput="updateFv()">
+        </div>
+        <div class="fv-slider">
+          <label>ความเร็ว v <span><b id="vLbl">3.0</b> m/s</span></label>
+          <input type="range" id="vRange" min="0" max="12" step="0.5" value="3" oninput="updateFv()">
+        </div>
+        <div class="callout" style="font-size:1.95vh">ลองปรับ: เพิ่ม v เป็น 2 เท่า → P เพิ่ม 2 เท่า (แปรผันตรง)</div>
+      </div>
+    </div>
+    <div class="pageno">หน้า <b>5</b> / 8</div>
+  </section>
+
+  <!-- 5 · สรุปสาระสำคัญ -->
+  <section class="slide" id="s5">
+    <div class="brand">KJST · PHYSICS</div>
+    <div class="slide-head">
+      <div class="eyebrow">สรุปสาระสำคัญ</div>
+      <h2>สิ่งที่ต้องจำ</h2>
+    </div>
+    <div class="body-grid" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="card accent">
+        <h3>1 · นิยาม</h3>
+        <div class="formula-box" style="font-size:3.4vh">P =<span class="frac"><span>W</span><span>t</span></span></div>
+        <p style="font-size:2vh">กำลัง = อัตราการทำงาน = งานต่อเวลา</p>
+      </div>
+      <div class="card accent">
+        <h3>2 · รูปแรง–ความเร็ว</h3>
+        <div class="formula-box" style="font-size:3.4vh">P = F · v</div>
+        <p style="font-size:2vh">ใช้เมื่อออกแรง F ให้เคลื่อนที่ด้วยความเร็ว v ในทิศเดียวกัน</p>
+      </div>
+      <div class="card accent">
+        <h3>3 · หน่วย</h3>
+        <div style="margin:1.4vh 0">
+          <span class="unit-pill">1 W = 1 J/s</span>
+          <span class="unit-pill">1 kW = 1000 W</span>
+          <span class="unit-pill">1 hp ≈ 746 W</span>
+        </div>
+        <p style="font-size:2vh">งานเท่ากัน + เวลาน้อย = กำลังมาก</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:2.2vh;font-size:2.15vh">
+      <b>คำถามชวนคิด:</b> ลิฟต์สองตัวยกน้ำหนักเท่ากันขึ้นชั้นเดียวกัน ตัวหนึ่งเร็วกว่า — ตัวไหนใช้ <b>กำลัง</b> มากกว่า? (ใช้พลังงานเท่ากันหรือไม่?)
+    </div>
+    <div class="pageno">หน้า <b>6</b> / 8</div>
+  </section>
+
+  <!-- 6 · QUIZ -->
+  <section class="slide" id="quiz">
+    <div class="brand">KJST · PHYSICS</div>
+    <div class="quiz-top">
+      <div>
+        <div class="eyebrow" style="margin-bottom:.4vh">แบบทดสอบท้ายบท</div>
+        <h2 style="font-size:3.4vh">Quiz — กำลัง (10 ข้อ)</h2>
+      </div>
+      <div class="progress-dots" id="dots"></div>
+    </div>
+    <div class="qcard">
+      <div class="qnum" id="qnum">ข้อ 1 / 10</div>
+      <div class="qtext" id="qtext">โจทย์…</div>
+      <div class="opts" id="opts"></div>
+      <div class="explain" id="explain"></div>
+      <div class="quiz-nav">
+        <button class="btn gold" id="ansBtn" onclick="showAnswer()">👁 ดูเฉลย</button>
+        <button class="btn ghost small" id="prevQ" onclick="prevQ()">◀ ก่อนหน้า</button>
+        <button class="btn small" id="nextQ" onclick="nextQ()">ถัดไป ▶</button>
+      </div>
+    </div>
+    <div class="pageno">หน้า <b>7</b> / 8</div>
+  </section>
+
+  <!-- 7 · DONE -->
+  <section class="slide" id="quiz-done">
+    <div class="brand">KJST · PHYSICS</div>
+    <div class="eyebrow">จบบทเรียน</div>
+    <h2 style="font-size:5vh;margin-bottom:1vh">เยี่ยมมาก! 🎉</h2>
+    <p style="font-size:2.6vh;max-width:60vw">คุณทบทวนเรื่อง <b>กำลัง (Power)</b> ครบทุกหัวข้อแล้ว<br>อย่าลืม: <b>P = W/t = F·v</b> · หน่วยวัตต์ · งานเท่ากันเวลาน้อย = กำลังมาก</p>
+    <button class="btn gold" style="margin-top:3vh" onclick="restartQuiz()">↺ ทำ Quiz อีกครั้ง</button>
+    <div class="pageno">หน้า <b>8</b> / 8</div>
+  </section>
+
+  <!-- NAV -->
+  <div class="nav">
+    <button class="btn ghost small" onclick="prevSlide()">◀</button>
+    <span class="pageno" style="position:static;color:#64748b">
+      <b id="curSlide">1</b> / <span id="totSlide">8</span></span>
+    <button class="btn small" onclick="nextSlide()">▶</button>
+  </div>
+</div>
+
+<script>
+/* ================= SLIDE NAV ================= */
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0;
+const totSlide=document.getElementById('totSlide');
+totSlide.textContent=slides.length;
+function goto(i){
+  if(i<0||i>=slides.length)return;
+  slides[cur].classList.remove('active');
+  cur=i;slides[cur].classList.add('active');
+  document.getElementById('curSlide').textContent=cur+1;
+  if(slides[cur].id==='s3'){resetRace();}
+  if(slides[cur].id==='s4'){updateFv();}
+  if(slides[cur].id==='quiz'){renderQ();}
+}
+function nextSlide(){goto(cur+1)}
+function prevSlide(){goto(cur-1)}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight')nextSlide();
+  if(e.key==='ArrowLeft')prevSlide();
+});
+function toggleFS(){
+  if(!document.fullscreenElement){document.getElementById('stage').requestFullscreen?.();}
+  else{document.exitFullscreen?.();}
+}
+
+/* ================= RACE SIM ================= */
+const W_JOB=3000; // งาน (J) เท่ากันทั้งสองคน
+let raceT=0, racePlaying=false, raceRAF=null, raceLast=0;
+const boxA=document.getElementById('boxA'),boxAt=document.getElementById('boxA-t');
+const boxB=document.getElementById('boxB'),boxBt=document.getElementById('boxB-t');
+const yStart=310,yEnd=40;
+function tA(){return +document.getElementById('tA').value;}
+function tB(){return +document.getElementById('tB').value;}
+function onSlider(){
+  document.getElementById('tA-lbl').textContent=tA();
+  document.getElementById('tB-lbl').textContent=tB();
+  document.getElementById('pA').textContent=Math.round(W_JOB/tA())+' W';
+  document.getElementById('pB').textContent=Math.round(W_JOB/tB())+' W';
+  if(!racePlaying)resetRace(true);
+}
+function setBox(box,txt,y){box.setAttribute('y',y);txt.setAttribute('y',y+25);}
+function toggleRace(){
+  const btn=document.getElementById('playBtn');
+  if(racePlaying){racePlaying=false;btn.textContent='▶ เล่น';cancelAnimationFrame(raceRAF);}
+  else{
+    if(raceT>=1)raceT=0;
+    racePlaying=true;btn.textContent='⏸ หยุด';raceLast=performance.now();
+    raceRAF=requestAnimationFrame(stepRace);
+  }
+}
+function stepRace(now){
+  const dt=(now-raceLast)/1000;raceLast=now;
+  const maxT=Math.max(tA(),tB());
+  raceT+=dt/maxT; // normalized progress of the slower one
+  const pa=Math.min(1, raceT*maxT/tA());
+  const pb=Math.min(1, raceT*maxT/tB());
+  setBox(boxA,boxAt, yStart+(yEnd-yStart)*pa);
+  setBox(boxB,boxBt, yStart+(yEnd-yStart)*pb);
+  if(raceT<1&&racePlaying){raceRAF=requestAnimationFrame(stepRace);}
+  else{racePlaying=false;document.getElementById('playBtn').textContent='▶ เล่น';showWinner();}
+}
+function showWinner(){
+  const win=document.getElementById('win');
+  const pa=W_JOB/tA(), pb=W_JOB/tB();
+  if(pa>pb){win.textContent='A';win.style.background='#EFF6FF';win.style.color='#2563EB';}
+  else if(pb>pa){win.textContent='B';win.style.background='#FFFBEB';win.style.color='#B45309';}
+  else{win.textContent='เสมอ';win.style.background='#F1F5F9';win.style.color='#334155';}
+  win.classList.add('show');
+}
+function resetRace(keepWin){
+  racePlaying=false;raceT=0;cancelAnimationFrame(raceRAF);
+  document.getElementById('playBtn').textContent='▶ เล่น';
+  setBox(boxA,boxAt,yStart);setBox(boxB,boxBt,yStart);
+  if(!keepWin)document.getElementById('win').classList.remove('show');
+  onSliderSafe();
+}
+function onSliderSafe(){
+  document.getElementById('tA-lbl').textContent=tA();
+  document.getElementById('tB-lbl').textContent=tB();
+  document.getElementById('pA').textContent=Math.round(W_JOB/tA())+' W';
+  document.getElementById('pB').textContent=Math.round(W_JOB/tB())+' W';
+}
+
+/* ================= Fv SIM ================= */
+function updateFv(){
+  const F=+document.getElementById('fRange').value;
+  const v=+document.getElementById('vRange').value;
+  const P=F*v;
+  document.getElementById('fLbl').textContent=F;
+  document.getElementById('vLbl').textContent=v.toFixed(1);
+  document.getElementById('pVal').textContent=P.toLocaleString();
+  document.getElementById('fEcho').textContent=F;
+  document.getElementById('vEcho').textContent=v.toFixed(1);
+  // force arrow length scales with F
+  const len=40+ (F/4000)*130;
+  const x0=270, x1=x0+len;
+  document.getElementById('fLine').setAttribute('x2',x1);
+  document.getElementById('fHead').setAttribute('points',`${x1},200 ${x1+20},210 ${x1},220`);
+  // speed lines
+  const g=document.getElementById('speedlines');g.innerHTML='';
+  const n=Math.round(v);
+  for(let i=0;i<n;i++){
+    const y=190+ i*12 % 60;
+    const lx=20+ (i*70)%120;
+    g.innerHTML+=`<line x1="${lx}" y1="${170+ (i%4)*22}" x2="${lx+30+v*2}" y2="${170+ (i%4)*22}"/>`;
+  }
+}
+
+/* ================= QUIZ ================= */
+const QUESTIONS=[
+ {q:"กำลัง (Power) หมายถึงข้อใด",
+  o:["ปริมาณงานทั้งหมดที่ทำ","อัตราการทำงาน (งานต่อเวลา)","แรงที่กระทำต่อวัตถุ","พลังงานที่สะสมในวัตถุ"],
+  a:1, e:"กำลังคืออัตราการทำงาน P = W/t คือปริมาณงานที่ทำได้ในหนึ่งหน่วยเวลา"},
+
+ {q:"หน่วยของกำลังในระบบ SI คือข้อใด",
+  o:["จูล (J)","นิวตัน (N)","วัตต์ (W)","แรงม้า (hp)"],
+  a:2, e:"หน่วย SI ของกำลังคือวัตต์ (W) โดย 1 W = 1 J/s"},
+
+ {q:"1 วัตต์ มีค่าเท่ากับข้อใด",
+  o:["1 จูล","1 จูลต่อวินาที","1 นิวตันต่อวินาที","1 จูล × วินาที"],
+  a:1, e:"1 W = 1 J/s หมายถึงทำงานได้ 1 จูลในทุก ๆ 1 วินาที"},
+
+ {q:"เครื่องยนต์ทำงาน 6,000 จูล ในเวลา 3 วินาที มีกำลังกี่วัตต์",
+  o:["1,000 W","2,000 W","3,000 W","18,000 W"],
+  a:1, e:"P = W/t = 6000/3 = 2,000 W"},
+
+ {q:"คนยกของทำงาน 1,200 J ในเวลา 4 s กำลังของเขาเท่ากับเท่าใด",
+  o:["300 W","400 W","4,800 W","0.3 W"],
+  a:0, e:"P = W/t = 1200/4 = 300 W"},
+
+ {q:"งานเท่ากัน แต่คน A ใช้เวลา 2 s คน B ใช้เวลา 5 s ใครมีกำลังมากกว่า",
+  o:["คน A","คน B","เท่ากัน","สรุปไม่ได้"],
+  a:0, e:"กำลัง P = W/t เมื่องานเท่ากัน ใครใช้เวลาน้อยกว่า (A) จะมีกำลังมากกว่า"},
+
+ {q:"สูตรกำลังในรูปของแรงและความเร็วคือข้อใด",
+  o:["P = F/v","P = F·v","P = v/F","P = F·v²"],
+  a:1, e:"P = W/t = (F·s)/t = F·(s/t) = F·v เมื่อทิศแรงและความเร็วเดียวกัน"},
+
+ {q:"รถออกแรง 500 N วิ่งด้วยความเร็วคงที่ 4 m/s เครื่องยนต์ให้กำลังกี่วัตต์",
+  o:["125 W","504 W","2,000 W","500 W"],
+  a:2, e:"P = F·v = 500 × 4 = 2,000 W"},
+
+ {q:"1 แรงม้า (hp) มีค่าประมาณกี่วัตต์",
+  o:["100 W","500 W","746 W","1,000 W"],
+  a:2, e:"1 hp ≈ 746 W ดังนั้นมอเตอร์ 1 แรงม้าให้กำลังราว 746 วัตต์"},
+
+ {q:"หลอดไฟ 60 W เปิดไว้ 10 วินาที ใช้พลังงานไฟฟ้ากี่จูล",
+  o:["6 J","60 J","600 J","70 J"],
+  a:2, e:"จาก P = W/t → W = P·t = 60 × 10 = 600 J"},
+];
+
+let qi=0;
+const answered=new Array(QUESTIONS.length).fill(false);
+function buildDots(){
+  const d=document.getElementById('dots');d.innerHTML='';
+  QUESTIONS.forEach((_,i)=>{const s=document.createElement('div');s.className='dot';s.id='dot'+i;d.appendChild(s);});
+}
+function renderQ(){
+  const Q=QUESTIONS[qi];
+  document.getElementById('qnum').textContent=`ข้อ ${qi+1} / ${QUESTIONS.length}`;
+  document.getElementById('qtext').textContent=Q.q;
+  const opts=document.getElementById('opts');opts.innerHTML='';
+  const labels=['ก','ข','ค','ง'];
+  Q.o.forEach((txt,i)=>{
+    const el=document.createElement('div');el.className='opt';el.id='opt'+i;
+    el.innerHTML=`<span class="opt-label">${labels[i]}</span><span>${txt}</span>`;
+    el.onclick=()=>pickOpt(i);
+    opts.appendChild(el);
+  });
+  const ex=document.getElementById('explain');ex.className='explain';ex.textContent='';
+  document.getElementById('ansBtn').style.display='inline-block';
+  // dots
+  QUESTIONS.forEach((_,i)=>{
+    const dot=document.getElementById('dot'+i);dot.className='dot';
+    if(answered[i])dot.classList.add('done');
+    if(i===qi)dot.classList.add('current');
+  });
+  document.getElementById('prevQ').style.visibility= qi===0?'hidden':'visible';
+  document.getElementById('nextQ').textContent= qi===QUESTIONS.length-1?'จบ ✓':'ถัดไป ▶';
+}
+let picked=-1;
+function pickOpt(i){
+  if(answered[qi])return;
+  picked=i;
+  const Q=QUESTIONS[qi];
+  document.querySelectorAll('.opt').forEach(o=>{o.classList.remove('correct','wrong')});
+  if(i===Q.a){document.getElementById('opt'+i).classList.add('correct');}
+  else{document.getElementById('opt'+i).classList.add('wrong');
+       document.getElementById('opt'+Q.a).classList.add('correct');}
+  revealExplain();
+}
+function showAnswer(){
+  const Q=QUESTIONS[qi];
+  document.getElementById('opt'+Q.a).classList.add('correct');
+  revealExplain();
+}
+function revealExplain(){
+  const Q=QUESTIONS[qi];
+  const ex=document.getElementById('explain');
+  ex.innerHTML=`<b>เฉลย: ${['ก','ข','ค','ง'][Q.a]}</b> — ${Q.e}`;
+  ex.classList.add('show');
+  answered[qi]=true;
+  document.getElementById('dot'+qi).classList.add('done');
+}
+function nextQ(){
+  if(qi===QUESTIONS.length-1){goto(slides.findIndex(s=>s.id==='quiz-done'));return;}
+  qi++;renderQ();
+}
+function prevQ(){if(qi>0){qi--;renderQ();}}
+function restartQuiz(){
+  qi=0;answered.fill(false);goto(slides.findIndex(s=>s.id==='quiz'));
+}
+
+/* init */
+buildDots();renderQ();updateFv();
+</script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz กำลัง (Power) — ฟิสิกส์ ม.5 | KJST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1F44;--blue:#1E3A8A;--blue2:#2563EB;
+  --gold:#F59E0B;--gold-soft:#FCD34D;
+  --red:#DC2626;--green:#059669;
+  --ink:#0F172A;--paper:#F8FAFC;--line:rgba(30,58,138,.12);
+  --shadow:0 10px 40px rgba(10,31,68,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Sarabun',sans-serif;color:var(--ink);
+  min-height:100vh;
+  background:radial-gradient(circle at 20% 0%,#12306b 0%,var(--navy) 55%,#061530 100%);
+  display:flex;align-items:center;justify-content:center;padding:3vh 3vw;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,.eyebrow,.btn,.opt-label,.qnum,.brand{font-family:'Prompt',sans-serif}
+.wrap{
+  width:100%;max-width:880px;background:var(--paper);
+  border-radius:24px;box-shadow:0 30px 80px rgba(0,0,0,.4);
+  overflow:hidden;position:relative;
+}
+.topbar{
+  background:linear-gradient(135deg,var(--blue),var(--navy));
+  color:#fff;padding:26px 34px;display:flex;justify-content:space-between;align-items:center;
+}
+.topbar .eyebrow{color:var(--gold-soft);font-size:13px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.topbar h1{font-size:28px;font-weight:700;margin-top:4px}
+.brand{font-weight:700;font-size:14px;letter-spacing:.12em;color:var(--gold-soft);opacity:.85}
+.pad{padding:34px}
+
+/* ===== screens ===== */
+.screen{display:none}
+.screen.active{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ===== form ===== */
+.lead{font-size:16px;color:#475569;margin-bottom:22px;line-height:1.55}
+.field{margin-bottom:20px}
+.field label{display:block;font-family:'Prompt';font-weight:600;font-size:15px;color:var(--navy);margin-bottom:8px}
+.field .req{color:var(--red)}
+.rooms{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.room-btn,.group-btn{
+  font-family:'Prompt';font-weight:600;font-size:18px;padding:16px 0;text-align:center;
+  background:#fff;border:2px solid var(--line);border-radius:14px;cursor:pointer;
+  transition:all .15s;color:var(--navy);
+}
+.room-btn:hover,.group-btn:hover{border-color:var(--blue2);background:#EFF6FF}
+.room-btn.sel,.group-btn.sel{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 8px 20px rgba(30,58,138,.35)}
+input[type=text],input[type=number]{
+  width:100%;font-family:'Sarabun';font-size:17px;padding:14px 16px;
+  border:2px solid var(--line);border-radius:14px;outline:none;background:#fff;
+  transition:border-color .15s;
+}
+input:focus{border-color:var(--blue2)}
+.err-msg{color:var(--red);font-size:14px;margin-top:8px;font-weight:600;display:none}
+.err-msg.show{display:block}
+
+.btn{
+  font-family:'Prompt';font-weight:600;font-size:17px;cursor:pointer;border:none;
+  border-radius:14px;padding:15px 30px;color:#fff;background:var(--blue2);
+  transition:transform .12s,box-shadow .2s;box-shadow:0 8px 22px rgba(37,99,235,.35);
+}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn.gold{background:var(--gold);color:var(--navy);box-shadow:0 8px 22px rgba(245,158,11,.4)}
+.btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue2);box-shadow:none}
+.btn.block{width:100%;margin-top:10px}
+
+/* ===== quiz ===== */
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.student-tag{font-size:14px;color:#64748b}
+.student-tag b{color:var(--navy);font-family:'Prompt'}
+.progress{height:8px;background:#E2E8F0;border-radius:99px;overflow:hidden;margin:14px 0 26px}
+.progress .bar{height:100%;background:linear-gradient(90deg,var(--blue2),var(--gold));width:10%;transition:width .35s;border-radius:99px}
+.qnum{font-family:'Prompt';font-weight:600;color:var(--gold);font-size:15px;letter-spacing:.06em;margin-bottom:10px}
+.qtext{font-family:'Prompt';font-weight:600;font-size:22px;color:var(--navy);line-height:1.4;margin-bottom:22px;min-height:60px}
+.opts{display:grid;gap:12px}
+.opt{
+  display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--line);
+  border-radius:14px;padding:16px 18px;cursor:pointer;transition:all .15s;font-size:17px;
+}
+.opt:hover{border-color:var(--blue2);background:#EFF6FF}
+.opt.sel{border-color:var(--blue);background:#EFF6FF}
+.opt.sel .opt-label{background:var(--gold);color:var(--navy)}
+.opt-label{
+  width:38px;height:38px;flex:none;border-radius:50%;background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px;transition:.15s;
+}
+/* review states */
+.opt.correct{border-color:var(--green);background:#ECFDF5}
+.opt.correct .opt-label{background:var(--green);color:#fff}
+.opt.wrong{border-color:var(--red);background:#FEF2F2}
+.opt.wrong .opt-label{background:var(--red);color:#fff}
+.explain{margin-top:16px;background:#FFFBEB;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:14px 16px;font-size:15px;line-height:1.55}
+.explain b{color:var(--navy)}
+
+.qnav{display:flex;justify-content:space-between;gap:12px;margin-top:26px}
+.dot-strip{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.dot{width:12px;height:12px;border-radius:50%;background:#CBD5E1;transition:.2s}
+.dot.filled{background:var(--blue2)}
+.dot.current{background:var(--gold);transform:scale(1.3)}
+
+/* ===== result ===== */
+#result{text-align:center}
+.score-ring{
+  width:180px;height:180px;margin:10px auto 20px;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:conic-gradient(var(--gold) var(--pct,0%),#E2E8F0 0);position:relative;
+}
+.score-ring::before{content:"";position:absolute;inset:14px;background:var(--paper);border-radius:50%}
+.score-ring .n{position:relative;font-family:'Prompt';font-size:46px;font-weight:700;color:var(--navy);line-height:1}
+.score-ring .l{position:relative;font-size:15px;color:#64748b}
+.save-status{font-size:15px;margin:16px 0;padding:12px 18px;border-radius:12px;display:inline-block}
+.save-status.pending{background:#EFF6FF;color:var(--blue)}
+.save-status.ok{background:#ECFDF5;color:var(--green);font-weight:600}
+.save-status.dup{background:#FEF3C7;color:#B45309;font-weight:600}
+.save-status.fail{background:#FEF2F2;color:var(--red);font-weight:600}
+.spinner{display:inline-block;width:16px;height:16px;border:3px solid #BFDBFE;border-top-color:var(--blue2);border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.review-title{font-family:'Prompt';font-weight:600;font-size:20px;color:var(--navy);text-align:left;margin:30px 0 16px}
+.rev-item{text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+.rev-item .rq{font-family:'Prompt';font-weight:600;color:var(--navy);font-size:16px;margin-bottom:8px}
+.rev-item .ra{font-size:15px}
+.rev-item .ra .tag{font-family:'Prompt';font-weight:600;font-size:13px;padding:2px 10px;border-radius:99px;margin-right:6px}
+.tag.good{background:#ECFDF5;color:var(--green)}
+.tag.bad{background:#FEF2F2;color:var(--red)}
+.rev-item .re{font-size:14px;color:#475569;margin-top:6px;padding-top:8px;border-top:1px dashed var(--line)}
+
+.footnote{text-align:center;font-size:12px;color:#94a3b8;padding:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <div class="eyebrow">ฟิสิกส์ ม.5 · บทงานและพลังงาน</div>
+      <h1>แบบทดสอบ: กำลัง (Power)</h1>
+    </div>
+    <div class="brand">KJST</div>
+  </div>
+
+  <!-- ============ SCREEN 1: FORM ============ -->
+  <div class="screen active pad" id="formScreen">
+    <p class="lead">กรอกข้อมูลให้ครบก่อนเริ่มทำแบบทดสอบ · มี <b>10 ข้อ</b> · ทำได้ <b>ครั้งเดียว</b> · ระบบจะบันทึกคะแนนอัตโนมัติเมื่อกดส่ง</p>
+
+    <div class="field">
+      <label>กลุ่ม <span class="req">*</span></label>
+      <div class="rooms" id="groups">
+        <div class="group-btn" data-group="1">กลุ่ม 1</div>
+        <div class="group-btn" data-group="2">กลุ่ม 2</div>
+        <div class="group-btn" data-group="3">กลุ่ม 3</div>
+        <div class="group-btn" data-group="4">กลุ่ม 4</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>ห้องเรียน <span class="req">*</span></label>
+      <div class="rooms" id="rooms">
+        <div class="room-btn" data-room="5/3">5/3</div>
+        <div class="room-btn" data-room="5/4">5/4</div>
+        <div class="room-btn" data-room="5/5">5/5</div>
+        <div class="room-btn" data-room="5/6">5/6</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="number">เลขที่ <span class="req">*</span></label>
+      <input type="number" id="number" min="1" max="50" placeholder="เช่น 12" inputmode="numeric">
+    </div>
+
+    <div class="field">
+      <label for="name">ชื่อ - นามสกุล <span class="req">*</span></label>
+      <input type="text" id="name" placeholder="เช่น สมชาย ใจดี" autocomplete="off">
+    </div>
+
+    <div class="err-msg" id="formErr">กรุณากรอกข้อมูลให้ครบทุกช่อง</div>
+    <button class="btn gold block" onclick="startQuiz()">เริ่มทำแบบทดสอบ ▶</button>
+  </div>
+
+  <!-- ============ SCREEN 2: QUIZ ============ -->
+  <div class="screen pad" id="quizScreen">
+    <div class="qhead">
+      <div class="student-tag">กลุ่ม <b id="tagGroup">–</b> · ห้อง <b id="tagRoom">–</b> · เลขที่ <b id="tagNo">–</b> · <b id="tagName">–</b></div>
+      <div class="qnum" id="qCounter">ข้อ 1 / 10</div>
+    </div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+
+    <div class="qtext" id="qtext">โจทย์…</div>
+    <div class="opts" id="opts"></div>
+
+    <div class="qnav">
+      <button class="btn ghost" id="prevBtn" onclick="prevQ()">◀ ก่อนหน้า</button>
+      <button class="btn" id="nextBtn" onclick="nextQ()">ถัดไป ▶</button>
+    </div>
+    <div class="dot-strip" id="dotStrip"></div>
+  </div>
+
+  <!-- ============ SCREEN 3: RESULT ============ -->
+  <div class="screen pad" id="result">
+    <h2 style="font-family:'Prompt';font-size:26px;color:var(--navy)">ผลการทำแบบทดสอบ</h2>
+    <div class="score-ring" id="ring">
+      <div class="n"><span id="scoreN">0</span>/10</div>
+      <div class="l">คะแนน</div>
+    </div>
+    <div id="saveStatus" class="save-status pending"><span class="spinner"></span>กำลังบันทึกคะแนน…</div>
+    <div>
+      <button class="btn ghost" onclick="toggleReview()" id="revBtn">ดูเฉลยรายข้อ ▾</button>
+    </div>
+    <div id="reviewBox" style="display:none">
+      <div class="review-title">เฉลยและคำอธิบาย</div>
+      <div id="reviewList"></div>
+    </div>
+  </div>
+
+  <div class="footnote">KJST · โรงเรียนกาญจนาภิเษกวิทยาลัย สุราษฎร์ธานี · ระบบแบบทดสอบออนไลน์</div>
+</div>
+
+<script>
+/* ================= CONFIG ================= */
+// วาง URL ของ Google Apps Script Web App ที่ deploy แล้วตรงนี้ (ลงท้าย /exec)
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbz0I-Qil1CAz25CRJkKaptD9lkkE04GsCR4UDzEcqBcCfM0oRrOmYfo456dXVXGPzXA/exec';
+const QUIZ_ID = 'power';
+
+/* ================= QUESTIONS ================= */
+const QUESTIONS=[
+ {q:"กำลัง (Power) หมายถึงข้อใด",
+  o:["ปริมาณงานทั้งหมดที่ทำ","อัตราการทำงาน (งานต่อเวลา)","แรงที่กระทำต่อวัตถุ","พลังงานที่สะสมในวัตถุ"],
+  a:1,e:"กำลังคืออัตราการทำงาน P = W/t คือปริมาณงานที่ทำได้ในหนึ่งหน่วยเวลา"},
+ {q:"หน่วยของกำลังในระบบ SI คือข้อใด",
+  o:["จูล (J)","นิวตัน (N)","วัตต์ (W)","แรงม้า (hp)"],
+  a:2,e:"หน่วย SI ของกำลังคือวัตต์ (W) โดย 1 W = 1 J/s"},
+ {q:"1 วัตต์ มีค่าเท่ากับข้อใด",
+  o:["1 จูล","1 จูลต่อวินาที","1 นิวตันต่อวินาที","1 จูล × วินาที"],
+  a:1,e:"1 W = 1 J/s หมายถึงทำงานได้ 1 จูลในทุก ๆ 1 วินาที"},
+ {q:"เครื่องยนต์ทำงาน 6,000 จูล ในเวลา 3 วินาที มีกำลังกี่วัตต์",
+  o:["1,000 W","2,000 W","3,000 W","18,000 W"],
+  a:1,e:"P = W/t = 6000/3 = 2,000 W"},
+ {q:"คนยกของทำงาน 1,200 J ในเวลา 4 s กำลังของเขาเท่ากับเท่าใด",
+  o:["300 W","400 W","4,800 W","0.3 W"],
+  a:0,e:"P = W/t = 1200/4 = 300 W"},
+ {q:"งานเท่ากัน แต่คน A ใช้เวลา 2 s คน B ใช้เวลา 5 s ใครมีกำลังมากกว่า",
+  o:["คน A","คน B","เท่ากัน","สรุปไม่ได้"],
+  a:0,e:"กำลัง P = W/t เมื่องานเท่ากัน ใครใช้เวลาน้อยกว่า (A) จะมีกำลังมากกว่า"},
+ {q:"สูตรกำลังในรูปของแรงและความเร็วคือข้อใด",
+  o:["P = F/v","P = F·v","P = v/F","P = F·v²"],
+  a:1,e:"P = W/t = (F·s)/t = F·(s/t) = F·v เมื่อทิศแรงและความเร็วเดียวกัน"},
+ {q:"รถออกแรง 500 N วิ่งด้วยความเร็วคงที่ 4 m/s เครื่องยนต์ให้กำลังกี่วัตต์",
+  o:["125 W","504 W","2,000 W","500 W"],
+  a:2,e:"P = F·v = 500 × 4 = 2,000 W"},
+ {q:"1 แรงม้า (hp) มีค่าประมาณกี่วัตต์",
+  o:["100 W","500 W","746 W","1,000 W"],
+  a:2,e:"1 hp ≈ 746 W ดังนั้นมอเตอร์ 1 แรงม้าให้กำลังราว 746 วัตต์"},
+ {q:"หลอดไฟ 60 W เปิดไว้ 10 วินาที ใช้พลังงานไฟฟ้ากี่จูล",
+  o:["6 J","60 J","600 J","70 J"],
+  a:2,e:"จาก P = W/t → W = P·t = 60 × 10 = 600 J"},
+];
+const LABELS=['ก','ข','ค','ง'];
+
+/* ================= STATE ================= */
+let student={group:'',room:'',number:'',name:''};
+let answers=new Array(QUESTIONS.length).fill(-1);
+let qi=0, submitted=false;
+
+/* ================= FORM ================= */
+document.querySelectorAll('.group-btn').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.group-btn').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+    student.group=b.dataset.group;
+    document.getElementById('formErr').classList.remove('show');
+  };
+});
+document.querySelectorAll('.room-btn').forEach(b=>{
+  b.onclick=()=>{
+    document.querySelectorAll('.room-btn').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+    student.room=b.dataset.room;
+    document.getElementById('formErr').classList.remove('show');
+  };
+});
+function startQuiz(){
+  const number=document.getElementById('number').value.trim();
+  const name=document.getElementById('name').value.trim();
+  if(!student.group||!student.room||!number||!name){
+    document.getElementById('formErr').classList.add('show');return;
+  }
+  student.number=number;student.name=name;
+  document.getElementById('tagGroup').textContent=student.group;
+  document.getElementById('tagRoom').textContent=student.room;
+  document.getElementById('tagNo').textContent=student.number;
+  document.getElementById('tagName').textContent=student.name;
+  buildDots();
+  showScreen('quizScreen');
+  qi=0;renderQ();
+}
+
+/* ================= QUIZ ================= */
+function buildDots(){
+  const s=document.getElementById('dotStrip');s.innerHTML='';
+  QUESTIONS.forEach((_,i)=>{const d=document.createElement('div');d.className='dot';d.id='d'+i;s.appendChild(d);});
+}
+function renderQ(){
+  const Q=QUESTIONS[qi];
+  document.getElementById('qCounter').textContent=`ข้อ ${qi+1} / ${QUESTIONS.length}`;
+  document.getElementById('bar').style.width=((qi+1)/QUESTIONS.length*100)+'%';
+  document.getElementById('qtext').textContent=Q.q;
+  const opts=document.getElementById('opts');opts.innerHTML='';
+  Q.o.forEach((txt,i)=>{
+    const el=document.createElement('div');
+    el.className='opt'+(answers[qi]===i?' sel':'');
+    el.innerHTML=`<span class="opt-label">${LABELS[i]}</span><span>${txt}</span>`;
+    el.onclick=()=>{answers[qi]=i;renderQ();};
+    opts.appendChild(el);
+  });
+  // dots
+  QUESTIONS.forEach((_,i)=>{
+    const d=document.getElementById('d'+i);d.className='dot';
+    if(answers[i]!==-1)d.classList.add('filled');
+    if(i===qi)d.classList.add('current');
+  });
+  document.getElementById('prevBtn').style.visibility=qi===0?'hidden':'visible';
+  const isLast=qi===QUESTIONS.length-1;
+  const nb=document.getElementById('nextBtn');
+  nb.textContent=isLast?'ส่งคำตอบ ✓':'ถัดไป ▶';
+  nb.className='btn'+(isLast?' gold':'');
+}
+function nextQ(){
+  if(qi<QUESTIONS.length-1){qi++;renderQ();}
+  else{trySubmit();}
+}
+function prevQ(){if(qi>0){qi--;renderQ();}}
+
+function trySubmit(){
+  // ตรวจว่าตอบครบ
+  const unanswered=answers.map((a,i)=>a===-1?i+1:null).filter(x=>x);
+  if(unanswered.length){
+    alert('ยังตอบไม่ครบ! เหลือข้อ: '+unanswered.join(', ')+'\nกรุณาตอบให้ครบก่อนส่ง');
+    qi=unanswered[0]-1;renderQ();return;
+  }
+  if(!confirm('ยืนยันส่งคำตอบ? ส่งแล้วไม่สามารถแก้ไขได้'))return;
+  submitQuiz();
+}
+
+/* ================= SUBMIT + SAVE ================= */
+function calcScore(){
+  return answers.reduce((s,a,i)=>s+(a===QUESTIONS[i].a?1:0),0);
+}
+function submitQuiz(){
+  submitted=true;
+  const score=calcScore();
+  // แสดงผล
+  showScreen('result');
+  document.getElementById('scoreN').textContent=score;
+  document.getElementById('ring').style.setProperty('--pct',(score/QUESTIONS.length*100)+'%');
+  buildReview();
+  // ส่งไปชีต
+  saveToSheet(score);
+}
+function saveToSheet(score){
+  const st=document.getElementById('saveStatus');
+  if(GAS_URL.startsWith('PASTE_')){
+    st.className='save-status fail';
+    st.textContent='⚠ ยังไม่ได้ตั้งค่า URL ปลายทาง (ครูต้องวาง GAS_URL)';
+    return;
+  }
+  const body=new URLSearchParams({
+    group:student.group,room:student.room,number:student.number,name:student.name,
+    quizId:QUIZ_ID,score:String(score)
+  });
+  fetch(GAS_URL,{method:'POST',body})
+    .then(r=>r.json())
+    .then(res=>{
+      if(res.status==='ok'){
+        st.className='save-status ok';st.textContent='✓ บันทึกคะแนนเรียบร้อยแล้ว';
+      }else if(res.status==='duplicate'){
+        st.className='save-status dup';st.textContent='⚠ คุณทำแบบทดสอบนี้ไปแล้ว — ระบบไม่บันทึกซ้ำ';
+      }else{
+        st.className='save-status fail';st.textContent='✕ บันทึกไม่สำเร็จ: '+(res.message||'');
+      }
+    })
+    .catch(err=>{
+      st.className='save-status fail';
+      st.textContent='✕ เชื่อมต่อไม่สำเร็จ กรุณาแจ้งครู ('+err.message+')';
+    });
+}
+
+/* ================= REVIEW ================= */
+function buildReview(){
+  const list=document.getElementById('reviewList');list.innerHTML='';
+  QUESTIONS.forEach((Q,i)=>{
+    const correct=answers[i]===Q.a;
+    const item=document.createElement('div');item.className='rev-item';
+    item.innerHTML=`
+      <div class="rq">${i+1}. ${Q.q}</div>
+      <div class="ra">
+        <span class="tag ${correct?'good':'bad'}">${correct?'ถูก':'ผิด'}</span>
+        คุณตอบ: <b>${LABELS[answers[i]]}. ${Q.o[answers[i]]}</b>
+        ${correct?'':`<br><span style="color:var(--green)">เฉลย: <b>${LABELS[Q.a]}. ${Q.o[Q.a]}</b></span>`}
+      </div>
+      <div class="re">${Q.e}</div>`;
+    list.appendChild(item);
+  });
+}
+function toggleReview(){
+  const box=document.getElementById('reviewBox');
+  const btn=document.getElementById('revBtn');
+  if(box.style.display==='none'){box.style.display='block';btn.textContent='ซ่อนเฉลย ▴';}
+  else{box.style.display='none';btn.textContent='ดูเฉลยรายข้อ ▾';}
+}
+
+/* ================= NAV ================= */
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
