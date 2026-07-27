@@ -194,6 +194,25 @@ input[type=range]::-moz-range-thumb{width:2.2vh;height:2.2vh;border:none;border-
   gap:1.2vw;z-index:55}
 .botnav .pageno{font-family:'Prompt';font-size:1.7vh;color:#64748b}
 .botnav .pageno b{color:var(--navy)}
+
+/* ปุ่มนำทางลอยมุมขวาล่าง (แตะได้บนมือถือ/แท็บเล็ต) */
+.floatnav{position:fixed;right:2.2vw;bottom:2.2vh;z-index:80;display:flex;align-items:center;gap:1.4vw;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);
+  border-radius:999px;padding:1vh 1.4vw;box-shadow:0 8px 26px rgba(10,31,68,.28)}
+.fnav-btn{font-family:'Prompt';font-weight:700;font-size:2.4vh;line-height:1;cursor:pointer;border:none;
+  width:6.2vh;height:6.2vh;min-width:44px;min-height:44px;border-radius:50%;color:var(--blue);
+  background:#EFF6FF;border:2px solid var(--line);transition:transform .12s,background .2s;
+  display:flex;align-items:center;justify-content:center}
+.fnav-btn:hover{transform:translateY(-2px)}
+.fnav-btn:active{transform:scale(.94)}
+.fnav-btn.primary{background:var(--gold);color:var(--navy);border-color:var(--gold);box-shadow:0 4px 14px rgba(245,158,11,.45)}
+.fnav-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.fnav-page{font-family:'Prompt';font-weight:600;font-size:1.9vh;color:var(--navy);white-space:nowrap;min-width:8ch;text-align:center}
+/* จอเล็กแนวนอน: ปรับปุ่มพอเหมาะ */
+@media(max-height:520px){
+  .fnav-btn{width:46px;height:46px;font-size:20px}
+  .fnav-page{font-size:14px}
+}
 </style>
 </head>
 <body>
@@ -213,6 +232,13 @@ input[type=range]::-moz-range-thumb{width:2.2vh;height:2.2vh;border:none;border-
     <div class="right">
       <button class="fs-btn" onclick="toggleFS()">⛶ เต็มจอ</button>
     </div>
+  </div>
+
+  <!-- ============ ปุ่มนำทางลอย (มุมขวาล่าง) ============ -->
+  <div class="floatnav" id="floatnav" style="display:none">
+    <button class="fnav-btn" id="fnavPrev" onclick="prevSlide()" aria-label="ก่อนหน้า">◀</button>
+    <span class="fnav-page" id="fnavPage">1 / 1</span>
+    <button class="fnav-btn primary" id="fnavNext" onclick="nextSlide()" aria-label="ถัดไป">▶</button>
   </div>
 
   <!-- ============ TITLE ============ -->
@@ -542,7 +568,7 @@ function buildNav(){
     nav.appendChild(t);
   });
 }
-function startLesson(){document.getElementById('topbar').style.display='flex';gotoId('k_concept');}
+function startLesson(){document.getElementById('topbar').style.display='flex';document.getElementById('floatnav').style.display='flex';gotoId('k_concept');}
 function gotoId(id){const i=slides.findIndex(s=>s.id===id);if(i>=0)goto(i);}
 function goto(i){
   if(i<0||i>=slides.length)return;
@@ -559,9 +585,22 @@ function goto(i){
   if(slides[cur].id==='c_sim')resetCSim();
   if(slides[cur].id==='c_examples')renderCEx();
   if(slides[cur].id==='c_quiz')cRenderQ();
+  updateFloatNav();
+}
+function updateFloatNav(){
+  const fn=document.getElementById('floatnav');
+  if(!fn)return;
+  // ซ่อนปุ่มที่หน้า title (index 0)
+  if(cur===0){fn.style.display='none';return;}
+  fn.style.display='flex';
+  // นับหน้าเฉพาะ slide เนื้อหา (ข้าม title)
+  const contentTotal=slides.length-1;
+  document.getElementById('fnavPage').textContent=`${cur} / ${contentTotal}`;
+  document.getElementById('fnavPrev').disabled=(cur<=1); // หน้าเนื้อหาแรกไม่ให้ย้อนไป title
+  document.getElementById('fnavNext').disabled=(cur>=slides.length-1);
 }
 function nextSlide(){if(cur<slides.length-1)goto(cur+1)}
-function prevSlide(){if(cur>0)goto(cur-1)}
+function prevSlide(){if(cur>1)goto(cur-1)}
 document.addEventListener('keydown',e=>{
   if(e.target.tagName==='INPUT')return;
   if(e.key==='ArrowRight')nextSlide();
