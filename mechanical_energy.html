@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>พลังงานกล — ฟิสิกส์ ม.5 | KJST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1F44;--blue:#1E3A8A;--blue2:#2563EB;
+  --gold:#F59E0B;--gold-soft:#FCD34D;
+  --red:#DC2626;--green:#059669;
+  --ink:#0F172A;--paper:#F8FAFC;--line:rgba(30,58,138,.12);
+  --shadow:0 8px 30px rgba(10,31,68,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Sarabun',sans-serif;color:var(--ink);
+  background:radial-gradient(circle at 20% 10%,#12306b 0%,var(--navy) 55%,#061530 100%);
+  display:flex;align-items:center;justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.eyebrow,.chip,.qnum,.btn,.opt-label,.brand,.tab{font-family:'Prompt',sans-serif}
+sub{font-size:.6em;vertical-align:sub;line-height:1}
+
+/* ===== stage: landscape-optimised ===== */
+.stage{
+  position:relative;width:100vw;height:100vh;
+  max-width:calc(100vh * 16 / 9);max-height:calc(100vw * 9 / 16);
+  background:var(--paper);overflow:hidden;box-shadow:0 20px 70px rgba(0,0,0,.5);
+}
+@media(min-aspect-ratio:16/9){.stage{width:calc(100vh*16/9);height:100vh}}
+
+/* rotate hint for portrait phones */
+.rotate-hint{
+  display:none;position:fixed;inset:0;z-index:999;background:var(--navy);color:#fff;
+  flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:40px;
+}
+.rotate-hint .icon{font-size:64px;animation:rot 2s ease-in-out infinite}
+@keyframes rot{0%,100%{transform:rotate(0)}50%{transform:rotate(90deg)}}
+@media(max-width:820px) and (orientation:portrait){.rotate-hint{display:flex}.stage{display:none}}
+
+/* ===== slides ===== */
+.slide{position:absolute;inset:0;padding:2.4vh 3vw 7vh;display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transform:translateX(24px);
+  transition:opacity .45s,transform .45s,visibility .45s;overflow-y:auto}
+.slide.active{opacity:1;visibility:visible;transform:none}
+
+.eyebrow{display:inline-flex;align-items:center;gap:.5em;font-size:1.9vh;font-weight:600;
+  letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:.8vh}
+.eyebrow::before{content:"";width:2.4vh;height:2px;background:var(--gold)}
+h2{font-size:3.8vh;font-weight:700;color:var(--navy);line-height:1.1;margin-bottom:.4vh}
+h3{font-size:2.5vh;font-weight:600;color:var(--blue)}
+h4{font-size:2.1vh;font-weight:600;color:var(--navy)}
+p{font-size:2.05vh;line-height:1.5}
+
+/* ===== title ===== */
+#s_title{justify-content:center;background:radial-gradient(circle at 78% 20%,#12306b,var(--navy) 55%,#061530);color:#fff}
+#s_title .eyebrow{color:var(--gold-soft)}
+#s_title h1{font-size:7vh;font-weight:700;color:#fff;line-height:1.02}
+#s_title .sub{font-size:3vh;font-weight:300;color:var(--gold-soft);margin-top:.8vh}
+#s_title .topics{display:flex;gap:1.6vw;margin-top:4vh;flex-wrap:wrap}
+#s_title .tchip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  border-radius:14px;padding:1.6vh 2vw;min-width:16vw}
+#s_title .tchip .n{font-family:'Prompt';font-size:2vh;color:var(--gold-soft);font-weight:600}
+#s_title .tchip .t{font-family:'Prompt';font-size:2.4vh;color:#fff;font-weight:600;margin-top:.3vh}
+#s_title .meta{margin-top:4vh;font-size:1.9vh;color:rgba(255,255,255,.6)}
+#s_title .meta b{color:#fff}
+
+/* ===== cards & formula ===== */
+.grid{flex:1;display:grid;gap:2vw;min-height:0}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:2.2vh 1.8vw;
+  box-shadow:var(--shadow);display:flex;flex-direction:column}
+.card.accent{border-top:4px solid var(--gold)}
+.card.blue{background:linear-gradient(160deg,#fff,#f1f5ff);border-top:4px solid var(--blue2)}
+.formula-box{display:flex;align-items:center;justify-content:center;gap:.35em;
+  font-family:'Prompt';font-weight:700;color:var(--navy);
+  background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border:1px solid var(--line);
+  border-radius:14px;padding:2vh 1vw;font-size:4vh;margin:1.2vh 0}
+.frac{display:inline-flex;flex-direction:column;text-align:center;line-height:1.05;vertical-align:middle}
+.frac span:first-child{border-bottom:3px solid var(--navy);padding:0 .25em}
+.unit-pill{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Prompt';
+  font-weight:600;padding:.25em .8em;border-radius:999px;font-size:1.8vh;margin:.3vh}
+ul.tick{list-style:none;margin-top:.6vh}
+ul.tick li{position:relative;padding-left:2.2vw;margin-bottom:1.2vh;font-size:2vh;line-height:1.45}
+ul.tick li::before{content:"";position:absolute;left:0;top:.5em;width:1vh;height:1vh;border-radius:50%;background:var(--gold)}
+ul.tick li b{color:var(--blue)}
+.callout{background:#FFFBEB;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.5vh 1.4vw;font-size:1.95vh}
+.callout b{color:var(--navy)}
+
+/* ===== simulation ===== */
+.mode-tabs{display:flex;gap:.7vw;flex-wrap:wrap}
+.mode-tab{font-family:'Prompt';font-weight:600;font-size:1.8vh;padding:.8vh 1.4vw;border-radius:999px;
+  background:#fff;border:2px solid var(--line);color:var(--blue);cursor:pointer;transition:.15s;white-space:nowrap}
+.mode-tab:hover{border-color:var(--blue2);background:#EFF6FF}
+.mode-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sim-canvas{flex:1;background:linear-gradient(180deg,#EFF6FF,#fff);border:1px solid var(--line);
+  border-radius:16px;position:relative;overflow:hidden;box-shadow:var(--shadow);min-height:0}
+.sim-canvas svg{width:100%;height:100%;display:block}
+.controls{display:flex;align-items:center;gap:1.2vw;flex-wrap:wrap;margin-top:1.4vh}
+.btn{font-family:'Prompt';font-weight:600;font-size:2vh;cursor:pointer;border:none;border-radius:12px;
+  padding:1.1vh 1.8vw;color:#fff;background:var(--blue2);transition:transform .12s,box-shadow .2s;
+  box-shadow:0 5px 16px rgba(37,99,235,.32)}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0)}
+.btn.gold{background:var(--gold);color:var(--navy);box-shadow:0 5px 16px rgba(245,158,11,.4)}
+.btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue2);box-shadow:none}
+.btn.small{padding:.8vh 1.3vw;font-size:1.8vh}
+.slider-row{display:flex;align-items:center;gap:.8vw;font-family:'Prompt';font-size:1.85vh;font-weight:500;color:var(--navy)}
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:#CBD5E1;outline:none;width:8vw}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:2.2vh;height:2.2vh;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+input[type=range]::-moz-range-thumb{width:2.2vh;height:2.2vh;border:none;border-radius:50%;background:var(--gold);cursor:pointer}
+.readout{display:flex;gap:1vw;margin-left:auto;flex-wrap:wrap}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.8vh 1.2vw;text-align:center;min-width:7vw;box-shadow:var(--shadow)}
+.stat .k{font-family:'Prompt';font-size:1.4vh;color:#64748b;font-weight:500}
+.stat .v{font-family:'Prompt';font-size:2.6vh;font-weight:700;color:var(--blue2)}
+.stat.gold .v{color:var(--gold)}
+.stat.green .v{color:var(--green)}
+
+/* ===== worked examples ===== */
+.ex-tabs{display:flex;gap:.8vw;margin-bottom:1.6vh;flex-wrap:wrap}
+.ex-tab{font-family:'Prompt';font-weight:600;font-size:1.85vh;padding:.9vh 1.5vw;border-radius:999px;
+  background:#fff;border:2px solid var(--line);color:var(--blue);cursor:pointer;transition:.15s}
+.ex-tab:hover{border-color:var(--blue2)}
+.ex-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ex-tab.easy.active{background:var(--green);border-color:var(--green)}
+.ex-tab.mid.active{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.ex-body{flex:1;display:flex;flex-direction:column;min-height:0}
+.ex-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:2.4vh 2vw;box-shadow:var(--shadow);flex:1;display:none;flex-direction:column;overflow-y:auto}
+.ex-card.show{display:flex}
+.ex-level{display:inline-block;font-family:'Prompt';font-weight:600;font-size:1.6vh;padding:.2em .9em;border-radius:999px;margin-bottom:1vh}
+.ex-level.easy{background:#ECFDF5;color:var(--green)}
+.ex-level.mid{background:#FEF3C7;color:#B45309}
+.ex-q{font-size:2.15vh;line-height:1.5;margin-bottom:1.4vh}
+.ex-q b{color:var(--navy)}
+.sol{background:#F8FAFC;border-left:5px solid var(--blue2);border-radius:0 12px 12px 0;padding:1.6vh 1.5vw;
+  font-size:1.95vh;line-height:1.6;opacity:0;max-height:0;overflow:hidden;transition:opacity .35s,max-height .5s}
+.sol.show{opacity:1;max-height:50vh}
+.sol .step{margin-bottom:.8vh}
+.sol .ans{font-family:'Prompt';font-weight:700;color:var(--green);font-size:2.2vh;margin-top:1vh}
+.sol .frac{font-size:1em}
+
+/* ===== quiz ===== */
+.quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4vh}
+.progress-dots{display:flex;gap:.5vw;flex-wrap:wrap;max-width:40vw}
+.dot{width:1.3vh;height:1.3vh;border-radius:50%;background:#CBD5E1;transition:.3s}
+.dot.done{background:var(--green)}.dot.current{background:var(--gold);transform:scale(1.3)}
+.qcard{flex:1;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);
+  padding:2.6vh 2.4vw;display:flex;flex-direction:column;min-height:0}
+.qtype{display:inline-block;font-family:'Prompt';font-weight:600;font-size:1.5vh;padding:.2em .8em;border-radius:999px;margin-bottom:.8vh}
+.qtype.theory{background:#EFF6FF;color:var(--blue2)}
+.qtype.calc{background:#FEF3C7;color:#B45309}
+.qnum{font-family:'Prompt';font-weight:600;color:var(--gold);font-size:1.8vh;margin-bottom:.6vh}
+.qtext{font-family:'Prompt';font-weight:600;font-size:2.5vh;color:var(--navy);line-height:1.35;margin-bottom:1.8vh}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:1.1vh 1.4vw}
+.opt{display:flex;align-items:center;gap:.9vw;background:var(--paper);border:2px solid var(--line);
+  border-radius:12px;padding:1.3vh 1.2vw;cursor:pointer;transition:.15s;font-size:2vh}
+.opt:hover{border-color:var(--blue2);background:#EFF6FF}
+.opt-label{width:3vh;height:3vh;flex:none;border-radius:50%;background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-weight:600;font-size:1.8vh}
+.opt.correct{border-color:var(--green);background:#ECFDF5}
+.opt.correct .opt-label{background:var(--green)}
+.opt.wrong{border-color:var(--red);background:#FEF2F2}
+.opt.wrong .opt-label{background:var(--red)}
+.explain{margin-top:1.6vh;background:#FFFBEB;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;
+  padding:1.5vh 1.4vw;font-size:1.95vh;opacity:0;max-height:0;overflow:hidden;transition:.4s;line-height:1.5}
+.explain.show{opacity:1;max-height:36vh}
+.explain b{color:var(--navy)}
+.quiz-nav{display:flex;gap:1vw;margin-top:1.6vh;align-items:center}
+
+/* ===== top nav bar ===== */
+.topbar{position:absolute;top:0;left:0;right:0;height:5.6vh;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;
+  padding:0 2vw;gap:1.2vw;z-index:60}
+.topbar .brand{font-weight:700;font-size:1.9vh;color:var(--navy);letter-spacing:.1em}
+.topbar .brand span{color:var(--gold)}
+.nav-tabs{display:flex;gap:.5vw;margin-left:1vw}
+.nav-tab{font-family:'Prompt';font-weight:500;font-size:1.7vh;padding:.6vh 1.2vw;border-radius:999px;
+  color:var(--blue);cursor:pointer;transition:.15s;white-space:nowrap}
+.nav-tab:hover{background:#EFF6FF}
+.nav-tab.active{background:var(--blue);color:#fff}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:1vw}
+.fs-btn{font-family:'Prompt';font-size:1.6vh;padding:.6vh 1.2vw;border-radius:8px;cursor:pointer;
+  background:#EFF6FF;border:1px solid var(--line);color:var(--blue)}
+.slide:not(#s_title){padding-top:7.5vh}
+#s_title{padding-top:2.4vh}
+
+/* ===== bottom nav ===== */
+.botnav{position:absolute;bottom:1.6vh;left:0;right:0;display:flex;align-items:center;justify-content:center;
+  gap:1.2vw;z-index:55}
+.botnav .pageno{font-family:'Prompt';font-size:1.7vh;color:#64748b}
+.botnav .pageno b{color:var(--navy)}
+</style>
+</head>
+<body>
+
+<div class="rotate-hint">
+  <div class="icon">📱</div>
+  <div style="font-family:'Prompt';font-size:24px;font-weight:600">กรุณาหมุนจอเป็นแนวนอน</div>
+  <div style="opacity:.7">บทเรียนนี้ออกแบบสำหรับการแสดงผลแนวนอน</div>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- ============ TOP BAR ============ -->
+  <div class="topbar" id="topbar" style="display:none">
+    <div class="brand">KJST · <span>พลังงานกล</span></div>
+    <div class="nav-tabs" id="navTabs"></div>
+    <div class="right">
+      <button class="fs-btn" onclick="toggleFS()">⛶ เต็มจอ</button>
+    </div>
+  </div>
+
+  <!-- ============ TITLE ============ -->
+  <section class="slide active" id="s_title">
+    <div class="eyebrow">ฟิสิกส์ ม.5 · บทงานและพลังงาน</div>
+    <h1>พลังงานกล</h1>
+    <div class="sub">Mechanical Energy — จลน์ · ศักย์โน้มถ่วง · การอนุรักษ์</div>
+    <div class="topics">
+      <div class="tchip"><div class="n">หัวข้อ 1</div><div class="t">พลังงานจลน์</div></div>
+      <div class="tchip"><div class="n">หัวข้อ 2</div><div class="t">พลังงานศักย์โน้มถ่วง</div></div>
+      <div class="tchip"><div class="n">หัวข้อ 3</div><div class="t">การอนุรักษ์พลังงานกล</div></div>
+    </div>
+    <div class="meta">ตามหลักสูตร <b>สสวท. ฟิสิกส์ 2</b> · ครูผู้สอน <b>ธนพันธ์ เพ็งสวัสดิ์</b> · โรงเรียนกาญจนาภิเษกวิทยาลัย สุราษฎร์ธานี</div>
+    <button class="btn gold" style="margin-top:4vh;align-self:flex-start" onclick="startLesson()">เริ่มบทเรียน ▶</button>
+  </section>
+
+  <!-- ============ SECTION 1: พลังงานจลน์ ============ -->
+
+  <!-- 1.1 เนื้อหา -->
+  <section class="slide" id="k_concept" data-sec="1">
+    <div class="eyebrow">หัวข้อ 1 · พลังงานจลน์</div>
+    <h2>พลังงานจลน์ (Kinetic Energy)</h2>
+    <div class="grid g2" style="margin-top:1.4vh">
+      <div class="card accent">
+        <h3>นิยาม</h3>
+        <p style="margin-top:.8vh">พลังงานที่วัตถุมีเนื่องจาก<b>การเคลื่อนที่</b> วัตถุที่มีมวลและกำลังเคลื่อนที่ ย่อมมีพลังงานจลน์เสมอ</p>
+        <div class="formula-box">E<sub>k</sub> = ½mv²</div>
+        <p style="font-size:1.9vh;color:#475569">
+          <b>E<sub>k</sub></b> = พลังงานจลน์ (จูล, J)<br>
+          <b>m</b> = มวล (กิโลกรัม, kg) &nbsp; <b>v</b> = อัตราเร็ว (m/s)</p>
+        <div style="margin-top:1vh"><span class="unit-pill">หน่วย: จูล (J)</span></div>
+      </div>
+      <div class="card blue">
+        <h3>สมบัติสำคัญ</h3>
+        <ul class="tick">
+          <li>แปรผันตรงกับ<b>มวล</b> (m เพิ่ม 2 เท่า → E<sub>k</sub> เพิ่ม 2 เท่า)</li>
+          <li>แปรผันตรงกับ<b>กำลังสองของอัตราเร็ว</b> (v เพิ่ม 2 เท่า → E<sub>k</sub> เพิ่ม 4 เท่า!)</li>
+          <li>เป็นปริมาณ<b>สเกลาร์</b> มีค่าเป็นบวกเสมอ (หรือศูนย์เมื่อหยุดนิ่ง)</li>
+          <li>ไม่ขึ้นกับทิศทางการเคลื่อนที่</li>
+        </ul>
+        <div class="callout" style="margin-top:auto"><b>สังเกต:</b> รถวิ่งเร็วขึ้น 2 เท่า พลังงานจลน์เพิ่มถึง 4 เท่า — จึงเป็นเหตุผลที่ความเร็วสูงอันตรายมาก</div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 1 · หน้า <b>1</b>/4</span></div>
+  </section>
+
+  <!-- 1.2 แบบจำลอง -->
+  <section class="slide" id="k_sim" data-sec="1">
+    <div class="eyebrow">หัวข้อ 1 · แบบจำลองโต้ตอบ</div>
+    <h2>ทดลอง: มวลและความเร็วมีผลอย่างไร?</h2>
+
+    <!-- เลือกโหมด -->
+    <div class="mode-tabs" style="margin-top:1vh">
+      <div class="mode-tab active" data-mode="single" onclick="setKMode('single')">🚗 โหมดเดี่ยว</div>
+      <div class="mode-tab" data-mode="mass" onclick="setKMode('mass')">⚖️ เทียบมวล (v เท่ากัน)</div>
+      <div class="mode-tab" data-mode="speed" onclick="setKMode('speed')">💨 เทียบความเร็ว (m เท่ากัน)</div>
+    </div>
+
+    <div class="sim-canvas" id="kCanvasWrap" style="margin-top:1vh">
+      <svg id="kSvg" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+
+    <div class="controls">
+      <button class="btn gold" id="kPlay" onclick="toggleKSim()">▶ เล่น</button>
+      <button class="btn ghost small" onclick="resetKSim()">↺ รีเซ็ต</button>
+      <!-- controls แบบเดี่ยว -->
+      <div id="kSingleCtl" style="display:flex;gap:1.2vw;flex-wrap:wrap;align-items:center">
+        <div class="slider-row"><span>มวล m: <b id="kmLbl">1000</b> kg</span>
+          <input type="range" id="km" min="500" max="2000" step="100" value="1000" oninput="onKChange()"></div>
+        <div class="slider-row"><span>ความเร็ว v: <b id="kvLbl">10</b> m/s</span>
+          <input type="range" id="kv" min="0" max="30" step="1" value="10" oninput="onKChange()"></div>
+      </div>
+      <!-- ค่าคงที่ในโหมดเทียบ -->
+      <div id="kCmpCtl" style="display:none;align-items:center;gap:1vw">
+        <span class="slider-row" id="kCmpHint" style="color:#64748b;font-size:1.8vh"></span>
+      </div>
+      <div class="readout" id="kReadout">
+        <div class="stat gold"><div class="k">E<sub>k</sub> ปัจจุบัน</div><div class="v"><span id="kEk">0</span> J</div></div>
+      </div>
+    </div>
+    <p id="kHint" style="font-size:1.8vh;color:#64748b;margin-top:1vh;text-align:center">
+      กด <b>▶ เล่น</b> เพื่อให้รถเคลื่อนที่ — พลังงานจลน์จะแสดงค่าเมื่อรถเริ่มวิ่ง
+    </p>
+    <div class="botnav"><span class="pageno">หัวข้อ 1 · หน้า <b>2</b>/4</span></div>
+  </section>
+
+  <!-- 1.3 โจทย์ตัวอย่าง -->
+  <section class="slide" id="k_examples" data-sec="1">
+    <div class="eyebrow">หัวข้อ 1 · โจทย์ตัวอย่าง</div>
+    <h2>โจทย์ฝึกคำนวณ — พลังงานจลน์</h2>
+    <div class="ex-tabs" id="kExTabs" style="margin-top:1.2vh"></div>
+    <div class="ex-body" id="kExBody"></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 1 · หน้า <b>3</b>/4</span></div>
+  </section>
+
+  <!-- 1.4 quiz -->
+  <section class="slide" id="k_quiz" data-sec="1">
+    <div class="quiz-top">
+      <div>
+        <div class="eyebrow" style="margin-bottom:.3vh">หัวข้อ 1 · แบบทดสอบ</div>
+        <h2 style="font-size:3.2vh">Quiz พลังงานจลน์ (10 ข้อ)</h2>
+      </div>
+      <div class="progress-dots" id="kDots"></div>
+    </div>
+    <div class="qcard">
+      <div>
+        <span class="qtype" id="kQType">ทฤษฎี</span>
+        <span class="qnum" id="kQNum">ข้อ 1 / 10</span>
+      </div>
+      <div class="qtext" id="kQText">โจทย์…</div>
+      <div class="opts" id="kOpts"></div>
+      <div class="explain" id="kExplain"></div>
+      <div class="quiz-nav">
+        <button class="btn gold" onclick="kShowAns()">👁 ดูเฉลย</button>
+        <button class="btn ghost small" id="kPrev" onclick="kPrevQ()">◀ ก่อนหน้า</button>
+        <button class="btn small" id="kNext" onclick="kNextQ()">ถัดไป ▶</button>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 1 · หน้า <b>4</b>/4</span></div>
+  </section>
+
+  <!-- ============ SECTION 2: พลังงานศักย์โน้มถ่วง ============ -->
+
+  <!-- 2.1 เนื้อหา -->
+  <section class="slide" id="p_concept" data-sec="2">
+    <div class="eyebrow">หัวข้อ 2 · พลังงานศักย์โน้มถ่วง</div>
+    <h2>พลังงานศักย์โน้มถ่วง (Gravitational PE)</h2>
+    <div class="grid g2" style="margin-top:1.4vh">
+      <div class="card accent">
+        <h3>นิยาม</h3>
+        <p style="margin-top:.8vh">พลังงานที่วัตถุมีเนื่องจาก<b>ตำแหน่งความสูง</b>ในสนามโน้มถ่วง ยิ่งอยู่สูง ยิ่งมีพลังงานศักย์มาก</p>
+        <div class="formula-box">E<sub>p</sub> = mgh</div>
+        <p style="font-size:1.9vh;color:#475569">
+          <b>E<sub>p</sub></b> = พลังงานศักย์โน้มถ่วง (จูล, J)<br>
+          <b>m</b> = มวล (kg) &nbsp; <b>g</b> = ความโน้มถ่วง ≈ 9.8 (หรือ 10) m/s²<br>
+          <b>h</b> = ความสูงจากระดับอ้างอิง (m)</p>
+        <div style="margin-top:1vh"><span class="unit-pill">หน่วย: จูล (J)</span></div>
+      </div>
+      <div class="card blue">
+        <h3>สมบัติสำคัญ</h3>
+        <ul class="tick">
+          <li>แปรผันตรงกับ<b>มวล</b> (m เพิ่ม 2 เท่า → E<sub>p</sub> เพิ่ม 2 เท่า)</li>
+          <li>แปรผันตรงกับ<b>ความสูง</b> (h เพิ่ม 2 เท่า → E<sub>p</sub> เพิ่ม 2 เท่า)</li>
+          <li>ต้องระบุ<b>ระดับอ้างอิง</b> (h = 0) ก่อนเสมอ เช่น พื้นดิน โต๊ะ</li>
+          <li>เป็นปริมาณ<b>สเกลาร์</b> หน่วยจูล เหมือนพลังงานจลน์</li>
+        </ul>
+        <div class="callout" style="margin-top:auto"><b>สังเกต:</b> เลือกระดับอ้างอิงต่างกัน ค่า h ต่างกัน ค่า E<sub>p</sub> จึงต่างกันได้ แต่<b>ผลต่าง</b>พลังงานเท่าเดิม</div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 2 · หน้า <b>1</b>/4</span></div>
+  </section>
+
+  <!-- 2.2 แบบจำลอง -->
+  <section class="slide" id="p_sim" data-sec="2">
+    <div class="eyebrow">หัวข้อ 2 · แบบจำลองโต้ตอบ</div>
+    <h2>ทดลอง: มวลและความสูงมีผลอย่างไร?</h2>
+    <div class="mode-tabs" style="margin-top:1vh">
+      <div class="mode-tab active" data-pmode="single" onclick="setPMode('single')">📦 โหมดเดี่ยว</div>
+      <div class="mode-tab" data-pmode="mass" onclick="setPMode('mass')">⚖️ เทียบมวล (h เท่ากัน)</div>
+      <div class="mode-tab" data-pmode="height" onclick="setPMode('height')">📏 เทียบความสูง (m เท่ากัน)</div>
+    </div>
+    <div class="sim-canvas" style="margin-top:1vh">
+      <svg id="pSvg" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <div class="controls">
+      <button class="btn gold" id="pPlay" onclick="togglePSim()">▶ ยกวัตถุ</button>
+      <button class="btn ghost small" onclick="resetPSim()">↺ รีเซ็ต</button>
+      <div id="pSingleCtl" style="display:flex;gap:1.2vw;flex-wrap:wrap;align-items:center">
+        <div class="slider-row"><span>มวล m: <b id="pmLbl">2</b> kg</span>
+          <input type="range" id="pm" min="1" max="10" step="1" value="2" oninput="onPChange()"></div>
+        <div class="slider-row"><span>ความสูง h: <b id="phLbl">8</b> m</span>
+          <input type="range" id="ph" min="0" max="14" step="1" value="8" oninput="onPChange()"></div>
+      </div>
+      <div id="pCmpCtl" style="display:none;align-items:center;gap:1vw">
+        <span class="slider-row" id="pCmpHint" style="color:#64748b;font-size:1.8vh"></span>
+      </div>
+      <div class="readout" id="pReadout">
+        <div class="stat gold"><div class="k">E<sub>p</sub> ปัจจุบัน</div><div class="v"><span id="pEp">0</span> J</div></div>
+      </div>
+    </div>
+    <p id="pHint" style="font-size:1.8vh;color:#64748b;margin-top:1vh;text-align:center">
+      กด <b>▶ ยกวัตถุ</b> เพื่อยกขึ้นสู่ความสูง h — พลังงานศักย์จะแสดงค่าเมื่อยกถึงระดับ (ใช้ g = 10 m/s²)
+    </p>
+    <div class="botnav"><span class="pageno">หัวข้อ 2 · หน้า <b>2</b>/4</span></div>
+  </section>
+
+  <!-- 2.3 โจทย์ตัวอย่าง -->
+  <section class="slide" id="p_examples" data-sec="2">
+    <div class="eyebrow">หัวข้อ 2 · โจทย์ตัวอย่าง</div>
+    <h2>โจทย์ฝึกคำนวณ — พลังงานศักย์โน้มถ่วง</h2>
+    <div class="ex-tabs" id="pExTabs" style="margin-top:1.2vh"></div>
+    <div class="ex-body" id="pExBody"></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 2 · หน้า <b>3</b>/4</span></div>
+  </section>
+
+  <!-- 2.4 quiz -->
+  <section class="slide" id="p_quiz" data-sec="2">
+    <div class="quiz-top">
+      <div>
+        <div class="eyebrow" style="margin-bottom:.3vh">หัวข้อ 2 · แบบทดสอบ</div>
+        <h2 style="font-size:3.2vh">Quiz พลังงานศักย์โน้มถ่วง (10 ข้อ)</h2>
+      </div>
+      <div class="progress-dots" id="pDots"></div>
+    </div>
+    <div class="qcard">
+      <div>
+        <span class="qtype" id="pQType">ทฤษฎี</span>
+        <span class="qnum" id="pQNum">ข้อ 1 / 10</span>
+      </div>
+      <div class="qtext" id="pQText">โจทย์…</div>
+      <div class="opts" id="pOpts"></div>
+      <div class="explain" id="pExplain"></div>
+      <div class="quiz-nav">
+        <button class="btn gold" onclick="pShowAns()">👁 ดูเฉลย</button>
+        <button class="btn ghost small" id="pPrev" onclick="pPrevQ()">◀ ก่อนหน้า</button>
+        <button class="btn small" id="pNext" onclick="pNextQ()">ถัดไป ▶</button>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 2 · หน้า <b>4</b>/4</span></div>
+  </section>
+
+  <!-- ============ SECTION 3: การอนุรักษ์พลังงานกล ============ -->
+
+  <!-- 3.1 เนื้อหา -->
+  <section class="slide" id="c_concept" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · การอนุรักษ์พลังงานกล</div>
+    <h2>กฎการอนุรักษ์พลังงานกล</h2>
+    <div class="grid g2" style="margin-top:1.4vh">
+      <div class="card accent">
+        <h3>พลังงานกลรวม</h3>
+        <p style="margin-top:.8vh">พลังงานกล (E) คือผลรวมของพลังงานจลน์และพลังงานศักย์</p>
+        <div class="formula-box" style="font-size:3.4vh">E = E<sub>k</sub> + E<sub>p</sub></div>
+        <h3 style="margin-top:.5vh">กฎการอนุรักษ์</h3>
+        <p style="margin-top:.6vh">เมื่อไม่มีแรงเสียดทานหรือแรงต้าน พลังงานกลรวม<b>คงที่เสมอ</b></p>
+        <div class="formula-box" style="font-size:2.8vh;background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border-color:#A7F3D0">E<sub>k1</sub> + E<sub>p1</sub> = E<sub>k2</sub> + E<sub>p2</sub></div>
+      </div>
+      <div class="card blue">
+        <h3>ความหมายและการใช้งาน</h3>
+        <ul class="tick">
+          <li>พลังงาน<b>แปลงรูป</b>ระหว่างจลน์↔ศักย์ แต่ผลรวมไม่หาย</li>
+          <li>ตกลง: E<sub>p</sub> ลด → E<sub>k</sub> เพิ่ม (เร็วขึ้น)</li>
+          <li>ขึ้นสูง: E<sub>k</sub> ลด → E<sub>p</sub> เพิ่ม (ช้าลง)</li>
+          <li>ใช้หาความเร็วหรือความสูงได้โดย<b>ไม่ต้องใช้เวลา</b></li>
+        </ul>
+        <div class="callout" style="margin-top:auto"><b>ตัวอย่างจริง:</b> รถไฟเหาะ ลูกตุ้ม การตกของวัตถุ — ทั้งหมดเป็นไปตามกฎนี้เมื่อแรงเสียดทานน้อยมาก</div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>1</b>/4</span></div>
+  </section>
+
+  <!-- 3.2 แบบจำลอง -->
+  <section class="slide" id="c_sim" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · แบบจำลองโต้ตอบ</div>
+    <h2>วัตถุตกอิสระ: พลังงานแปลงรูปอย่างไร?</h2>
+    <div class="controls" style="margin-top:1vh">
+      <button class="btn gold" id="cPlay" onclick="toggleCSim()">▶ ปล่อยวัตถุ</button>
+      <button class="btn ghost small" onclick="resetCSim()">↺ รีเซ็ต</button>
+      <div class="slider-row"><span>มวล m: <b id="cmLbl">2</b> kg</span>
+        <input type="range" id="cm" min="1" max="5" step="1" value="2" oninput="onCChange()"></div>
+      <div class="slider-row"><span>ความสูงเริ่มต้น h: <b id="chLbl">10</b> m</span>
+        <input type="range" id="ch" min="4" max="12" step="1" value="10" oninput="onCChange()"></div>
+    </div>
+    <div class="sim-canvas" style="margin-top:1vh">
+      <svg id="cSvg" viewBox="0 0 1000 340" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <p id="cHint" style="font-size:1.8vh;color:#64748b;margin-top:.8vh;text-align:center">
+      กด <b>▶ ปล่อยวัตถุ</b> สังเกตแท่ง <span style="color:#2563EB;font-weight:600">E<sub>k</sub></span> เพิ่มขณะ <span style="color:#F59E0B;font-weight:600">E<sub>p</sub></span> ลด แต่ <span style="color:#059669;font-weight:600">E รวม</span> คงที่ตลอด (g = 10 m/s²)
+    </p>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>2</b>/4</span></div>
+  </section>
+
+  <!-- 3.3 โจทย์ตัวอย่าง -->
+  <section class="slide" id="c_examples" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · โจทย์ตัวอย่าง</div>
+    <h2>โจทย์ฝึกคำนวณ — การอนุรักษ์พลังงานกล</h2>
+    <div class="ex-tabs" id="cExTabs" style="margin-top:1.2vh"></div>
+    <div class="ex-body" id="cExBody"></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>3</b>/4</span></div>
+  </section>
+
+  <!-- 3.4 quiz -->
+  <section class="slide" id="c_quiz" data-sec="3">
+    <div class="quiz-top">
+      <div>
+        <div class="eyebrow" style="margin-bottom:.3vh">หัวข้อ 3 · แบบทดสอบ</div>
+        <h2 style="font-size:3.2vh">Quiz การอนุรักษ์พลังงานกล (10 ข้อ)</h2>
+      </div>
+      <div class="progress-dots" id="cDots"></div>
+    </div>
+    <div class="qcard">
+      <div>
+        <span class="qtype" id="cQType">ทฤษฎี</span>
+        <span class="qnum" id="cQNum">ข้อ 1 / 10</span>
+      </div>
+      <div class="qtext" id="cQText">โจทย์…</div>
+      <div class="opts" id="cOpts"></div>
+      <div class="explain" id="cExplain"></div>
+      <div class="quiz-nav">
+        <button class="btn gold" onclick="cShowAns()">👁 ดูเฉลย</button>
+        <button class="btn ghost small" id="cPrev" onclick="cPrevQ()">◀ ก่อนหน้า</button>
+        <button class="btn small" id="cNext" onclick="cNextQ()">ถัดไป ▶</button>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>4</b>/4</span></div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   โครงหลัก: ระบบสไลด์ + เมนูนำทางหัวข้อ
+   (ออกแบบให้เพิ่มหัวข้อ 2, 3 ต่อได้โดยเพิ่ม section + ข้อมูล)
+============================================================ */
+const SECTIONS=[
+  {id:1, name:'1 · พลังงานจลน์', first:'k_concept'},
+  {id:2, name:'2 · พลังงานศักย์', first:'p_concept'},
+  {id:3, name:'3 · อนุรักษ์พลังงาน', first:'c_concept'},
+];
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0;
+
+function buildNav(){
+  const nav=document.getElementById('navTabs');nav.innerHTML='';
+  SECTIONS.forEach(s=>{
+    const t=document.createElement('div');t.className='nav-tab';t.textContent=s.name;
+    t.onclick=()=>gotoId(s.first);t.dataset.sec=s.id;
+    nav.appendChild(t);
+  });
+}
+function startLesson(){document.getElementById('topbar').style.display='flex';gotoId('k_concept');}
+function gotoId(id){const i=slides.findIndex(s=>s.id===id);if(i>=0)goto(i);}
+function goto(i){
+  if(i<0||i>=slides.length)return;
+  slides[cur].classList.remove('active');cur=i;slides[cur].classList.add('active');
+  slides[cur].scrollTop=0;
+  const sec=slides[cur].dataset.sec;
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.sec===sec));
+  if(slides[cur].id==='k_sim')resetKSim();
+  if(slides[cur].id==='k_examples')renderKEx();
+  if(slides[cur].id==='k_quiz')kRenderQ();
+  if(slides[cur].id==='p_sim')resetPSim();
+  if(slides[cur].id==='p_examples')renderPEx();
+  if(slides[cur].id==='p_quiz')pRenderQ();
+  if(slides[cur].id==='c_sim')resetCSim();
+  if(slides[cur].id==='c_examples')renderCEx();
+  if(slides[cur].id==='c_quiz')cRenderQ();
+}
+function nextSlide(){if(cur<slides.length-1)goto(cur+1)}
+function prevSlide(){if(cur>0)goto(cur-1)}
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.key==='ArrowRight')nextSlide();
+  if(e.key==='ArrowLeft')prevSlide();
+});
+function toggleFS(){
+  if(!document.fullscreenElement)document.getElementById('stage').requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+/* ============================================================
+   แบบจำลอง 1: พลังงานจลน์
+============================================================ */
+let kMode='single';
+let kPlaying=false,kRAF=null,kLast=0,kMoving=false;
+const K_MAXREF=900000; // 0.5*2000*30^2 อ้างอิงความสูงแท่ง/กราฟ
+const CAR_COLORS=['#1E3A8A','#F59E0B','#059669'];
+
+// ชุดรถสำหรับแต่ละโหมดเปรียบเทียบ
+const K_MASS_SET =[{m:500,v:15},{m:1000,v:15},{m:2000,v:15}]; // v เท่ากัน มวลต่าง
+const K_SPEED_SET=[{m:1000,v:10},{m:1000,v:20},{m:1000,v:30}]; // m เท่ากัน v ต่าง
+let kCars=[]; // สถานะรถขณะรัน (x position)
+
+function km(){return +document.getElementById('km').value}
+function kv(){return +document.getElementById('kv').value}
+function ek(m,v){return 0.5*m*v*v}
+function fmt(n){return Math.round(n).toLocaleString();}
+
+/* ---------- สลับโหมด ---------- */
+function setKMode(mode){
+  kMode=mode;
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===mode));
+  document.getElementById('kSingleCtl').style.display = mode==='single'?'flex':'none';
+  document.getElementById('kCmpCtl').style.display    = mode==='single'?'none':'flex';
+  document.getElementById('kReadout').style.display   = mode==='single'?'flex':'none';
+  const hint=document.getElementById('kHint');
+  if(mode==='single') hint.innerHTML='กด <b>▶ เล่น</b> เพื่อให้รถเคลื่อนที่ — พลังงานจลน์จะแสดงค่าเมื่อรถเริ่มวิ่ง';
+  if(mode==='mass')   {document.getElementById('kCmpHint').innerHTML='รถทั้ง 3 คัน <b>ความเร็วเท่ากัน 15 m/s</b> · มวลต่างกัน 500 / 1000 / 2000 kg';hint.innerHTML='มวลมากกว่า → พลังงานจลน์มากกว่า (แปรผันตรงกับ m)';}
+  if(mode==='speed')  {document.getElementById('kCmpHint').innerHTML='รถทั้ง 3 คัน <b>มวลเท่ากัน 1000 kg</b> · ความเร็วต่างกัน 10 / 20 / 30 m/s';hint.innerHTML='ความเร็วเป็น 2, 3 เท่า → พลังงานเป็น 4, 9 เท่า (แปรผันกับ v²)';}
+  resetKSim();
+}
+
+function currentSet(){
+  if(kMode==='mass') return K_MASS_SET;
+  if(kMode==='speed')return K_SPEED_SET;
+  return [{m:km(),v:kv()}];
+}
+
+/* ---------- อัปเดตค่าฝั่ง single ตอนเลื่อน slider ---------- */
+function onKChange(){
+  document.getElementById('kmLbl').textContent=km();
+  document.getElementById('kvLbl').textContent=kv();
+  // ถ้ายังไม่วิ่ง แสดง 0; ถ้ากำลังวิ่ง อัปเดตค่าจริง
+  if(!kMoving){document.getElementById('kEk').textContent='0';}
+  else{document.getElementById('kEk').textContent=fmt(ek(km(),kv()));}
+  drawKScene();
+}
+
+/* ---------- วาดฉาก SVG ตามโหมด ---------- */
+function drawKScene(){
+  const svg=document.getElementById('kSvg');
+  const set=currentSet();
+  let html='<line x1="0" y1="235" x2="1000" y2="235" stroke="#94a3b8" stroke-width="3"/>';
+
+  if(kMode==='single'){
+    const c=set[0];
+    const val=kMoving?ek(c.m,c.v):0;
+    // แท่งพลังงานด้านขวา
+    const h=Math.min(1,val/K_MAXREF)*180;
+    html+=`<rect x="820" y="40" width="140" height="180" rx="8" fill="#EFF6FF" stroke="#CBD5E1"/>`;
+    html+=`<rect x="828" y="${212-h}" width="124" height="${h}" rx="6" fill="#2563EB"/>`;
+    html+=`<text x="890" y="34" font-family="Prompt" font-size="16" fill="#1E3A8A" text-anchor="middle" font-weight="600">พลังงานจลน์</text>`;
+    if(kMoving)html+=`<text x="890" y="${212-h-8}" font-family="Prompt" font-size="17" fill="#1E3A8A" text-anchor="middle" font-weight="700">${fmt(val)} J</text>`;
+    // รถ
+    const x=kCars[0]?kCars[0].x:60;
+    html+=carSVG(x,CAR_COLORS[0],c.m+'kg');
+  } else {
+    // โหมดเปรียบเทียบ 3 คัน — วางเป็น 3 เลน + กราฟแท่งด้านขวา
+    const laneY=[90,155,220];
+    const maxVal=Math.max(...set.map(c=>ek(c.m,c.v)));
+    const barX=555, barMax=340; // เริ่มกราฟที่ 555, ยาวสุด 340 → จบที่ 895 เหลือที่วางตัวเลขถึง ~995
+    set.forEach((c,i)=>{
+      const val=kMoving?ek(c.m,c.v):0;
+      const y=laneY[i];
+      // รถเล็กในแต่ละเลน
+      const x=kCars[i]?kCars[i].x:40;
+      html+=miniCarSVG(x,y,CAR_COLORS[i], kMode==='mass'?c.m+'kg':c.v+' m/s');
+      // แท่งกราฟด้านขวา
+      const w=maxVal>0?Math.min(1,val/maxVal)*barMax:0;
+      html+=`<rect x="${barX}" y="${y-14}" width="${barMax}" height="28" rx="6" fill="#EFF6FF" stroke="#E2E8F0"/>`;
+      html+=`<rect x="${barX}" y="${y-14}" width="${w}" height="28" rx="6" fill="${CAR_COLORS[i]}"/>`;
+      // ค่าท้ายแท่ง — ถ้าแท่งยาวเกิน ให้วางตัวเลขไว้ในแท่ง (สีขาว) กันล้น
+      if(kMoving){
+        const near = barX + w + 10;
+        if(near > 860){ // ใกล้ขอบ → วางในแท่ง
+          html+=`<text x="${barX+w-10}" y="${y+6}" font-family="Prompt" font-size="16" fill="#fff" text-anchor="end" font-weight="700">${fmt(val)} J</text>`;
+        }else{
+          html+=`<text x="${near}" y="${y+6}" font-family="Prompt" font-size="16" fill="${CAR_COLORS[i]}" font-weight="700">${fmt(val)} J</text>`;
+        }
+      }
+    });
+    html+=`<text x="555" y="52" font-family="Prompt" font-size="15" fill="#64748b" font-weight="600">พลังงานจลน์เปรียบเทียบ (E_k = ½mv²)</text>`;
+    html+=`<line x1="548" y1="60" x2="548" y2="245" stroke="#CBD5E1" stroke-width="2"/>`;
+  }
+  svg.innerHTML=html;
+}
+function carSVG(x,color,label){
+  return `<g transform="translate(${x-60},0)">
+    <rect x="60" y="195" width="90" height="34" rx="8" fill="${color}"/>
+    <rect x="80" y="178" width="52" height="22" rx="6" fill="#2563EB"/>
+    <circle cx="82" cy="232" r="13" fill="#0A1F44" stroke="#F59E0B" stroke-width="3"/>
+    <circle cx="130" cy="232" r="13" fill="#0A1F44" stroke="#F59E0B" stroke-width="3"/>
+    <text x="105" y="217" font-family="Prompt" font-size="15" fill="#fff" text-anchor="middle" font-weight="600">${label}</text>
+  </g>`;
+}
+function miniCarSVG(x,y,color,label){
+  return `<g transform="translate(${x},${y-32})">
+    <rect x="0" y="14" width="60" height="24" rx="6" fill="${color}"/>
+    <rect x="14" y="2" width="34" height="15" rx="4" fill="#2563EB"/>
+    <circle cx="15" cy="40" r="9" fill="#0A1F44" stroke="#F59E0B" stroke-width="2"/>
+    <circle cx="47" cy="40" r="9" fill="#0A1F44" stroke="#F59E0B" stroke-width="2"/>
+    <text x="30" y="31" font-family="Prompt" font-size="12" fill="#fff" text-anchor="middle" font-weight="600">${label}</text>
+  </g>`;
+}
+
+/* ---------- เล่น / หยุด / รีเซ็ต ---------- */
+function initCars(){
+  const set=currentSet();
+  if(kMode==='single'){kCars=[{x:60}];}
+  else{kCars=set.map(()=>({x:40}));}
+}
+function toggleKSim(){
+  const b=document.getElementById('kPlay');
+  if(kPlaying){
+    kPlaying=false;b.textContent='▶ เล่น';cancelAnimationFrame(kRAF);
+  }else{
+    kPlaying=true;kMoving=true;b.textContent='⏸ หยุด';kLast=performance.now();
+    if(kMode==='single')document.getElementById('kEk').textContent=fmt(ek(km(),kv()));
+    kRAF=requestAnimationFrame(kStep);
+  }
+}
+function kStep(now){
+  const dt=(now-kLast)/1000;kLast=now;
+  const set=currentSet();
+  if(kMode==='single'){
+    const c=set[0];
+    kCars[0].x+=c.v*dt*6;
+    if(kCars[0].x>760)kCars[0].x=60;
+  }else{
+    const laneMaxX = 440; // ไม่ให้หัวรถ (กว้าง ~60) ชนเส้นแบ่งที่ x=548
+    set.forEach((c,i)=>{
+      kCars[i].x+=c.v*dt*5;
+      if(kCars[i].x>laneMaxX)kCars[i].x=40;
+    });
+  }
+  drawKScene();
+  if(kPlaying)kRAF=requestAnimationFrame(kStep);
+}
+function resetKSim(){
+  kPlaying=false;kMoving=false;cancelAnimationFrame(kRAF);
+  document.getElementById('kPlay').textContent='▶ เล่น';
+  if(kMode==='single')document.getElementById('kEk').textContent='0';
+  initCars();drawKScene();
+}
+function updateKSim(){onKChange();} // เผื่อจุดเรียกเดิม
+
+/* ============================================================
+   โจทย์ตัวอย่าง: พลังงานจลน์ (ง่าย 2 + ปานกลาง 2)
+============================================================ */
+const K_EXAMPLES=[
+ {lv:'easy',t:'ง่าย 1',
+  q:'รถยนต์มวล 1,000 kg เคลื่อนที่ด้วยอัตราเร็ว 20 m/s จงหาพลังงานจลน์',
+  sol:[
+    'สูตร: E<sub>k</sub> = ½mv²',
+    'แทนค่า: E<sub>k</sub> = ½ × 1000 × (20)²',
+    'E<sub>k</sub> = ½ × 1000 × 400 = 0.5 × 400,000'
+  ], ans:'E<sub>k</sub> = 200,000 J = 2 × 10⁵ J'},
+
+ {lv:'easy',t:'ง่าย 2',
+  q:'ลูกบอลมวล 0.5 kg เคลื่อนที่ด้วยอัตราเร็ว 4 m/s มีพลังงานจลน์เท่าใด',
+  sol:[
+    'สูตร: E<sub>k</sub> = ½mv²',
+    'แทนค่า: E<sub>k</sub> = ½ × 0.5 × (4)²',
+    'E<sub>k</sub> = ½ × 0.5 × 16 = 0.25 × 16'
+  ], ans:'E<sub>k</sub> = 4 J'},
+
+ {lv:'mid',t:'ปานกลาง 1',
+  q:'วัตถุมวล 2 kg มีพลังงานจลน์ 64 J จงหาอัตราเร็วของวัตถุ',
+  sol:[
+    'จาก E<sub>k</sub> = ½mv² → v² = 2E<sub>k</sub>/m',
+    'v² = (2 × 64) / 2 = 128 / 2 = 64',
+    'v = √64'
+  ], ans:'v = 8 m/s'},
+
+ {lv:'mid',t:'ปานกลาง 2',
+  q:'รถทดลองมวล 1,200 kg เพิ่มอัตราเร็วจาก 10 m/s เป็น 20 m/s พลังงานจลน์เพิ่มขึ้นเท่าใด',
+  sol:[
+    'E<sub>k</sub> ตอนแรก = ½ × 1200 × (10)² = 600 × 100 = 60,000 J',
+    'E<sub>k</sub> ตอนหลัง = ½ × 1200 × (20)² = 600 × 400 = 240,000 J',
+    'ผลต่าง = 240,000 − 60,000'
+  ], ans:'ΔE<sub>k</sub> = 180,000 J = 1.8 × 10⁵ J'},
+];
+let kExIdx=0;
+function renderKEx(){
+  const tabs=document.getElementById('kExTabs');tabs.innerHTML='';
+  K_EXAMPLES.forEach((ex,i)=>{
+    const b=document.createElement('div');
+    b.className='ex-tab '+(ex.lv==='easy'?'easy':'mid')+(i===kExIdx?' active':'');
+    b.textContent=ex.t;b.onclick=()=>{kExIdx=i;renderKEx();};
+    tabs.appendChild(b);
+  });
+  const body=document.getElementById('kExBody');
+  const ex=K_EXAMPLES[kExIdx];
+  body.innerHTML=`
+    <div class="ex-card show">
+      <span class="ex-level ${ex.lv}">${ex.lv==='easy'?'ระดับง่าย':'ระดับปานกลาง'}</span>
+      <div class="ex-q"><b>โจทย์:</b> ${ex.q}</div>
+      <button class="btn gold small" style="align-self:flex-start" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.nextElementSibling.classList.contains('show')?'ซ่อนวิธีทำ ▴':'👁 ดูวิธีทำ + เฉลย'">👁 ดูวิธีทำ + เฉลย</button>
+      <div class="sol">
+        ${ex.sol.map(s=>`<div class="step">▸ ${s}</div>`).join('')}
+        <div class="ans">✓ ${ex.ans}</div>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   Quiz: พลังงานจลน์ (ทฤษฎี 7 + คำนวณ 3)
+============================================================ */
+const K_QUIZ=[
+ {ty:'theory',q:'พลังงานจลน์คือพลังงานที่วัตถุมีเนื่องจากสิ่งใด',
+  o:['ตำแหน่งความสูง','การเคลื่อนที่','อุณหภูมิ','ประจุไฟฟ้า'],a:1,
+  e:'พลังงานจลน์ (Kinetic Energy) คือพลังงานที่วัตถุมีเนื่องจากการเคลื่อนที่'},
+ {ty:'theory',q:'สูตรพลังงานจลน์คือข้อใด',
+  o:['E = mgh','E = ½mv²','E = mv','E = Fs'],a:1,
+  e:'พลังงานจลน์ E_k = ½mv² โดย m คือมวล และ v คืออัตราเร็ว'},
+ {ty:'theory',q:'พลังงานจลน์เป็นปริมาณชนิดใด',
+  o:['เวกเตอร์','สเกลาร์','ปริมาณลบได้','ไม่มีหน่วย'],a:1,
+  e:'พลังงานจลน์เป็นปริมาณสเกลาร์ มีแต่ขนาด ไม่มีทิศทาง และมีค่าไม่ติดลบ'},
+ {ty:'theory',q:'หน่วยของพลังงานจลน์ในระบบ SI คือข้อใด',
+  o:['นิวตัน (N)','วัตต์ (W)','จูล (J)','เมตร (m)'],a:2,
+  e:'หน่วยของพลังงานทุกชนิดรวมทั้งพลังงานจลน์คือ จูล (J)'},
+ {ty:'theory',q:'ถ้าเพิ่มอัตราเร็วเป็น 2 เท่า พลังงานจลน์จะเปลี่ยนอย่างไร',
+  o:['เพิ่ม 2 เท่า','เพิ่ม 4 เท่า','เพิ่ม 8 เท่า','เท่าเดิม'],a:1,
+  e:'เพราะ E_k แปรผันกับ v² เมื่อ v เพิ่ม 2 เท่า E_k จึงเพิ่ม 2² = 4 เท่า'},
+ {ty:'theory',q:'ถ้าเพิ่มมวลเป็น 3 เท่า โดยอัตราเร็วคงเดิม พลังงานจลน์เปลี่ยนอย่างไร',
+  o:['เพิ่ม 3 เท่า','เพิ่ม 9 เท่า','ลด 3 เท่า','เท่าเดิม'],a:0,
+  e:'E_k แปรผันตรงกับมวล m เมื่อ m เพิ่ม 3 เท่า E_k จึงเพิ่ม 3 เท่า'},
+ {ty:'theory',q:'วัตถุที่หยุดนิ่ง (v = 0) จะมีพลังงานจลน์เท่าใด',
+  o:['มากที่สุด','เท่ากับมวล','เป็นศูนย์','ติดลบ'],a:2,
+  e:'เมื่อ v = 0 จะได้ E_k = ½m(0)² = 0 วัตถุหยุดนิ่งไม่มีพลังงานจลน์'},
+ {ty:'calc',q:'วัตถุมวล 2 kg เคลื่อนที่ด้วยอัตราเร็ว 3 m/s มีพลังงานจลน์เท่าใด',
+  o:['6 J','9 J','12 J','18 J'],a:1,
+  e:'E_k = ½ × 2 × 3² = ½ × 2 × 9 = 9 J'},
+ {ty:'calc',q:'รถมวล 1,000 kg วิ่งด้วยอัตราเร็ว 10 m/s มีพลังงานจลน์กี่จูล',
+  o:['5,000 J','10,000 J','50,000 J','100,000 J'],a:2,
+  e:'E_k = ½ × 1000 × 10² = 500 × 100 = 50,000 J'},
+ {ty:'calc',q:'วัตถุมวล 4 kg มีพลังงานจลน์ 50 J จงหาอัตราเร็ว',
+  o:['3 m/s','5 m/s','10 m/s','25 m/s'],a:1,
+  e:'จาก E_k = ½mv² → v² = 2E_k/m = (2×50)/4 = 25 → v = 5 m/s'},
+];
+let kqi=0;const kAnswered=new Array(K_QUIZ.length).fill(false);
+const LABELS=['ก','ข','ค','ง'];
+function kBuildDots(){
+  const d=document.getElementById('kDots');d.innerHTML='';
+  K_QUIZ.forEach((_,i)=>{const s=document.createElement('div');s.className='dot';s.id='kd'+i;d.appendChild(s);});
+}
+function kRenderQ(){
+  const Q=K_QUIZ[kqi];
+  const tp=document.getElementById('kQType');
+  tp.textContent=Q.ty==='theory'?'ทฤษฎี':'คำนวณ';
+  tp.className='qtype '+(Q.ty==='theory'?'theory':'calc');
+  document.getElementById('kQNum').textContent=`ข้อ ${kqi+1} / ${K_QUIZ.length}`;
+  document.getElementById('kQText').textContent=Q.q;
+  const opts=document.getElementById('kOpts');opts.innerHTML='';
+  Q.o.forEach((txt,i)=>{
+    const el=document.createElement('div');el.className='opt';el.id='kopt'+i;
+    el.innerHTML=`<span class="opt-label">${LABELS[i]}</span><span>${txt}</span>`;
+    el.onclick=()=>kPick(i);opts.appendChild(el);
+  });
+  const ex=document.getElementById('kExplain');ex.className='explain';ex.textContent='';
+  K_QUIZ.forEach((_,i)=>{
+    const dot=document.getElementById('kd'+i);dot.className='dot';
+    if(kAnswered[i])dot.classList.add('done');
+    if(i===kqi)dot.classList.add('current');
+  });
+  document.getElementById('kPrev').style.visibility=kqi===0?'hidden':'visible';
+  document.getElementById('kNext').textContent=kqi===K_QUIZ.length-1?'จบ ✓':'ถัดไป ▶';
+}
+function kPick(i){
+  const Q=K_QUIZ[kqi];
+  document.querySelectorAll('#kOpts .opt').forEach(o=>o.classList.remove('correct','wrong'));
+  if(i===Q.a)document.getElementById('kopt'+i).classList.add('correct');
+  else{document.getElementById('kopt'+i).classList.add('wrong');document.getElementById('kopt'+Q.a).classList.add('correct');}
+  kReveal();
+}
+function kShowAns(){document.getElementById('kopt'+K_QUIZ[kqi].a).classList.add('correct');kReveal();}
+function kReveal(){
+  const Q=K_QUIZ[kqi];const ex=document.getElementById('kExplain');
+  ex.innerHTML=`<b>เฉลย: ${LABELS[Q.a]}</b> — ${Q.e}`;ex.classList.add('show');
+  kAnswered[kqi]=true;document.getElementById('kd'+kqi).classList.add('done');
+}
+function kNextQ(){if(kqi<K_QUIZ.length-1){kqi++;kRenderQ();}}
+function kPrevQ(){if(kqi>0){kqi--;kRenderQ();}}
+
+/* ============================================================
+   แบบจำลอง 2: พลังงานศักย์โน้มถ่วง (E_p = mgh, g=10)
+============================================================ */
+const G=10;
+let pMode='single',pPlaying=false,pRAF=null,pLifted=false,pAnimT=0;
+const P_MASS_SET =[{m:1,h:8},{m:2,h:8},{m:4,h:8}];   // h เท่ากัน มวลต่าง
+const P_HEIGHT_SET=[{m:2,h:4},{m:2,h:8},{m:2,h:12}]; // m เท่ากัน h ต่าง
+const P_COLORS=['#1E3A8A','#F59E0B','#059669'];
+let pLift=[]; // สัดส่วนการยก 0..1 ต่อวัตถุ
+
+function pm(){return +document.getElementById('pm').value}
+function ph(){return +document.getElementById('ph').value}
+function ep(m,h){return m*G*h}
+
+function setPMode(mode){
+  pMode=mode;
+  document.querySelectorAll('.mode-tab[data-pmode]').forEach(t=>t.classList.toggle('active',t.dataset.pmode===mode));
+  document.getElementById('pSingleCtl').style.display=mode==='single'?'flex':'none';
+  document.getElementById('pCmpCtl').style.display=mode==='single'?'none':'flex';
+  document.getElementById('pReadout').style.display=mode==='single'?'flex':'none';
+  const hint=document.getElementById('pHint');
+  if(mode==='single')hint.innerHTML='กด <b>▶ ยกวัตถุ</b> เพื่อยกขึ้นสู่ความสูง h — พลังงานศักย์จะแสดงค่าเมื่อยกถึงระดับ (ใช้ g = 10 m/s²)';
+  if(mode==='mass'){document.getElementById('pCmpHint').innerHTML='วัตถุทั้ง 3 ก้อน <b>ความสูงเท่ากัน 8 m</b> · มวลต่างกัน 1 / 2 / 4 kg';hint.innerHTML='มวลมากกว่า → พลังงานศักย์มากกว่า (แปรผันตรงกับ m)';}
+  if(mode==='height'){document.getElementById('pCmpHint').innerHTML='วัตถุทั้ง 3 ก้อน <b>มวลเท่ากัน 2 kg</b> · ความสูงต่างกัน 4 / 8 / 12 m';hint.innerHTML='ยิ่งสูง → พลังงานศักย์ยิ่งมาก (แปรผันตรงกับ h)';}
+  resetPSim();
+}
+function pCurrentSet(){
+  if(pMode==='mass')return P_MASS_SET;
+  if(pMode==='height')return P_HEIGHT_SET;
+  return [{m:pm(),h:ph()}];
+}
+function onPChange(){
+  document.getElementById('pmLbl').textContent=pm();
+  document.getElementById('phLbl').textContent=ph();
+  drawPScene(); // drawPScene จะอัปเดต pEp ตาม lift ปัจจุบันเอง
+}
+
+/* ---------- วาดฉาก ---------- */
+const P_GROUND=280, P_TOP=40, P_MAXH=14; // h สูงสุดในแบบจำลอง 14m แมปเต็มช่วง canvas
+function hToY(h,lift){ // lift 0..1
+  const targetY = P_GROUND - Math.min(1,h/P_MAXH)*(P_GROUND-P_TOP);
+  return P_GROUND - (P_GROUND-targetY)*lift;
+}
+function drawPScene(){
+  const svg=document.getElementById('pSvg');
+  const set=pCurrentSet();
+  let html='';
+  // พื้น + ระดับอ้างอิง
+  html+=`<line x1="0" y1="${P_GROUND}" x2="1000" y2="${P_GROUND}" stroke="#94a3b8" stroke-width="3"/>`;
+  html+=`<text x="12" y="${P_GROUND+22}" font-family="Prompt" font-size="14" fill="#94a3b8">ระดับอ้างอิง h = 0</text>`;
+
+  if(pMode==='single'){
+    const c=set[0];
+    const lift=pLift[0]||0;
+    const val=ep(c.m,c.h)*lift; // แปรตามความสูงจริงขณะยก
+    const x=160;
+    const y=hToY(c.h,lift);
+    // เส้นบอกความสูงเป้าหมาย
+    const ty=hToY(c.h,1);
+    html+=`<line x1="90" y1="${ty}" x2="330" y2="${ty}" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6 6"/>`;
+    html+=`<text x="335" y="${ty+5}" font-family="Prompt" font-size="15" fill="#B45309" font-weight="600">h = ${c.h} m</text>`;
+    // เส้นดิ่งวัดความสูง
+    html+=`<line x1="120" y1="${P_GROUND}" x2="120" y2="${y}" stroke="#CBD5E1" stroke-width="2"/>`;
+    // กล่อง
+    html+=boxSVG(x,y,P_COLORS[0],c.m+' kg');
+    // แท่งพลังงานขวา (อ้างอิงเต็ม = ค่าเมื่อยกถึงยอด)
+    // แท่งพลังงานขวา (อ้างอิงเต็ม = ค่าเมื่อยกถึงยอด)
+    const maxRef=Math.max(ep(c.m,c.h),1);
+    const boxTop=P_TOP+22;           // เว้นที่เหนือกรอบให้หัวข้อ
+    const boxBottom=P_GROUND-20;
+    const boxH=boxBottom-boxTop;
+    const barMaxH=boxH-30;           // แท่งเต็มสุดไม่ชนขอบบน เผื่อที่ตัวเลข
+    const barH=Math.min(1,val/maxRef)*barMaxH;
+    html+=`<rect x="820" y="${boxTop}" width="140" height="${boxH}" rx="8" fill="#EFF6FF" stroke="#CBD5E1"/>`;
+    html+=`<rect x="828" y="${boxBottom-barH}" width="124" height="${barH}" rx="6" fill="#F59E0B"/>`;
+    html+=`<text x="890" y="${P_TOP+12}" font-family="Prompt" font-size="16" fill="#B45309" text-anchor="middle" font-weight="600">พลังงานศักย์</text>`;
+    if(lift>0.01){
+      // วางตัวเลขเหนือยอดแท่ง แต่ไม่ต่ำกว่าขอบบนกรอบ
+      const ty=Math.max(boxTop+18, boxBottom-barH-8);
+      html+=`<text x="890" y="${ty}" font-family="Prompt" font-size="17" fill="${barH>barMaxH*0.85?'#fff':'#B45309'}" text-anchor="middle" font-weight="700">${fmt(val)} J</text>`;
+    }
+    // อัปเดต readout ให้ค่าวิ่งตามการยก
+    document.getElementById('pEp').textContent=fmt(val);
+  } else {
+    // 3 ก้อน วางเป็น 3 คอลัมน์ + กราฟแท่งขวา
+    const colX=[130,250,370];
+    const maxVal=Math.max(...set.map(c=>ep(c.m,c.h)));
+    const barX=555,barMax=340;
+    set.forEach((c,i)=>{
+      const lift=pLift[i]||0;
+      const val=ep(c.m,c.h)*lift; // แปรตามการยก
+      const y=hToY(c.h,lift);
+      const x=colX[i];
+      // เส้นเป้าหมาย
+      const ty=hToY(c.h,1);
+      html+=`<line x1="${x-35}" y1="${ty}" x2="${x+35}" y2="${ty}" stroke="${P_COLORS[i]}" stroke-width="2" stroke-dasharray="5 5" opacity=".5"/>`;
+      html+=miniBoxSVG(x,y,P_COLORS[i], pMode==='mass'?c.m+'kg':c.h+'m');
+      // แท่งกราฟ
+      const laneY=[90,155,220];
+      const by=laneY[i];
+      const w=maxVal>0?Math.min(1,val/maxVal)*barMax:0;
+      html+=`<rect x="${barX}" y="${by-14}" width="${barMax}" height="28" rx="6" fill="#FFFBEB" stroke="#FDE68A"/>`;
+      html+=`<rect x="${barX}" y="${by-14}" width="${w}" height="28" rx="6" fill="${P_COLORS[i]}"/>`;
+      if(lift>0.01){
+        const near=barX+w+10;
+        if(near>860)html+=`<text x="${barX+w-10}" y="${by+6}" font-family="Prompt" font-size="16" fill="#fff" text-anchor="end" font-weight="700">${fmt(val)} J</text>`;
+        else html+=`<text x="${near}" y="${by+6}" font-family="Prompt" font-size="16" fill="${P_COLORS[i]}" font-weight="700">${fmt(val)} J</text>`;
+      }
+    });
+    html+=`<text x="555" y="${P_TOP+12}" font-family="Prompt" font-size="15" fill="#64748b" font-weight="600">พลังงานศักย์เปรียบเทียบ (E_p = mgh)</text>`;
+    html+=`<line x1="548" y1="60" x2="548" y2="245" stroke="#CBD5E1" stroke-width="2"/>`;
+  }
+  svg.innerHTML=html;
+}
+function boxSVG(x,y,color,label){
+  return `<g>
+    <rect x="${x-38}" y="${y-38}" width="76" height="38" rx="6" fill="${color}"/>
+    <rect x="${x-38}" y="${y-38}" width="76" height="10" rx="3" fill="rgba(255,255,255,.25)"/>
+    <text x="${x}" y="${y-14}" font-family="Prompt" font-size="16" fill="#fff" text-anchor="middle" font-weight="600">${label}</text>
+  </g>`;
+}
+function miniBoxSVG(x,y,color,label){
+  return `<g>
+    <rect x="${x-28}" y="${y-28}" width="56" height="28" rx="5" fill="${color}"/>
+    <text x="${x}" y="${y-9}" font-family="Prompt" font-size="13" fill="#fff" text-anchor="middle" font-weight="600">${label}</text>
+  </g>`;
+}
+function initPBoxes(){
+  const set=pCurrentSet();
+  pLift = set.map(()=>0);
+}
+const P_LIFT_DURATION=3000; // ms — ยกวัตถุใช้เวลา ~3 วินาที
+function togglePSim(){
+  const b=document.getElementById('pPlay');
+  if(pPlaying){pPlaying=false;b.textContent='▶ ยกวัตถุ';cancelAnimationFrame(pRAF);}
+  else{
+    // ถ้ายกสุดแล้ว กดใหม่ = ยกใหม่ตั้งแต่พื้น
+    if(pLift.every(l=>l>=1)){initPBoxes();pLifted=false;}
+    pPlaying=true;b.textContent='⏸ หยุด';pLifted=true;
+    // ตั้งเวลาเริ่ม โดยหักลบความคืบหน้าที่ทำไปแล้ว (กรณีกดหยุดแล้วเล่นต่อ)
+    const doneFrac=pLift[0]||0;
+    pAnimT=performance.now()-doneFrac*P_LIFT_DURATION;
+    pRAF=requestAnimationFrame(pStep);
+  }
+}
+function pStep(now){
+  const elapsed=now-pAnimT;
+  let frac=Math.min(1,elapsed/P_LIFT_DURATION);
+  // ease-out ให้ดูนุ่มนวลตอนใกล้ถึงยอด
+  const eased=1-Math.pow(1-frac,2);
+  pLift=pLift.map(()=>eased);
+  drawPScene();
+  if(pPlaying&&frac<1)pRAF=requestAnimationFrame(pStep);
+  else{pPlaying=false;pLift=pLift.map(()=>1);drawPScene();document.getElementById('pPlay').textContent='▶ ยกวัตถุ';}
+}
+function resetPSim(){
+  pPlaying=false;pLifted=false;cancelAnimationFrame(pRAF);
+  document.getElementById('pPlay').textContent='▶ ยกวัตถุ';
+  if(pMode==='single')document.getElementById('pEp').textContent='0';
+  initPBoxes();drawPScene();
+}
+
+/* ============================================================
+   โจทย์ตัวอย่าง: พลังงานศักย์ (ง่าย 2 + ปานกลาง 2) g=10
+============================================================ */
+const P_EXAMPLES=[
+ {lv:'easy',t:'ง่าย 1',
+  q:'วัตถุมวล 2 kg วางอยู่สูง 5 m จากพื้น จงหาพลังงานศักย์โน้มถ่วง (g = 10 m/s²)',
+  sol:['สูตร: E<sub>p</sub> = mgh','แทนค่า: E<sub>p</sub> = 2 × 10 × 5'],
+  ans:'E<sub>p</sub> = 100 J'},
+ {lv:'easy',t:'ง่าย 2',
+  q:'ยกกล่องมวล 3 kg ขึ้นชั้นวางสูง 2 m มีพลังงานศักย์เท่าใด (g = 10 m/s²)',
+  sol:['สูตร: E<sub>p</sub> = mgh','แทนค่า: E<sub>p</sub> = 3 × 10 × 2'],
+  ans:'E<sub>p</sub> = 60 J'},
+ {lv:'mid',t:'ปานกลาง 1',
+  q:'วัตถุมีพลังงานศักย์ 240 J เมื่ออยู่สูง 4 m จงหามวลของวัตถุ (g = 10 m/s²)',
+  sol:['จาก E<sub>p</sub> = mgh → m = E<sub>p</sub>/(gh)','m = 240 / (10 × 4) = 240 / 40'],
+  ans:'m = 6 kg'},
+ {lv:'mid',t:'ปานกลาง 2',
+  q:'ยกวัตถุมวล 5 kg จากพื้นขึ้นไปสูง 3 m แล้วยกต่อไปอีกจนสูง 8 m พลังงานศักย์เพิ่มขึ้นเท่าใด (g = 10 m/s²)',
+  sol:['E<sub>p</sub> ที่ 8 m = 5 × 10 × 8 = 400 J','E<sub>p</sub> ที่ 3 m = 5 × 10 × 3 = 150 J','ผลต่าง = 400 − 150'],
+  ans:'ΔE<sub>p</sub> = 250 J'},
+];
+let pExIdx=0;
+function renderPEx(){
+  const tabs=document.getElementById('pExTabs');tabs.innerHTML='';
+  P_EXAMPLES.forEach((ex,i)=>{
+    const b=document.createElement('div');
+    b.className='ex-tab '+(ex.lv==='easy'?'easy':'mid')+(i===pExIdx?' active':'');
+    b.textContent=ex.t;b.onclick=()=>{pExIdx=i;renderPEx();};
+    tabs.appendChild(b);
+  });
+  const ex=P_EXAMPLES[pExIdx];
+  document.getElementById('pExBody').innerHTML=`
+    <div class="ex-card show">
+      <span class="ex-level ${ex.lv}">${ex.lv==='easy'?'ระดับง่าย':'ระดับปานกลาง'}</span>
+      <div class="ex-q"><b>โจทย์:</b> ${ex.q}</div>
+      <button class="btn gold small" style="align-self:flex-start" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.nextElementSibling.classList.contains('show')?'ซ่อนวิธีทำ ▴':'👁 ดูวิธีทำ + เฉลย'">👁 ดูวิธีทำ + เฉลย</button>
+      <div class="sol">
+        ${ex.sol.map(s=>`<div class="step">▸ ${s}</div>`).join('')}
+        <div class="ans">✓ ${ex.ans}</div>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   Quiz: พลังงานศักย์ (ทฤษฎี 7 + คำนวณ 3) g=10
+============================================================ */
+const P_QUIZ=[
+ {ty:'theory',q:'พลังงานศักย์โน้มถ่วงคือพลังงานที่วัตถุมีเนื่องจากสิ่งใด',
+  o:['การเคลื่อนที่','ตำแหน่งความสูง','อุณหภูมิ','การหมุน'],a:1,
+  e:'พลังงานศักย์โน้มถ่วงคือพลังงานที่วัตถุมีเนื่องจากตำแหน่งความสูงในสนามโน้มถ่วง'},
+ {ty:'theory',q:'สูตรพลังงานศักย์โน้มถ่วงคือข้อใด',
+  o:['E = ½mv²','E = mgh','E = Fs','E = mv'],a:1,
+  e:'พลังงานศักย์โน้มถ่วง E_p = mgh โดย m คือมวล g คือความโน้มถ่วง h คือความสูง'},
+ {ty:'theory',q:'ในสูตร E_p = mgh ตัว h หมายถึงอะไร',
+  o:['ความเร็ว','ความสูงจากระดับอ้างอิง','มวล','เวลา'],a:1,
+  e:'h คือความสูงของวัตถุวัดจากระดับอ้างอิงที่กำหนดให้เป็น h = 0'},
+ {ty:'theory',q:'ถ้าเพิ่มความสูงเป็น 2 เท่า พลังงานศักย์จะเปลี่ยนอย่างไร',
+  o:['เพิ่ม 2 เท่า','เพิ่ม 4 เท่า','ลดครึ่งหนึ่ง','เท่าเดิม'],a:0,
+  e:'E_p แปรผันตรงกับ h เมื่อ h เพิ่ม 2 เท่า E_p จึงเพิ่ม 2 เท่า'},
+ {ty:'theory',q:'ค่า g (ความโน้มถ่วง) บนผิวโลกมีค่าประมาณเท่าใด',
+  o:['1 m/s²','9.8 m/s²','100 m/s²','0 m/s²'],a:1,
+  e:'ความเร่งโน้มถ่วงบนผิวโลกมีค่าประมาณ 9.8 m/s² (มักปัดเป็น 10 m/s² ในการคำนวณ)'},
+ {ty:'theory',q:'วัตถุที่วางบนพื้น (h = 0 จากระดับอ้างอิงพื้น) มีพลังงานศักย์เท่าใด',
+  o:['มากที่สุด','เท่ากับมวล','เป็นศูนย์','ติดลบ'],a:2,
+  e:'เมื่อ h = 0 จะได้ E_p = mg(0) = 0 วัตถุที่ระดับอ้างอิงไม่มีพลังงานศักย์'},
+ {ty:'theory',q:'พลังงานศักย์โน้มถ่วงมีหน่วยตรงกับข้อใด',
+  o:['จูล (J) เหมือนพลังงานจลน์','นิวตัน (N)','วัตต์ (W)','เมตร (m)'],a:0,
+  e:'พลังงานทุกชนิดมีหน่วยเป็นจูล (J) พลังงานศักย์และพลังงานจลน์จึงหน่วยเดียวกัน'},
+ {ty:'calc',q:'วัตถุมวล 4 kg อยู่สูง 5 m มีพลังงานศักย์เท่าใด (g = 10 m/s²)',
+  o:['20 J','40 J','200 J','2,000 J'],a:2,
+  e:'E_p = mgh = 4 × 10 × 5 = 200 J'},
+ {ty:'calc',q:'ยกวัตถุมวล 2 kg ขึ้นสูง 10 m ต้องใช้พลังงานเท่าใด (g = 10 m/s²)',
+  o:['20 J','100 J','200 J','400 J'],a:2,
+  e:'E_p = mgh = 2 × 10 × 10 = 200 J (พลังงานที่เพิ่มขึ้นเท่ากับงานที่ทำในการยก)'},
+ {ty:'calc',q:'วัตถุมีพลังงานศักย์ 300 J เมื่ออยู่สูง 6 m จงหามวล (g = 10 m/s²)',
+  o:['3 kg','5 kg','6 kg','50 kg'],a:1,
+  e:'จาก E_p = mgh → m = E_p/(gh) = 300/(10×6) = 300/60 = 5 kg'},
+];
+let pqi=0;const pAnswered=new Array(P_QUIZ.length).fill(false);
+function pBuildDots(){
+  const d=document.getElementById('pDots');d.innerHTML='';
+  P_QUIZ.forEach((_,i)=>{const s=document.createElement('div');s.className='dot';s.id='pd'+i;d.appendChild(s);});
+}
+function pRenderQ(){
+  const Q=P_QUIZ[pqi];
+  const tp=document.getElementById('pQType');
+  tp.textContent=Q.ty==='theory'?'ทฤษฎี':'คำนวณ';
+  tp.className='qtype '+(Q.ty==='theory'?'theory':'calc');
+  document.getElementById('pQNum').textContent=`ข้อ ${pqi+1} / ${P_QUIZ.length}`;
+  document.getElementById('pQText').textContent=Q.q;
+  const opts=document.getElementById('pOpts');opts.innerHTML='';
+  Q.o.forEach((txt,i)=>{
+    const el=document.createElement('div');el.className='opt';el.id='popt'+i;
+    el.innerHTML=`<span class="opt-label">${LABELS[i]}</span><span>${txt}</span>`;
+    el.onclick=()=>pPick(i);opts.appendChild(el);
+  });
+  const ex=document.getElementById('pExplain');ex.className='explain';ex.textContent='';
+  P_QUIZ.forEach((_,i)=>{
+    const dot=document.getElementById('pd'+i);dot.className='dot';
+    if(pAnswered[i])dot.classList.add('done');
+    if(i===pqi)dot.classList.add('current');
+  });
+  document.getElementById('pPrev').style.visibility=pqi===0?'hidden':'visible';
+  document.getElementById('pNext').textContent=pqi===P_QUIZ.length-1?'จบ ✓':'ถัดไป ▶';
+}
+function pPick(i){
+  const Q=P_QUIZ[pqi];
+  document.querySelectorAll('#pOpts .opt').forEach(o=>o.classList.remove('correct','wrong'));
+  if(i===Q.a)document.getElementById('popt'+i).classList.add('correct');
+  else{document.getElementById('popt'+i).classList.add('wrong');document.getElementById('popt'+Q.a).classList.add('correct');}
+  pReveal();
+}
+function pShowAns(){document.getElementById('popt'+P_QUIZ[pqi].a).classList.add('correct');pReveal();}
+function pReveal(){
+  const Q=P_QUIZ[pqi];const ex=document.getElementById('pExplain');
+  ex.innerHTML=`<b>เฉลย: ${LABELS[Q.a]}</b> — ${Q.e}`;ex.classList.add('show');
+  pAnswered[pqi]=true;document.getElementById('pd'+pqi).classList.add('done');
+}
+function pNextQ(){if(pqi<P_QUIZ.length-1){pqi++;pRenderQ();}}
+function pPrevQ(){if(pqi>0){pqi--;pRenderQ();}}
+
+/* ============================================================
+   แบบจำลอง 3: การอนุรักษ์พลังงานกล — วัตถุตกอิสระ (g=10)
+============================================================ */
+let cPlaying=false,cRAF=null,cAnimStart=0,cFrac=0,cDropped=false;
+function cm(){return +document.getElementById('cm').value}
+function ch(){return +document.getElementById('ch').value}
+const C_GROUND=290, C_TOP=40, C_MAXH=12;
+function cHtoY(h){ // ความสูง h → พิกัด y ของ "จุดล่างวัตถุ"
+  return C_GROUND - Math.min(1,h/C_MAXH)*(C_GROUND-C_TOP-30);
+}
+function onCChange(){
+  document.getElementById('cmLbl').textContent=cm();
+  document.getElementById('chLbl').textContent=ch();
+  drawCScene();
+}
+function drawCScene(){
+  const svg=document.getElementById('cSvg');
+  const m=cm(),h0=ch();
+  const Etot=m*G*h0;
+  // ความสูงปัจจุบัน (ตกอิสระ: h = h0(1-frac) โดย frac คือสัดส่วนของการตกตามระยะ)
+  const hNow=h0*(1-cFrac);
+  const Ep=cDropped?m*G*hNow:m*G*h0;
+  const Ek=cDropped?Etot-Ep:0;
+  let html='';
+  // พื้น
+  html+=`<line x1="0" y1="${C_GROUND}" x2="640" y2="${C_GROUND}" stroke="#94a3b8" stroke-width="3"/>`;
+  html+=`<text x="12" y="${C_GROUND+22}" font-family="Prompt" font-size="14" fill="#94a3b8">พื้น (h = 0)</text>`;
+  // เส้นความสูงเริ่มต้น
+  const y0=cHtoY(h0);
+  html+=`<line x1="80" y1="${y0}" x2="360" y2="${y0}" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6 6" opacity=".6"/>`;
+  html+=`<text x="365" y="${y0+5}" font-family="Prompt" font-size="14" fill="#B45309" font-weight="600">h₀ = ${h0} m</text>`;
+  // เส้นดิ่ง
+  html+=`<line x1="110" y1="${C_GROUND}" x2="110" y2="${y0}" stroke="#E2E8F0" stroke-width="2"/>`;
+  // วัตถุ (ลูกบอล)
+  const ballY=cHtoY(hNow)-18;
+  const r=14+cm()*2;
+  html+=`<circle cx="220" cy="${ballY}" r="${r}" fill="#1E3A8A" stroke="#F59E0B" stroke-width="3"/>`;
+  html+=`<text x="220" y="${ballY+5}" font-family="Prompt" font-size="14" fill="#fff" text-anchor="middle" font-weight="600">${m}kg</text>`;
+  // ป้ายความสูงปัจจุบัน
+  html+=`<text x="270" y="${ballY+5}" font-family="Prompt" font-size="14" fill="#475569">h = ${hNow.toFixed(1)} m</text>`;
+
+  // ===== แท่งพลังงาน 3 แท่ง =====
+  const bx0=700, bw=70, gap=45;
+  const baseY=C_GROUND, maxBarH=C_GROUND-C_TOP-30;
+  const bars=[
+    {label:'Eₖ',val:Ek,color:'#2563EB'},
+    {label:'Eₚ',val:Ep,color:'#F59E0B'},
+    {label:'E รวม',val:Ek+Ep,color:'#059669'},
+  ];
+  html+=`<text x="${bx0+bw+gap}" y="${C_TOP-8}" font-family="Prompt" font-size="15" fill="#64748b" text-anchor="middle" font-weight="600">พลังงาน (J)</text>`;
+  bars.forEach((b,i)=>{
+    const x=bx0+i*(bw+gap);
+    const barH=Etot>0?Math.min(1,b.val/Etot)*maxBarH:0;
+    // กรอบอ้างอิง (จาง)
+    html+=`<rect x="${x}" y="${baseY-maxBarH}" width="${bw}" height="${maxBarH}" rx="5" fill="#F1F5F9"/>`;
+    html+=`<rect x="${x}" y="${baseY-barH}" width="${bw}" height="${barH}" rx="5" fill="${b.color}"/>`;
+    // ค่าเหนือแท่ง
+    html+=`<text x="${x+bw/2}" y="${baseY-barH-8}" font-family="Prompt" font-size="15" fill="${b.color}" text-anchor="middle" font-weight="700">${fmt(b.val)}</text>`;
+    // ป้ายชื่อใต้แท่ง
+    html+=`<text x="${x+bw/2}" y="${baseY+22}" font-family="Prompt" font-size="15" fill="${b.color}" text-anchor="middle" font-weight="600">${b.label}</text>`;
+  });
+  svg.innerHTML=html;
+}
+function toggleCSim(){
+  const b=document.getElementById('cPlay');
+  if(cPlaying){cPlaying=false;b.textContent='▶ ปล่อยวัตถุ';cancelAnimationFrame(cRAF);}
+  else{
+    if(cFrac>=1){cFrac=0;} // ตกถึงพื้นแล้ว กดใหม่ = ปล่อยใหม่
+    cPlaying=true;cDropped=true;b.textContent='⏸ หยุด';
+    // ตกอิสระ ~2.2s ด้วย ease-in (เร่งขึ้นเหมือนแรงโน้มถ่วง)
+    cAnimStart=performance.now()-cFrac*2200;
+    cRAF=requestAnimationFrame(cStep);
+  }
+}
+function cStep(now){
+  const elapsed=now-cAnimStart;
+  const t=Math.min(1,elapsed/2200);
+  cFrac=t*t; // ease-in: ระยะตก ∝ t² (สอดคล้องการตกจริง s = ½gt²)
+  if(cFrac>1)cFrac=1;
+  drawCScene();
+  if(cPlaying&&t<1)cRAF=requestAnimationFrame(cStep);
+  else{cPlaying=false;document.getElementById('cPlay').textContent='▶ ปล่อยวัตถุ';}
+}
+function resetCSim(){
+  cPlaying=false;cDropped=false;cFrac=0;cancelAnimationFrame(cRAF);
+  document.getElementById('cPlay').textContent='▶ ปล่อยวัตถุ';
+  drawCScene();
+}
+
+/* ============================================================
+   โจทย์ตัวอย่าง: อนุรักษ์พลังงาน (ง่าย 2 + ปานกลาง 2) g=10
+============================================================ */
+const C_EXAMPLES=[
+ {lv:'easy',t:'ง่าย 1',
+  q:'ปล่อยวัตถุมวล 2 kg จากที่สูง 5 m ขณะตกถึงพื้น มีพลังงานจลน์เท่าใด (ไม่คิดแรงต้าน, g = 10)',
+  sol:['พลังงานกลอนุรักษ์: E<sub>k</sub>(พื้น) = E<sub>p</sub>(เริ่มต้น)','E<sub>k</sub> = mgh = 2 × 10 × 5'],
+  ans:'E<sub>k</sub> = 100 J'},
+ {lv:'easy',t:'ง่าย 2',
+  q:'วัตถุมีพลังงานศักย์เริ่มต้น 80 J ปล่อยให้ตก เมื่อถึงพื้นพลังงานจลน์เป็นเท่าใด (g = 10)',
+  sol:['ตามกฎอนุรักษ์: E<sub>p</sub> ทั้งหมดเปลี่ยนเป็น E<sub>k</sub>','E<sub>k</sub>(พื้น) = E<sub>p</sub>(เริ่มต้น) = 80 J'],
+  ans:'E<sub>k</sub> = 80 J'},
+ {lv:'mid',t:'ปานกลาง 1',
+  q:'ปล่อยวัตถุมวล 1 kg จากที่สูง 20 m จงหาอัตราเร็วขณะตกถึงพื้น (g = 10)',
+  sol:['อนุรักษ์พลังงาน: ½mv² = mgh','½v² = gh → v² = 2gh = 2 × 10 × 20 = 400','v = √400'],
+  ans:'v = 20 m/s'},
+ {lv:'mid',t:'ปานกลาง 2',
+  q:'วัตถุมวล 2 kg ตกจากที่สูง 10 m เมื่อตกลงมาถึงจุดที่สูง 4 m จากพื้น จงหาพลังงานจลน์ที่จุดนั้น (g = 10)',
+  sol:['พลังงานกลรวม E = mgh₀ = 2 × 10 × 10 = 200 J','E<sub>p</sub> ที่ 4 m = 2 × 10 × 4 = 80 J','E<sub>k</sub> = E − E<sub>p</sub> = 200 − 80'],
+  ans:'E<sub>k</sub> = 120 J'},
+];
+let cExIdx=0;
+function renderCEx(){
+  const tabs=document.getElementById('cExTabs');tabs.innerHTML='';
+  C_EXAMPLES.forEach((ex,i)=>{
+    const b=document.createElement('div');
+    b.className='ex-tab '+(ex.lv==='easy'?'easy':'mid')+(i===cExIdx?' active':'');
+    b.textContent=ex.t;b.onclick=()=>{cExIdx=i;renderCEx();};
+    tabs.appendChild(b);
+  });
+  const ex=C_EXAMPLES[cExIdx];
+  document.getElementById('cExBody').innerHTML=`
+    <div class="ex-card show">
+      <span class="ex-level ${ex.lv}">${ex.lv==='easy'?'ระดับง่าย':'ระดับปานกลาง'}</span>
+      <div class="ex-q"><b>โจทย์:</b> ${ex.q}</div>
+      <button class="btn gold small" style="align-self:flex-start" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.nextElementSibling.classList.contains('show')?'ซ่อนวิธีทำ ▴':'👁 ดูวิธีทำ + เฉลย'">👁 ดูวิธีทำ + เฉลย</button>
+      <div class="sol">
+        ${ex.sol.map(s=>`<div class="step">▸ ${s}</div>`).join('')}
+        <div class="ans">✓ ${ex.ans}</div>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   Quiz: อนุรักษ์พลังงาน (ทฤษฎี 7 + คำนวณ 3) g=10
+============================================================ */
+const C_QUIZ=[
+ {ty:'theory',q:'พลังงานกล (Mechanical Energy) คือผลรวมของพลังงานใด',
+  o:['จลน์ + ความร้อน','จลน์ + ศักย์','ศักย์ + ไฟฟ้า','ความร้อน + แสง'],a:1,
+  e:'พลังงานกล E = E_k + E_p คือผลรวมของพลังงานจลน์และพลังงานศักย์'},
+ {ty:'theory',q:'กฎการอนุรักษ์พลังงานกลกล่าวว่าอย่างไร (เมื่อไม่มีแรงเสียดทาน)',
+  o:['พลังงานจลน์คงที่','พลังงานศักย์คงที่','พลังงานกลรวมคงที่','พลังงานหายไป'],a:2,
+  e:'เมื่อไม่มีแรงเสียดทาน/แรงต้าน พลังงานกลรวม (E_k + E_p) จะคงที่เสมอ'},
+ {ty:'theory',q:'ขณะวัตถุตกลงอย่างอิสระ พลังงานเปลี่ยนแปลงอย่างไร',
+  o:['E_p เพิ่ม E_k ลด','E_p ลด E_k เพิ่ม','ทั้งคู่เพิ่ม','ทั้งคู่ลด'],a:1,
+  e:'ขณะตก ความสูงลดลง E_p จึงลด และความเร็วเพิ่มขึ้น E_k จึงเพิ่ม โดยผลรวมคงที่'},
+ {ty:'theory',q:'ที่จุดสูงสุดของการเคลื่อนที่ (วัตถุที่โยนขึ้น) พลังงานจลน์เป็นอย่างไร',
+  o:['มากที่สุด','เป็นศูนย์ (ที่จุดสูงสุด)','เท่ากับพลังงานศักย์','ติดลบ'],a:1,
+  e:'ที่จุดสูงสุด วัตถุหยุดชั่วขณะ (v=0) E_k = 0 และ E_p มีค่ามากที่สุด'},
+ {ty:'theory',q:'ขณะวัตถุตกถึงพื้น (h=0) พลังงานเป็นอย่างไร',
+  o:['E_k = 0','E_p มากที่สุด','E_k มากที่สุด E_p = 0','พลังงานรวมเป็นศูนย์'],a:2,
+  e:'ที่พื้น h=0 ทำให้ E_p=0 พลังงานทั้งหมดกลายเป็น E_k จึงมีค่ามากที่สุด'},
+ {ty:'theory',q:'สิ่งใดทำให้พลังงานกลไม่คงที่ (มีการสูญเสีย)',
+  o:['ความสูง','มวล','แรงเสียดทาน/แรงต้านอากาศ','ความเร็ว'],a:2,
+  e:'แรงเสียดทานและแรงต้านอากาศเปลี่ยนพลังงานกลบางส่วนเป็นความร้อน ทำให้พลังงานกลลดลง'},
+ {ty:'theory',q:'ประโยชน์ของกฎอนุรักษ์พลังงานในการแก้โจทย์คือข้อใด',
+  o:['หาเวลาได้เท่านั้น','หาความเร็ว/ความสูงได้โดยไม่ต้องใช้เวลา','ใช้ได้เฉพาะแนวราบ','ต้องรู้แรงเสมอ'],a:1,
+  e:'กฎอนุรักษ์พลังงานช่วยหาความเร็วหรือความสูงได้โดยตรง โดยไม่ต้องทราบเวลาหรือแรง'},
+ {ty:'calc',q:'ปล่อยวัตถุมวล 3 kg จากที่สูง 6 m พลังงานจลน์ขณะถึงพื้นเป็นเท่าใด (g = 10)',
+  o:['18 J','60 J','180 J','1,800 J'],a:2,
+  e:'E_k(พื้น) = E_p(เริ่ม) = mgh = 3 × 10 × 6 = 180 J'},
+ {ty:'calc',q:'ปล่อยวัตถุจากที่สูง 5 m จงหาอัตราเร็วขณะถึงพื้น (g = 10)',
+  o:['5 m/s','10 m/s','25 m/s','50 m/s'],a:1,
+  e:'½mv² = mgh → v² = 2gh = 2×10×5 = 100 → v = 10 m/s'},
+ {ty:'calc',q:'วัตถุมวล 2 kg ตกจากที่สูง 8 m เมื่อถึงจุดสูง 3 m พลังงานจลน์เป็นเท่าใด (g = 10)',
+  o:['60 J','100 J','160 J','220 J'],a:1,
+  e:'E รวม = 2×10×8 = 160 J, E_p ที่ 3m = 2×10×3 = 60 J, E_k = 160−60 = 100 J'},
+];
+let cqi=0;const cAnswered=new Array(C_QUIZ.length).fill(false);
+function cBuildDots(){
+  const d=document.getElementById('cDots');d.innerHTML='';
+  C_QUIZ.forEach((_,i)=>{const s=document.createElement('div');s.className='dot';s.id='cd'+i;d.appendChild(s);});
+}
+function cRenderQ(){
+  const Q=C_QUIZ[cqi];
+  const tp=document.getElementById('cQType');
+  tp.textContent=Q.ty==='theory'?'ทฤษฎี':'คำนวณ';
+  tp.className='qtype '+(Q.ty==='theory'?'theory':'calc');
+  document.getElementById('cQNum').textContent=`ข้อ ${cqi+1} / ${C_QUIZ.length}`;
+  document.getElementById('cQText').textContent=Q.q;
+  const opts=document.getElementById('cOpts');opts.innerHTML='';
+  Q.o.forEach((txt,i)=>{
+    const el=document.createElement('div');el.className='opt';el.id='copt'+i;
+    el.innerHTML=`<span class="opt-label">${LABELS[i]}</span><span>${txt}</span>`;
+    el.onclick=()=>cPick(i);opts.appendChild(el);
+  });
+  const ex=document.getElementById('cExplain');ex.className='explain';ex.textContent='';
+  C_QUIZ.forEach((_,i)=>{
+    const dot=document.getElementById('cd'+i);dot.className='dot';
+    if(cAnswered[i])dot.classList.add('done');
+    if(i===cqi)dot.classList.add('current');
+  });
+  document.getElementById('cPrev').style.visibility=cqi===0?'hidden':'visible';
+  document.getElementById('cNext').textContent=cqi===C_QUIZ.length-1?'จบ ✓':'ถัดไป ▶';
+}
+function cPick(i){
+  const Q=C_QUIZ[cqi];
+  document.querySelectorAll('#cOpts .opt').forEach(o=>o.classList.remove('correct','wrong'));
+  if(i===Q.a)document.getElementById('copt'+i).classList.add('correct');
+  else{document.getElementById('copt'+i).classList.add('wrong');document.getElementById('copt'+Q.a).classList.add('correct');}
+  cReveal();
+}
+function cShowAns(){document.getElementById('copt'+C_QUIZ[cqi].a).classList.add('correct');cReveal();}
+function cReveal(){
+  const Q=C_QUIZ[cqi];const ex=document.getElementById('cExplain');
+  ex.innerHTML=`<b>เฉลย: ${LABELS[Q.a]}</b> — ${Q.e}`;ex.classList.add('show');
+  cAnswered[cqi]=true;document.getElementById('cd'+cqi).classList.add('done');
+}
+function cNextQ(){if(cqi<C_QUIZ.length-1){cqi++;cRenderQ();}}
+function cPrevQ(){if(cqi>0){cqi--;cRenderQ();}}
+
+/* ===== init ===== */
+buildNav();initCars();drawKScene();kBuildDots();initPBoxes();pBuildDots();drawCScene();cBuildDots();
+</script>
+</body>
+</html>
