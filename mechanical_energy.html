@@ -460,11 +460,99 @@ input[type=range]::-moz-range-thumb{width:2.2vh;height:2.2vh;border:none;border-
     <div class="botnav"><span class="pageno">หัวข้อ 2 · หน้า <b>4</b>/4</span></div>
   </section>
 
-  <!-- ============ SECTION 3: การอนุรักษ์พลังงานกล ============ -->
+  <!-- ============ SECTION 3: พลังงานศักย์ยืดหยุ่น ============ -->
 
   <!-- 3.1 เนื้อหา -->
-  <section class="slide" id="c_concept" data-sec="3">
-    <div class="eyebrow">หัวข้อ 3 · การอนุรักษ์พลังงานกล</div>
+  <section class="slide" id="e_concept" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · พลังงานศักย์ยืดหยุ่น</div>
+    <h2>พลังงานศักย์ยืดหยุ่น (Elastic PE)</h2>
+    <div class="grid g2" style="margin-top:1.4vh">
+      <div class="card accent">
+        <h3>กฎของฮุก (Hooke's Law)</h3>
+        <p style="margin-top:.8vh">แรงที่สปริงดึงกลับแปรผันตรงกับระยะยืด/หดจากตำแหน่งสมดุล</p>
+        <div class="formula-box" style="font-size:3.6vh">F = kx</div>
+        <p style="font-size:1.9vh;color:#475569">
+          <b>F</b> = แรงสปริง (นิวตัน, N)<br>
+          <b>k</b> = ค่านิจสปริง (N/m) &nbsp; <b>x</b> = ระยะยืด/หด (m)</p>
+        <h3 style="margin-top:.6vh">พลังงานศักย์ยืดหยุ่น</h3>
+        <div class="formula-box">E<sub>p</sub> = ½kx²</div>
+        <div><span class="unit-pill">หน่วย: จูล (J)</span></div>
+      </div>
+      <div class="card blue">
+        <h3>สมบัติสำคัญ</h3>
+        <ul class="tick">
+          <li>พลังงานสะสมในสปริงที่<b>ถูกยืดหรือถูกอัด</b> (ทั้งสองกรณีมีค่าเป็นบวก)</li>
+          <li>แปรผันตรงกับ<b>ค่านิจสปริง k</b> (สปริงแข็งกว่าสะสมพลังงานมากกว่า)</li>
+          <li>แปรผันกับ<b>กำลังสองของระยะ x²</b> (ยืด 2 เท่า → พลังงาน 4 เท่า)</li>
+          <li>ที่ตำแหน่งสมดุล (x = 0) พลังงานศักย์ยืดหยุ่น = 0</li>
+        </ul>
+        <div class="callout" style="margin-top:auto"><b>ตัวอย่างจริง:</b> สปริงในปากกา คันธนู แทรมโพลีน โช้คอัพรถ — ล้วนสะสมพลังงานศักย์ยืดหยุ่น</div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>1</b>/4</span></div>
+  </section>
+
+  <!-- 3.2 แบบจำลอง -->
+  <section class="slide" id="e_sim" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · แบบจำลองโต้ตอบ</div>
+    <h2>ทดลอง: ยืด/อัดสปริง แล้วสังเกตพลังงาน</h2>
+    <div class="controls" style="margin-top:1vh">
+      <div class="slider-row"><span>ค่านิจสปริง k: <b id="ekLbl">200</b> N/m</span>
+        <input type="range" id="ek" min="50" max="500" step="50" value="200" oninput="drawESim()"></div>
+      <div class="slider-row"><span>ระยะ x: <b id="exLbl">0.20</b> m</span>
+        <input type="range" id="ex" min="-0.4" max="0.4" step="0.02" value="0.2" oninput="drawESim()"></div>
+      <button class="btn gold small" onclick="toggleEOsc()" id="eOscBtn">▶ ปล่อยให้สั่น</button>
+      <button class="btn ghost small" onclick="resetESim()">↺ รีเซ็ต</button>
+    </div>
+    <div class="sim-canvas" style="margin-top:1vh">
+      <svg id="eSvg" viewBox="0 0 1000 300" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <p id="eHint" style="font-size:1.8vh;color:#64748b;margin-top:.8vh;text-align:center">
+      เลื่อน <b>x</b> ไปทางขวา = ยืด, ทางซ้าย = อัด · สังเกต <span style="color:#DC2626;font-weight:600">F = kx</span> และ <span style="color:#F59E0B;font-weight:600">E<sub>p</sub> = ½kx²</span> · กด <b>ปล่อยให้สั่น</b> เพื่อดูการแกว่ง
+    </p>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>2</b>/4</span></div>
+  </section>
+
+  <!-- 3.3 โจทย์ตัวอย่าง -->
+  <section class="slide" id="e_examples" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · โจทย์ตัวอย่าง</div>
+    <h2>โจทย์ฝึกคำนวณ — พลังงานศักย์ยืดหยุ่น</h2>
+    <div class="ex-tabs" id="eExTabs" style="margin-top:1.2vh"></div>
+    <div class="ex-body" id="eExBody"></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>3</b>/4</span></div>
+  </section>
+
+  <!-- 3.4 quiz -->
+  <section class="slide" id="e_quiz" data-sec="3">
+    <div class="quiz-top">
+      <div>
+        <div class="eyebrow" style="margin-bottom:.3vh">หัวข้อ 3 · แบบทดสอบ</div>
+        <h2 style="font-size:3.2vh">Quiz พลังงานศักย์ยืดหยุ่น (10 ข้อ)</h2>
+      </div>
+      <div class="progress-dots" id="eDots"></div>
+    </div>
+    <div class="qcard">
+      <div>
+        <span class="qtype" id="eQType">ทฤษฎี</span>
+        <span class="qnum" id="eQNum">ข้อ 1 / 10</span>
+      </div>
+      <div class="qtext" id="eQText">โจทย์…</div>
+      <div class="opts" id="eOpts"></div>
+      <div class="explain" id="eExplain"></div>
+      <div class="quiz-nav">
+        <button class="btn gold" onclick="eShowAns()">👁 ดูเฉลย</button>
+        <button class="btn ghost small" id="ePrev" onclick="ePrevQ()">◀ ก่อนหน้า</button>
+        <button class="btn small" id="eNext" onclick="eNextQ()">ถัดไป ▶</button>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>4</b>/4</span></div>
+  </section>
+
+  <!-- ============ SECTION 4: การอนุรักษ์พลังงานกล ============ -->
+
+  <!-- 4.1 เนื้อหา -->
+  <section class="slide" id="c_concept" data-sec="4">
+    <div class="eyebrow">หัวข้อ 4 · การอนุรักษ์พลังงานกล</div>
     <h2>กฎการอนุรักษ์พลังงานกล</h2>
     <div class="grid g2" style="margin-top:1.4vh">
       <div class="card accent">
@@ -486,12 +574,12 @@ input[type=range]::-moz-range-thumb{width:2.2vh;height:2.2vh;border:none;border-
         <div class="callout" style="margin-top:auto"><b>ตัวอย่างจริง:</b> รถไฟเหาะ ลูกตุ้ม การตกของวัตถุ — ทั้งหมดเป็นไปตามกฎนี้เมื่อแรงเสียดทานน้อยมาก</div>
       </div>
     </div>
-    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>1</b>/4</span></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 4 · หน้า <b>1</b>/4</span></div>
   </section>
 
   <!-- 3.2 แบบจำลอง -->
-  <section class="slide" id="c_sim" data-sec="3">
-    <div class="eyebrow">หัวข้อ 3 · แบบจำลองโต้ตอบ</div>
+  <section class="slide" id="c_sim" data-sec="4">
+    <div class="eyebrow">หัวข้อ 4 · แบบจำลองโต้ตอบ</div>
     <h2>วัตถุตกอิสระ: พลังงานแปลงรูปอย่างไร?</h2>
     <div class="controls" style="margin-top:1vh">
       <button class="btn gold" id="cPlay" onclick="toggleCSim()">▶ ปล่อยวัตถุ</button>
@@ -507,23 +595,23 @@ input[type=range]::-moz-range-thumb{width:2.2vh;height:2.2vh;border:none;border-
     <p id="cHint" style="font-size:1.8vh;color:#64748b;margin-top:.8vh;text-align:center">
       กด <b>▶ ปล่อยวัตถุ</b> สังเกตแท่ง <span style="color:#2563EB;font-weight:600">E<sub>k</sub></span> เพิ่มขณะ <span style="color:#F59E0B;font-weight:600">E<sub>p</sub></span> ลด แต่ <span style="color:#059669;font-weight:600">E รวม</span> คงที่ตลอด (g = 10 m/s²)
     </p>
-    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>2</b>/4</span></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 4 · หน้า <b>2</b>/4</span></div>
   </section>
 
   <!-- 3.3 โจทย์ตัวอย่าง -->
-  <section class="slide" id="c_examples" data-sec="3">
-    <div class="eyebrow">หัวข้อ 3 · โจทย์ตัวอย่าง</div>
+  <section class="slide" id="c_examples" data-sec="4">
+    <div class="eyebrow">หัวข้อ 4 · โจทย์ตัวอย่าง</div>
     <h2>โจทย์ฝึกคำนวณ — การอนุรักษ์พลังงานกล</h2>
     <div class="ex-tabs" id="cExTabs" style="margin-top:1.2vh"></div>
     <div class="ex-body" id="cExBody"></div>
-    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>3</b>/4</span></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 4 · หน้า <b>3</b>/4</span></div>
   </section>
 
   <!-- 3.4 quiz -->
-  <section class="slide" id="c_quiz" data-sec="3">
+  <section class="slide" id="c_quiz" data-sec="4">
     <div class="quiz-top">
       <div>
-        <div class="eyebrow" style="margin-bottom:.3vh">หัวข้อ 3 · แบบทดสอบ</div>
+        <div class="eyebrow" style="margin-bottom:.3vh">หัวข้อ 4 · แบบทดสอบ</div>
         <h2 style="font-size:3.2vh">Quiz การอนุรักษ์พลังงานกล (10 ข้อ)</h2>
       </div>
       <div class="progress-dots" id="cDots"></div>
@@ -542,7 +630,7 @@ input[type=range]::-moz-range-thumb{width:2.2vh;height:2.2vh;border:none;border-
         <button class="btn small" id="cNext" onclick="cNextQ()">ถัดไป ▶</button>
       </div>
     </div>
-    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>4</b>/4</span></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 4 · หน้า <b>4</b>/4</span></div>
   </section>
 
 </div>
@@ -554,8 +642,9 @@ input[type=range]::-moz-range-thumb{width:2.2vh;height:2.2vh;border:none;border-
 ============================================================ */
 const SECTIONS=[
   {id:1, name:'1 · พลังงานจลน์', first:'k_concept'},
-  {id:2, name:'2 · พลังงานศักย์', first:'p_concept'},
-  {id:3, name:'3 · อนุรักษ์พลังงาน', first:'c_concept'},
+  {id:2, name:'2 · ศักย์โน้มถ่วง', first:'p_concept'},
+  {id:3, name:'3 · ศักย์ยืดหยุ่น', first:'e_concept'},
+  {id:4, name:'4 · อนุรักษ์พลังงาน', first:'c_concept'},
 ];
 const slides=[...document.querySelectorAll('.slide')];
 let cur=0;
@@ -582,6 +671,9 @@ function goto(i){
   if(slides[cur].id==='p_sim')resetPSim();
   if(slides[cur].id==='p_examples')renderPEx();
   if(slides[cur].id==='p_quiz')pRenderQ();
+  if(slides[cur].id==='e_sim')resetESim();
+  if(slides[cur].id==='e_examples')renderEEx();
+  if(slides[cur].id==='e_quiz')eRenderQ();
   if(slides[cur].id==='c_sim')resetCSim();
   if(slides[cur].id==='c_examples')renderCEx();
   if(slides[cur].id==='c_quiz')cRenderQ();
@@ -1189,7 +1281,216 @@ function pNextQ(){if(pqi<P_QUIZ.length-1){pqi++;pRenderQ();}}
 function pPrevQ(){if(pqi>0){pqi--;pRenderQ();}}
 
 /* ============================================================
-   แบบจำลอง 3: การอนุรักษ์พลังงานกล — วัตถุตกอิสระ (g=10)
+   แบบจำลอง 3: พลังงานศักย์ยืดหยุ่น — สปริง F=kx, Ep=½kx²
+============================================================ */
+let eOsc=false,eRAF=null,eOscT=0,eOscStart=0,eBaseX=0.2;
+function ek_(){return +document.getElementById('ek').value}
+function ex_(){return +document.getElementById('ex').value}
+function eEp(k,x){return 0.5*k*x*x}
+function eF(k,x){return k*x}
+const E_ORIGIN_X=430;   // ตำแหน่งผนังยึดสปริง (x ซ้าย)
+const E_EQ=620;         // ตำแหน่งสมดุลของปลายสปริง
+const E_SCALE=280;      // 0.4 m แมปเป็นกี่ px (0.4*280≈112px)
+function springPath(x1,y,x2,coils){
+  // วาดสปริงซิกแซกจาก x1 ถึง x2
+  let d=`M ${x1} ${y}`;
+  const seg=(x2-x1)/coils;
+  for(let i=0;i<coils;i++){
+    const xa=x1+seg*i+seg*0.25, xb=x1+seg*i+seg*0.75;
+    d+=` L ${xa} ${y-16} L ${xb} ${y+16}`;
+  }
+  d+=` L ${x2} ${y}`;
+  return d;
+}
+function drawESim(){
+  document.getElementById('ekLbl').textContent=ek_();
+  const x=eOsc?eBaseX*Math.cos((performance.now()-eOscStart)/1000*3):ex_();
+  if(!eOsc)document.getElementById('exLbl').textContent=ex_().toFixed(2);
+  else document.getElementById('exLbl').textContent=x.toFixed(2);
+  const k=ek_();
+  const Ep=eEp(k,x), F=eF(k,x);
+  const svg=document.getElementById('eSvg');
+  const y=150;
+  const endX=E_EQ + x*E_SCALE; // ยืด(x>0)ไปขวา อัด(x<0)ไปซ้าย
+  let html='';
+  // พื้น
+  html+=`<line x1="0" y1="235" x2="1000" y2="235" stroke="#94a3b8" stroke-width="3"/>`;
+  // ผนังยึด
+  html+=`<rect x="${E_ORIGIN_X-30}" y="70" width="30" height="130" fill="#64748b"/>`;
+  for(let i=0;i<8;i++)html+=`<line x1="${E_ORIGIN_X-30}" y1="${74+i*16}" x2="${E_ORIGIN_X-14}" y2="${66+i*16}" stroke="#475569" stroke-width="2"/>`;
+  // เส้นตำแหน่งสมดุล
+  html+=`<line x1="${E_EQ}" y1="60" x2="${E_EQ}" y2="220" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 5"/>`;
+  html+=`<text x="${E_EQ}" y="55" font-family="Prompt" font-size="13" fill="#94a3b8" text-anchor="middle">สมดุล x=0</text>`;
+  // สปริง
+  html+=`<path d="${springPath(E_ORIGIN_X,y,endX,10)}" fill="none" stroke="#1E3A8A" stroke-width="4"/>`;
+  // มวล (กล่อง)
+  html+=`<rect x="${endX}" y="${y-34}" width="68" height="68" rx="8" fill="#2563EB"/>`;
+  html+=`<text x="${endX+34}" y="${y+5}" font-family="Prompt" font-size="16" fill="#fff" text-anchor="middle" font-weight="600">m</text>`;
+  // ลูกศรแรง F = kx (ทิศดึงกลับสู่สมดุล)
+  if(Math.abs(x)>0.01){
+    const dir=x>0?-1:1; // ยืด→แรงชี้ซ้าย, อัด→แรงชี้ขวา
+    const fLen=Math.min(100,Math.abs(F)/500*100+20);
+    const fx0=endX+34, fx1=fx0+dir*fLen;
+    html+=`<line x1="${fx0}" y1="${y-52}" x2="${fx1}" y2="${y-52}" stroke="#DC2626" stroke-width="5" stroke-linecap="round"/>`;
+    html+=`<polygon points="${fx1},${y-58} ${fx1+dir*12},${y-52} ${fx1},${y-46}" fill="#DC2626"/>`;
+    html+=`<text x="${(fx0+fx1)/2}" y="${y-62}" font-family="Prompt" font-size="15" fill="#DC2626" text-anchor="middle" font-weight="700">F = ${Math.abs(F).toFixed(0)} N</text>`;
+  }
+  // แท่งพลังงานขวา
+  const maxEp=eEp(500,0.4); // 40
+  const barMaxH=150;
+  const barH=Math.min(1,Ep/maxEp)*barMaxH;
+  html+=`<rect x="880" y="55" width="90" height="${barMaxH}" rx="8" fill="#FFFBEB" stroke="#FDE68A"/>`;
+  html+=`<rect x="888" y="${205-barH}" width="74" height="${barH}" rx="6" fill="#F59E0B"/>`;
+  html+=`<text x="925" y="48" font-family="Prompt" font-size="14" fill="#B45309" text-anchor="middle" font-weight="600">E_p ยืดหยุ่น</text>`;
+  html+=`<text x="925" y="${Math.max(72,205-barH-8)}" font-family="Prompt" font-size="15" fill="${barH>barMaxH*0.85?'#fff':'#B45309'}" text-anchor="middle" font-weight="700">${Ep.toFixed(1)} J</text>`;
+  // ป้ายสถานะยืด/อัด
+  const state = Math.abs(x)<0.01?'สมดุล':(x>0?'กำลังยืด →':'← กำลังอัด');
+  html+=`<text x="${E_EQ}" y="215" font-family="Prompt" font-size="15" fill="#1E3A8A" text-anchor="middle" font-weight="600">${state} (x = ${x.toFixed(2)} m)</text>`;
+  svg.innerHTML=html;
+}
+function toggleEOsc(){
+  const b=document.getElementById('eOscBtn');
+  if(eOsc){eOsc=false;b.textContent='▶ ปล่อยให้สั่น';cancelAnimationFrame(eRAF);
+    document.getElementById('ex').disabled=false;drawESim();}
+  else{
+    eBaseX=Math.abs(ex_())>0.02?ex_():0.3; // ใช้ x ปัจจุบันเป็นแอมพลิจูด
+    eOsc=true;b.textContent='⏸ หยุดสั่น';eOscStart=performance.now();
+    document.getElementById('ex').disabled=true;
+    eRAF=requestAnimationFrame(eStep);
+  }
+}
+function eStep(){drawESim();if(eOsc)eRAF=requestAnimationFrame(eStep);}
+function resetESim(){
+  eOsc=false;cancelAnimationFrame(eRAF);
+  document.getElementById('eOscBtn').textContent='▶ ปล่อยให้สั่น';
+  document.getElementById('ex').disabled=false;
+  document.getElementById('ex').value=0.2;
+  drawESim();
+}
+
+/* ============================================================
+   โจทย์ตัวอย่าง: ศักย์ยืดหยุ่น (ง่าย 2 + ปานกลาง 2)
+============================================================ */
+const E_EXAMPLES=[
+ {lv:'easy',t:'ง่าย 1',
+  q:'สปริงค่านิจ 200 N/m ถูกยืดออก 0.1 m จงหาพลังงานศักย์ยืดหยุ่น',
+  sol:['สูตร: E<sub>p</sub> = ½kx²','แทนค่า: E<sub>p</sub> = ½ × 200 × (0.1)²','E<sub>p</sub> = ½ × 200 × 0.01 = 100 × 0.01'],
+  ans:'E<sub>p</sub> = 1 J'},
+ {lv:'easy',t:'ง่าย 2',
+  q:'สปริงค่านิจ 400 N/m ถูกอัด 0.2 m มีพลังงานศักย์ยืดหยุ่นเท่าใด',
+  sol:['สูตร: E<sub>p</sub> = ½kx² (อัดหรือยืดใช้ x เท่ากัน)','แทนค่า: E<sub>p</sub> = ½ × 400 × (0.2)²','E<sub>p</sub> = 200 × 0.04'],
+  ans:'E<sub>p</sub> = 8 J'},
+ {lv:'mid',t:'ปานกลาง 1',
+  q:'สปริงถูกยืด 0.05 m ด้วยแรง 10 N จงหาค่านิจสปริง k (ใช้กฎของฮุก F = kx)',
+  sol:['จากกฎของฮุก: F = kx → k = F/x','k = 10 / 0.05'],
+  ans:'k = 200 N/m'},
+ {lv:'mid',t:'ปานกลาง 2',
+  q:'สปริงค่านิจ 500 N/m มีพลังงานศักย์ยืดหยุ่น 10 J จงหาระยะที่ยืดออก',
+  sol:['จาก E<sub>p</sub> = ½kx² → x² = 2E<sub>p</sub>/k','x² = (2 × 10) / 500 = 20/500 = 0.04','x = √0.04'],
+  ans:'x = 0.2 m'},
+];
+let eExIdx=0;
+function renderEEx(){
+  const tabs=document.getElementById('eExTabs');tabs.innerHTML='';
+  E_EXAMPLES.forEach((ex,i)=>{
+    const b=document.createElement('div');
+    b.className='ex-tab '+(ex.lv==='easy'?'easy':'mid')+(i===eExIdx?' active':'');
+    b.textContent=ex.t;b.onclick=()=>{eExIdx=i;renderEEx();};
+    tabs.appendChild(b);
+  });
+  const ex=E_EXAMPLES[eExIdx];
+  document.getElementById('eExBody').innerHTML=`
+    <div class="ex-card show">
+      <span class="ex-level ${ex.lv}">${ex.lv==='easy'?'ระดับง่าย':'ระดับปานกลาง'}</span>
+      <div class="ex-q"><b>โจทย์:</b> ${ex.q}</div>
+      <button class="btn gold small" style="align-self:flex-start" onclick="this.nextElementSibling.classList.toggle('show');this.textContent=this.nextElementSibling.classList.contains('show')?'ซ่อนวิธีทำ ▴':'👁 ดูวิธีทำ + เฉลย'">👁 ดูวิธีทำ + เฉลย</button>
+      <div class="sol">
+        ${ex.sol.map(s=>`<div class="step">▸ ${s}</div>`).join('')}
+        <div class="ans">✓ ${ex.ans}</div>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   Quiz: ศักย์ยืดหยุ่น (ทฤษฎี 7 + คำนวณ 3)
+============================================================ */
+const E_QUIZ=[
+ {ty:'theory',q:'พลังงานศักย์ยืดหยุ่นคือพลังงานที่สะสมในสิ่งใด',
+  o:['วัตถุที่เคลื่อนที่','วัตถุที่อยู่สูง','สปริงหรือวัตถุยืดหยุ่นที่ถูกยืด/อัด','วัตถุร้อน'],a:2,
+  e:'พลังงานศักย์ยืดหยุ่นคือพลังงานที่สะสมในสปริงหรือวัตถุยืดหยุ่นเมื่อถูกยืดหรือถูกอัด'},
+ {ty:'theory',q:'กฎของฮุก (Hooke\'s Law) เขียนได้เป็นข้อใด',
+  o:['F = ma','F = kx','F = mgh','F = ½kx²'],a:1,
+  e:'กฎของฮุก F = kx แรงสปริงแปรผันตรงกับระยะยืด/หด x'},
+ {ty:'theory',q:'สูตรพลังงานศักย์ยืดหยุ่นคือข้อใด',
+  o:['E = ½mv²','E = mgh','E = ½kx²','E = kx'],a:2,
+  e:'พลังงานศักย์ยืดหยุ่น E_p = ½kx² โดย k คือค่านิจสปริง และ x คือระยะยืด/หด'},
+ {ty:'theory',q:'ในสูตร F = kx และ E_p = ½kx² ตัว k หมายถึงอะไร',
+  o:['มวลของสปริง','ค่านิจสปริง (ความแข็งของสปริง)','ความเร็ว','ความสูง'],a:1,
+  e:'k คือค่านิจสปริง (spring constant) บอกความแข็งของสปริง มีหน่วย N/m'},
+ {ty:'theory',q:'ที่ตำแหน่งสมดุลของสปริง (x = 0) พลังงานศักย์ยืดหยุ่นเป็นเท่าใด',
+  o:['มากที่สุด','เป็นศูนย์','เท่ากับ k','ติดลบ'],a:1,
+  e:'เมื่อ x = 0 จะได้ E_p = ½k(0)² = 0 ที่ตำแหน่งสมดุลไม่มีพลังงานศักย์ยืดหยุ่น'},
+ {ty:'theory',q:'ถ้ายืดสปริงเป็นระยะ 2 เท่า พลังงานศักย์ยืดหยุ่นจะเปลี่ยนอย่างไร',
+  o:['เพิ่ม 2 เท่า','เพิ่ม 4 เท่า','ลดครึ่งหนึ่ง','เท่าเดิม'],a:1,
+  e:'E_p แปรผันกับ x² เมื่อ x เพิ่ม 2 เท่า E_p จึงเพิ่ม 2² = 4 เท่า'},
+ {ty:'theory',q:'สปริงที่ถูกอัด (x เป็นลบ) มีพลังงานศักย์ยืดหยุ่นเป็นอย่างไร',
+  o:['เป็นลบ','เป็นบวก (เพราะ x²)','เป็นศูนย์','คำนวณไม่ได้'],a:1,
+  e:'เพราะ E_p = ½kx² มี x ยกกำลังสอง ทั้งการยืดและการอัดจึงให้พลังงานเป็นบวกเสมอ'},
+ {ty:'calc',q:'สปริงค่านิจ 100 N/m ยืดออก 0.2 m มีพลังงานศักย์ยืดหยุ่นเท่าใด',
+  o:['1 J','2 J','4 J','20 J'],a:1,
+  e:'E_p = ½kx² = ½ × 100 × (0.2)² = 50 × 0.04 = 2 J'},
+ {ty:'calc',q:'ต้องใช้แรงเท่าใดในการยืดสปริงค่านิจ 300 N/m ออก 0.1 m (ใช้ F = kx)',
+  o:['3 N','30 N','300 N','0.3 N'],a:1,
+  e:'F = kx = 300 × 0.1 = 30 N'},
+ {ty:'calc',q:'สปริงค่านิจ 200 N/m มีพลังงานศักย์ยืดหยุ่น 4 J จงหาระยะที่ยืดออก',
+  o:['0.1 m','0.2 m','0.4 m','2 m'],a:1,
+  e:'จาก E_p = ½kx² → x² = 2E_p/k = (2×4)/200 = 0.04 → x = 0.2 m'},
+];
+let eqi=0;const eAnswered=new Array(E_QUIZ.length).fill(false);
+function eBuildDots(){
+  const d=document.getElementById('eDots');d.innerHTML='';
+  E_QUIZ.forEach((_,i)=>{const s=document.createElement('div');s.className='dot';s.id='ed'+i;d.appendChild(s);});
+}
+function eRenderQ(){
+  const Q=E_QUIZ[eqi];
+  const tp=document.getElementById('eQType');
+  tp.textContent=Q.ty==='theory'?'ทฤษฎี':'คำนวณ';
+  tp.className='qtype '+(Q.ty==='theory'?'theory':'calc');
+  document.getElementById('eQNum').textContent=`ข้อ ${eqi+1} / ${E_QUIZ.length}`;
+  document.getElementById('eQText').textContent=Q.q;
+  const opts=document.getElementById('eOpts');opts.innerHTML='';
+  Q.o.forEach((txt,i)=>{
+    const el=document.createElement('div');el.className='opt';el.id='eopt'+i;
+    el.innerHTML=`<span class="opt-label">${LABELS[i]}</span><span>${txt}</span>`;
+    el.onclick=()=>ePick(i);opts.appendChild(el);
+  });
+  const ex=document.getElementById('eExplain');ex.className='explain';ex.textContent='';
+  E_QUIZ.forEach((_,i)=>{
+    const dot=document.getElementById('ed'+i);dot.className='dot';
+    if(eAnswered[i])dot.classList.add('done');
+    if(i===eqi)dot.classList.add('current');
+  });
+  document.getElementById('ePrev').style.visibility=eqi===0?'hidden':'visible';
+  document.getElementById('eNext').textContent=eqi===E_QUIZ.length-1?'จบ ✓':'ถัดไป ▶';
+}
+function ePick(i){
+  const Q=E_QUIZ[eqi];
+  document.querySelectorAll('#eOpts .opt').forEach(o=>o.classList.remove('correct','wrong'));
+  if(i===Q.a)document.getElementById('eopt'+i).classList.add('correct');
+  else{document.getElementById('eopt'+i).classList.add('wrong');document.getElementById('eopt'+Q.a).classList.add('correct');}
+  eReveal();
+}
+function eShowAns(){document.getElementById('eopt'+E_QUIZ[eqi].a).classList.add('correct');eReveal();}
+function eReveal(){
+  const Q=E_QUIZ[eqi];const ex=document.getElementById('eExplain');
+  ex.innerHTML=`<b>เฉลย: ${LABELS[Q.a]}</b> — ${Q.e}`;ex.classList.add('show');
+  eAnswered[eqi]=true;document.getElementById('ed'+eqi).classList.add('done');
+}
+function eNextQ(){if(eqi<E_QUIZ.length-1){eqi++;eRenderQ();}}
+function ePrevQ(){if(eqi>0){eqi--;eRenderQ();}}
+
+/* ============================================================
+   แบบจำลอง 4: การอนุรักษ์พลังงานกล — วัตถุตกอิสระ (g=10)
 ============================================================ */
 let cPlaying=false,cRAF=null,cAnimStart=0,cFrac=0,cDropped=false;
 function cm(){return +document.getElementById('cm').value}
@@ -1399,7 +1700,7 @@ function cNextQ(){if(cqi<C_QUIZ.length-1){cqi++;cRenderQ();}}
 function cPrevQ(){if(cqi>0){cqi--;cRenderQ();}}
 
 /* ===== init ===== */
-buildNav();initCars();drawKScene();kBuildDots();initPBoxes();pBuildDots();drawCScene();cBuildDots();
+buildNav();initCars();drawKScene();kBuildDots();initPBoxes();pBuildDots();drawESim();eBuildDots();drawCScene();cBuildDots();
 </script>
 </body>
 </html>
