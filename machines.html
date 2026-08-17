@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>เครื่องกล — ฟิสิกส์ ม.5 | KJST</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+window.MathJax={
+  tex:{inlineMath:[['\\(','\\)']],displayMath:[['$$','$$']]},
+  svg:{fontCache:'global'},
+  options:{skipHtmlTags:['script','noscript','style','textarea','pre']},
+  startup:{typeset:true}
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+:root{
+  --navy:#0A1F44;--blue:#1E3A8A;--blue2:#2563EB;
+  --gold:#F59E0B;--gold-soft:#FCD34D;
+  --red:#DC2626;--green:#059669;
+  --ink:#0F172A;--paper:#F8FAFC;--line:rgba(30,58,138,.12);
+  --shadow:0 8px 30px rgba(10,31,68,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{
+  font-family:'Sarabun',sans-serif;color:var(--ink);
+  background:radial-gradient(circle at 20% 10%,#12306b 0%,var(--navy) 55%,#061530 100%);
+  display:flex;align-items:center;justify-content:center;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,.eyebrow,.btn,.brand,.mode-tab,.ex-tab{font-family:'Prompt',sans-serif}
+sub,sup{font-size:.62em;line-height:1}
+mjx-container{font-size:96%!important}
+mjx-container[display="true"]{margin:.35em 0!important}
+
+.stage{
+  position:relative;width:100vw;height:100vh;
+  max-width:calc(100vh * 16 / 9);max-height:calc(100vw * 9 / 16);
+  background:var(--paper);overflow:hidden;box-shadow:0 20px 70px rgba(0,0,0,.5);
+}
+@media(min-aspect-ratio:16/9){.stage{width:calc(100vh*16/9);height:100vh}}
+
+.rotate-hint{
+  display:none;position:fixed;inset:0;z-index:999;background:var(--navy);color:#fff;
+  flex-direction:column;align-items:center;justify-content:center;gap:20px;text-align:center;padding:40px;
+}
+.rotate-hint .icon{font-size:64px;animation:rot 2s ease-in-out infinite}
+@keyframes rot{0%,100%{transform:rotate(0)}50%{transform:rotate(90deg)}}
+@media(max-width:820px) and (orientation:portrait){.rotate-hint{display:flex}.stage{display:none}}
+
+/* ===== slides ===== */
+.slide{position:absolute;inset:0;padding:2.4vh 3vw 6.4vh;display:flex;flex-direction:column;
+  opacity:0;visibility:hidden;transform:translateX(24px);
+  transition:opacity .45s,transform .45s,visibility .45s;overflow-y:auto}
+.slide.active{opacity:1;visibility:visible;transform:none}
+
+.eyebrow{display:inline-flex;align-items:center;gap:.5em;font-size:1.85vh;font-weight:600;
+  letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:.6vh}
+.eyebrow::before{content:"";width:2.4vh;height:2px;background:var(--gold)}
+h2{font-size:3.5vh;font-weight:700;color:var(--navy);line-height:1.1;margin-bottom:.3vh}
+h3{font-size:2.3vh;font-weight:600;color:var(--blue)}
+h4{font-size:2vh;font-weight:600;color:var(--navy)}
+p{font-size:1.95vh;line-height:1.5}
+
+/* ===== title ===== */
+#s_title{justify-content:center;background:radial-gradient(circle at 78% 20%,#12306b,var(--navy) 55%,#061530);color:#fff}
+#s_title .eyebrow{color:var(--gold-soft)}
+#s_title h1{font-size:7vh;font-weight:700;color:#fff;line-height:1.02}
+#s_title .sub{font-size:3vh;font-weight:300;color:var(--gold-soft);margin-top:.8vh}
+#s_title .topics{display:flex;gap:1.6vw;margin-top:4vh;flex-wrap:wrap}
+#s_title .tchip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);
+  border-radius:14px;padding:1.6vh 2vw;min-width:16vw}
+#s_title .tchip .n{font-family:'Prompt';font-size:2vh;color:var(--gold-soft);font-weight:600}
+#s_title .tchip .t{font-family:'Prompt';font-size:2.4vh;color:#fff;font-weight:600;margin-top:.3vh}
+#s_title .meta{margin-top:4vh;font-size:1.9vh;color:rgba(255,255,255,.6)}
+#s_title .meta b{color:#fff}
+
+/* ===== cards ===== */
+.grid{flex:1;display:grid;gap:1.6vw;min-height:0}
+.g2{grid-template-columns:1fr 1fr}
+.g32{grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);gap:1.3vh 1.3vw}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:2vh 1.6vw;
+  box-shadow:var(--shadow);display:flex;flex-direction:column;min-height:0}
+.card.accent{border-top:4px solid var(--gold)}
+.card.blue{background:linear-gradient(160deg,#fff,#f1f5ff);border-top:4px solid var(--blue2)}
+.card.scroll{overflow-y:auto}
+.eqbox{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border:1px solid var(--line);
+  border-radius:12px;padding:.6vh 1vw;margin:.8vh 0;text-align:center}
+.eqbox.green{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border-color:#A7F3D0}
+.eqbox.gold{background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border-color:#FDE68A}
+.unit-pill{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Prompt';
+  font-weight:600;padding:.25em .8em;border-radius:999px;font-size:1.75vh;margin:.3vh}
+ul.tick{list-style:none;margin-top:.4vh}
+ul.tick li{position:relative;padding-left:2vw;margin-bottom:.9vh;font-size:1.9vh;line-height:1.45}
+ul.tick li::before{content:"";position:absolute;left:0;top:.5em;width:1vh;height:1vh;border-radius:50%;background:var(--gold)}
+ul.tick li b{color:var(--blue)}
+.callout{background:#FFFBEB;border-left:5px solid var(--gold);border-radius:0 12px 12px 0;padding:1.3vh 1.2vw;font-size:1.85vh}
+.callout b{color:var(--navy)}
+
+/* ตารางเปรียบเทียบ */
+table.tb{width:100%;border-collapse:collapse;font-size:1.75vh;margin-top:.6vh}
+table.tb th{background:#EFF6FF;color:var(--blue);font-family:'Prompt';font-weight:600;padding:.7vh .6vw;text-align:left;border-bottom:2px solid var(--line)}
+table.tb td{padding:.6vh .6vw;border-bottom:1px solid var(--line)}
+table.tb tr:last-child td{border-bottom:none}
+
+/* การ์ดเครื่องกล 6 ชนิด */
+.mcard{background:#fff;border:1px solid var(--line);border-top:4px solid var(--blue2);border-radius:14px;
+  padding:1.3vh 1vw;box-shadow:var(--shadow);display:flex;flex-direction:column;overflow:hidden}
+.mcard .top{display:flex;align-items:center;gap:.7vw;margin-bottom:.5vh}
+.mcard .ic{font-size:2.8vh;line-height:1}
+.mcard .nm{font-family:'Prompt';font-weight:700;font-size:2vh;color:var(--navy)}
+.mcard .en{font-family:'Prompt';font-size:1.45vh;color:#64748b}
+.mcard .ds{font-size:1.7vh;line-height:1.4;color:#334155}
+.mcard .ma{margin-top:auto;font-family:'Prompt';font-size:1.65vh;font-weight:600;color:var(--blue);
+  background:#EFF6FF;border-radius:8px;padding:.45vh .7vw}
+.mcard .exx{font-size:1.55vh;color:#B45309;margin-top:.4vh}
+
+/* ===== simulation ===== */
+.mode-tabs{display:flex;gap:.6vw;flex-wrap:wrap}
+.mode-tab{font-weight:600;font-size:1.75vh;padding:.7vh 1.1vw;border-radius:999px;
+  background:#fff;border:2px solid var(--line);color:var(--blue);cursor:pointer;transition:.15s;white-space:nowrap}
+.mode-tab:hover{border-color:var(--blue2);background:#EFF6FF}
+.mode-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.sim-canvas{background:linear-gradient(180deg,#EFF6FF,#fff);border:1px solid var(--line);
+  border-radius:16px;position:relative;overflow:hidden;box-shadow:var(--shadow);min-height:0}
+.sim-canvas svg{width:100%;height:100%;display:block}
+.controls{display:flex;align-items:center;gap:1vw;flex-wrap:wrap;margin-top:1.1vh}
+.btn{font-family:'Prompt';font-weight:600;font-size:1.9vh;cursor:pointer;border:none;border-radius:12px;
+  padding:1vh 1.6vw;color:#fff;background:var(--blue2);transition:transform .12s,box-shadow .2s;
+  box-shadow:0 5px 16px rgba(37,99,235,.32)}
+.btn:hover{transform:translateY(-2px)}.btn:active{transform:translateY(0)}
+.btn.gold{background:var(--gold);color:var(--navy);box-shadow:0 5px 16px rgba(245,158,11,.4)}
+.btn.ghost{background:#fff;color:var(--blue);border:2px solid var(--blue2);box-shadow:none}
+.btn.small{padding:.7vh 1.2vw;font-size:1.7vh}
+.slider-row{display:flex;align-items:center;gap:.7vw;font-family:'Prompt';font-size:1.75vh;font-weight:500;color:var(--navy)}
+input[type=range]{-webkit-appearance:none;appearance:none;height:6px;border-radius:99px;background:#CBD5E1;outline:none;width:6.5vw}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:2.1vh;height:2.1vh;border-radius:50%;background:var(--gold);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+input[type=range]::-moz-range-thumb{width:2.1vh;height:2.1vh;border:none;border-radius:50%;background:var(--gold);cursor:pointer}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.7vh 1vw;text-align:center;min-width:6.5vw;box-shadow:var(--shadow)}
+.stat .k{font-family:'Prompt';font-size:1.35vh;color:#64748b;font-weight:500}
+.stat .v{font-family:'Prompt';font-size:2.3vh;font-weight:700;color:var(--blue2)}
+.stat.gold .v{color:var(--gold)}
+.stat.green .v{color:var(--green)}
+.stat.red .v{color:var(--red)}
+.readout{display:flex;gap:.8vw;flex-wrap:wrap}
+
+/* แผงค่าที่คำนวณสด */
+.lgrid{margin-top:.6vh;border-top:1px solid var(--line);padding-top:.6vh}
+.lrow{display:flex;justify-content:space-between;align-items:center;font-size:1.7vh;padding:.35vh 0;gap:.6vw}
+.lrow span{color:#475569}
+.lrow b{font-family:'Prompt';color:var(--navy);white-space:nowrap}
+.lrow.hi{background:#F1F5F9;border-radius:8px;padding:.45vh .6vw;margin:.25vh 0}
+.lrow b.red{color:var(--red)}
+.lrow b.gold{color:#B45309}
+.lrow b.green{color:var(--green)}
+
+/* ===== worked examples ===== */
+.ex-tabs{display:flex;gap:.7vw;margin-bottom:1.2vh;flex-wrap:wrap}
+.ex-tab{font-weight:600;font-size:1.75vh;padding:.8vh 1.3vw;border-radius:999px;
+  background:#fff;border:2px solid var(--line);color:var(--blue);cursor:pointer;transition:.15s}
+.ex-tab:hover{border-color:var(--blue2)}
+.ex-tab.easy.active{background:var(--green);border-color:var(--green);color:#fff}
+.ex-tab.mid.active{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.ex-tab.hard.active{background:var(--red);border-color:var(--red);color:#fff}
+.ex-body{flex:1;display:flex;flex-direction:column;min-height:0}
+.ex-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:2vh 1.8vw;box-shadow:var(--shadow);flex:1;display:flex;flex-direction:column;overflow-y:auto}
+.ex-level{display:inline-block;font-family:'Prompt';font-weight:600;font-size:1.55vh;padding:.2em .9em;border-radius:999px;margin-bottom:.8vh;align-self:flex-start}
+.ex-level.easy{background:#ECFDF5;color:var(--green)}
+.ex-level.mid{background:#FEF3C7;color:#B45309}
+.ex-level.hard{background:#FEF2F2;color:var(--red)}
+.ex-q{font-size:2vh;line-height:1.5;margin-bottom:1vh}
+.ex-q b{color:var(--navy)}
+.sol{background:#F8FAFC;border-left:5px solid var(--blue2);border-radius:0 12px 12px 0;padding:1.2vh 1.3vw;
+  font-size:1.85vh;line-height:1.5;display:none;margin-top:1vh}
+.sol.show{display:block}
+.sol .step{margin-bottom:.5vh}
+.sol .ans{font-family:'Prompt';font-weight:700;color:var(--green);font-size:2.05vh;margin-top:.8vh}
+
+/* ===== nav ===== */
+.topbar{position:absolute;top:0;left:0;right:0;height:5.4vh;background:rgba(255,255,255,.92);
+  backdrop-filter:blur(8px);border-bottom:1px solid var(--line);display:flex;align-items:center;
+  padding:0 2vw;gap:1.2vw;z-index:60}
+.topbar .brand{font-weight:700;font-size:1.85vh;color:var(--navy);letter-spacing:.1em}
+.topbar .brand span{color:var(--gold)}
+.nav-tabs{display:flex;gap:.5vw;margin-left:1vw}
+.nav-tab{font-family:'Prompt';font-weight:500;font-size:1.65vh;padding:.6vh 1.1vw;border-radius:999px;
+  color:var(--blue);cursor:pointer;transition:.15s;white-space:nowrap}
+.nav-tab:hover{background:#EFF6FF}
+.nav-tab.active{background:var(--blue);color:#fff}
+.topbar .right{margin-left:auto;display:flex;align-items:center;gap:1vw}
+.fs-btn{font-family:'Prompt';font-size:1.55vh;padding:.6vh 1.1vw;border-radius:8px;cursor:pointer;
+  background:#EFF6FF;border:1px solid var(--line);color:var(--blue)}
+.slide:not(#s_title){padding-top:7vh}
+#s_title{padding-top:2.4vh}
+.botnav{position:absolute;bottom:1.4vh;left:0;right:0;display:flex;align-items:center;justify-content:center;z-index:55}
+.botnav .pageno{font-family:'Prompt';font-size:1.6vh;color:#64748b}
+.botnav .pageno b{color:var(--navy)}
+.floatnav{position:fixed;right:2.2vw;bottom:2.2vh;z-index:80;display:flex;align-items:center;gap:1.4vw;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid var(--line);
+  border-radius:999px;padding:.9vh 1.3vw;box-shadow:0 8px 26px rgba(10,31,68,.28)}
+.fnav-btn{font-family:'Prompt';font-weight:700;font-size:2.2vh;line-height:1;cursor:pointer;border:none;
+  width:5.8vh;height:5.8vh;min-width:44px;min-height:44px;border-radius:50%;color:var(--blue);
+  background:#EFF6FF;border:2px solid var(--line);transition:transform .12s,background .2s;
+  display:flex;align-items:center;justify-content:center}
+.fnav-btn:hover{transform:translateY(-2px)}
+.fnav-btn:active{transform:scale(.94)}
+.fnav-btn.primary{background:var(--gold);color:var(--navy);border-color:var(--gold);box-shadow:0 4px 14px rgba(245,158,11,.45)}
+.fnav-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.fnav-page{font-family:'Prompt';font-weight:600;font-size:1.8vh;color:var(--navy);white-space:nowrap;min-width:7ch;text-align:center}
+@media(max-height:520px){.fnav-btn{width:46px;height:46px;font-size:20px}.fnav-page{font-size:14px}}
+</style>
+</head>
+<body>
+
+<div class="rotate-hint">
+  <div class="icon">📱</div>
+  <div style="font-family:'Prompt';font-size:24px;font-weight:600">กรุณาหมุนจอเป็นแนวนอน</div>
+  <div style="opacity:.7">บทเรียนนี้ออกแบบสำหรับการแสดงผลแนวนอน</div>
+</div>
+
+<div class="stage" id="stage">
+
+  <div class="topbar" id="topbar" style="display:none">
+    <div class="brand">KJST · <span>เครื่องกล</span></div>
+    <div class="nav-tabs" id="navTabs"></div>
+    <div class="right"><button class="fs-btn" onclick="toggleFS()">⛶ เต็มจอ</button></div>
+  </div>
+
+  <div class="floatnav" id="floatnav" style="display:none">
+    <button class="fnav-btn" id="fnavPrev" onclick="prevSlide()" aria-label="ก่อนหน้า">◀</button>
+    <span class="fnav-page" id="fnavPage">1 / 1</span>
+    <button class="fnav-btn primary" id="fnavNext" onclick="nextSlide()" aria-label="ถัดไป">▶</button>
+  </div>
+
+  <!-- ============ TITLE ============ -->
+  <section class="slide active" id="s_title">
+    <div class="eyebrow">ฟิสิกส์ ม.5 · บทงานและพลังงาน</div>
+    <h1>เครื่องกล</h1>
+    <div class="sub">Machines — เครื่องกลอย่างง่าย · ประสิทธิภาพ · หลักการของงาน</div>
+    <div class="topics">
+      <div class="tchip"><div class="n">หัวข้อ 1</div><div class="t">เครื่องกลอย่างง่าย 6 ชนิด</div></div>
+      <div class="tchip"><div class="n">หัวข้อ 2</div><div class="t">ประสิทธิภาพของเครื่องกล</div></div>
+      <div class="tchip"><div class="n">หัวข้อ 3</div><div class="t">หลักการของงานกับเครื่องกล</div></div>
+    </div>
+    <div class="meta">ตามหลักสูตร <b>สสวท. ฟิสิกส์ 2</b> · ครูผู้สอน <b>ธนพันธ์ เพ็งสวัสดิ์</b> · โรงเรียนกาญจนาภิเษกวิทยาลัย สุราษฎร์ธานี</div>
+    <button class="btn gold" style="margin-top:4vh;align-self:flex-start" onclick="startLesson()">เริ่มบทเรียน ▶</button>
+  </section>
+
+  <!-- ============ 1.1 ============ -->
+  <section class="slide" id="m_concept" data-sec="1">
+    <div class="eyebrow">หัวข้อ 1 · เครื่องกลอย่างง่าย</div>
+    <h2>เครื่องกลคืออะไร</h2>
+    <div class="grid g2" style="margin-top:1.2vh">
+      <div class="card accent scroll">
+        <h3>นิยาม</h3>
+        <p style="margin-top:.6vh">อุปกรณ์ที่ช่วยให้เรา<b>ทำงานได้สะดวกขึ้น</b> โดยการ<b>ผ่อนแรง</b> <b>เปลี่ยนทิศทางของแรง</b> หรือ<b>เพิ่มระยะทาง/ความเร็ว</b>ของการเคลื่อนที่</p>
+        <h3 style="margin-top:1vh">ปริมาณหลัก 4 ตัวของเครื่องกลทุกชนิด</h3>
+        <table class="tb">
+          <tr><th style="width:22%">สัญลักษณ์</th><th>ความหมาย</th><th style="width:18%">หน่วย</th></tr>
+          <tr><td>\(E\)</td><td>แรงพยายาม (effort) ที่เราออก</td><td>N</td></tr>
+          <tr><td>\(W\)</td><td>แรงต้าน หรือ น้ำหนักที่ต้องเอาชนะ</td><td>N</td></tr>
+          <tr><td>\(s_E\)</td><td>ขนาดการกระจัดของจุดที่ออกแรง \(E\)</td><td>m</td></tr>
+          <tr><td>\(s_W\)</td><td>ขนาดการกระจัดของวัตถุที่ถูกกระทำ</td><td>m</td></tr>
+        </table>
+        <div class="eqbox" style="margin-top:auto">$$\text{M.A.}=\frac{W}{E}$$</div>
+        <div style="text-align:center"><span class="unit-pill">การได้เปรียบเชิงกล ไม่มีหน่วย</span></div>
+      </div>
+      <div class="card blue scroll">
+        <h3>สิ่งที่ต้องเข้าใจให้ตรง</h3>
+        <ul class="tick">
+          <li>\(\text{M.A.}&gt;1\) → <b>ผ่อนแรง</b> ออกแรงน้อยกว่าน้ำหนัก</li>
+          <li>\(\text{M.A.}=1\) → <b>ไม่ผ่อนแรง</b> แต่เปลี่ยนทิศทางแรงได้ เช่น รอกเดี่ยวตายตัว</li>
+          <li>\(\text{M.A.}&lt;1\) → ออกแรงมากกว่า แต่ได้<b>ระยะทาง/ความเร็ว</b>เพิ่ม เช่น ไม้กวาด คีมคีบ</li>
+          <li>เครื่องกล<b>ไม่สร้างพลังงาน</b> เพียงจัดรูปแบบการออกแรงใหม่เท่านั้น</li>
+        </ul>
+        <div class="callout" style="margin-top:auto"><b>ประโยคหลักของบทนี้:</b> เครื่องกล <b>ผ่อนแรงได้ แต่ผ่อนงานไม่ได้</b> — ออกแรงน้อยลงกี่เท่า ต้องเคลื่อนที่ไกลขึ้นเท่านั้นเท่า</div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 1 · หน้า <b>1</b>/3</span></div>
+  </section>
+
+  <!-- ============ 1.2 ============ -->
+  <section class="slide" id="m_types" data-sec="1">
+    <div class="eyebrow">หัวข้อ 1 · ภาพรวม</div>
+    <h2>เครื่องกลอย่างง่าย 6 ชนิด</h2>
+    <div class="grid g32" style="margin-top:1vh">
+      <div class="mcard">
+        <div class="top"><span class="ic">🪝</span><div><div class="nm">คาน</div><div class="en">Lever</div></div></div>
+        <div class="ds">แท่งแข็งที่หมุนรอบจุดหมุน ใช้งัดหรือยกวัตถุ แบ่งเป็นคาน 3 อันดับตามตำแหน่งจุดหมุน</div>
+        <div class="ma">M.A. = แขนแรงพยายาม / แขนแรงต้าน</div>
+        <div class="exx">ไม้กระดก · ชะแลง · กรรไกร · รถเข็นดิน</div>
+      </div>
+      <div class="mcard">
+        <div class="top"><span class="ic">⚙️</span><div><div class="nm">รอก</div><div class="en">Pulley</div></div></div>
+        <div class="ds">ล้อมีร่องสำหรับคล้องเชือก มีทั้งรอกเดี่ยวตายตัว รอกเดี่ยวเคลื่อนที่ และรอกพวง</div>
+        <div class="ma">M.A. = จำนวนเส้นเชือกที่รับน้ำหนัก</div>
+        <div class="exx">รอกชักธง · ลิฟต์ · เครนก่อสร้าง</div>
+      </div>
+      <div class="mcard">
+        <div class="top"><span class="ic">📐</span><div><div class="nm">พื้นเอียง</div><div class="en">Inclined plane</div></div></div>
+        <div class="ds">พื้นลาดเอียงที่ช่วยให้ยกของขึ้นที่สูงโดยออกแรงน้อยลง แลกกับระยะทางที่ยาวขึ้น</div>
+        <div class="ma">M.A. = ความยาวพื้นเอียง / ความสูง</div>
+        <div class="exx">ทางลาดรถเข็น · ถนนขึ้นเขา · บันได</div>
+      </div>
+      <div class="mcard">
+        <div class="top"><span class="ic">🔪</span><div><div class="nm">ลิ่ม</div><div class="en">Wedge</div></div></div>
+        <div class="ds">พื้นเอียงสองด้านประกบกัน เคลื่อนที่เข้าหาวัตถุ เปลี่ยนแรงกดเป็นแรงดันออกด้านข้าง</div>
+        <div class="ma">M.A. = ความยาวลิ่ม / ความหนาของลิ่ม</div>
+        <div class="exx">มีด · ขวาน · สิ่ว · ตะปู · ฟันหน้า</div>
+      </div>
+      <div class="mcard">
+        <div class="top"><span class="ic">🔩</span><div><div class="nm">สกรู</div><div class="en">Screw</div></div></div>
+        <div class="ds">พื้นเอียงที่พันรอบแกนทรงกระบอก เปลี่ยนการหมุนเป็นการเคลื่อนที่ตามแนวแกน</div>
+        <div class="ma">M.A. = เส้นรอบวง / ระยะพิตช์</div>
+        <div class="exx">น็อต · แม่แรงยกรถ · ฝาขวด · สว่าน</div>
+      </div>
+      <div class="mcard">
+        <div class="top"><span class="ic">🛞</span><div><div class="nm">ล้อและเพลา</div><div class="en">Wheel &amp; axle</div></div></div>
+        <div class="ds">ล้อรัศมีใหญ่ยึดติดกับเพลารัศมีเล็ก หมุนไปพร้อมกัน ออกแรงที่ล้อเพื่อยกของที่เพลา</div>
+        <div class="ma">M.A. = รัศมีล้อ / รัศมีเพลา</div>
+        <div class="exx">พวงมาลัย · ลูกบิดประตู · ไขควง · จักรยาน</div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 1 · หน้า <b>2</b>/3</span></div>
+  </section>
+
+  <!-- ============ 1.3 ============ -->
+  <section class="slide" id="m_sim" data-sec="1">
+    <div class="eyebrow">หัวข้อ 1 · แบบจำลองโต้ตอบ</div>
+    <h2>สำรวจเครื่องกลทีละชนิด</h2>
+    <div class="mode-tabs" id="mTabs" style="margin-top:.8vh"></div>
+    <div style="flex:1;display:flex;gap:1.2vw;min-height:0;margin-top:.9vh">
+      <div class="sim-canvas" style="flex:1.35"><svg id="mSvg" viewBox="0 0 640 340" preserveAspectRatio="xMidYMid meet"></svg></div>
+      <div class="card scroll" style="flex:1;padding:1.6vh 1.2vw" id="mInfo"></div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 1 · หน้า <b>3</b>/3</span></div>
+  </section>
+
+  <!-- ============ 2.1 ============ -->
+  <section class="slide" id="f_work" data-sec="2">
+    <div class="eyebrow">หัวข้อ 2 · ประสิทธิภาพ</div>
+    <h2>งาน แรง และการกระจัด ในเครื่องกล</h2>
+    <div class="grid g2" style="margin-top:1.2vh">
+      <div class="card accent scroll">
+        <h3>1) นิยามงานของแรงคงตัว</h3>
+        <div class="eqbox">$$W=\vec{F}\cdot\vec{s}=F\,s\cos\theta$$</div>
+        <p style="font-size:1.8vh;color:#475569">\(F\) = ขนาดของแรง (N) · \(s\) = ขนาดการกระจัด (m) · \(\theta\) = มุมระหว่างแรงกับการกระจัด · งานมีหน่วยจูล (J)</p>
+        <h3 style="margin-top:1vh">2) งานที่ให้ และ งานที่ได้</h3>
+        <div class="eqbox">$$W_{\text{in}}=E\,s_E \qquad W_{\text{out}}=W\,s_W$$</div>
+        <p style="font-size:1.8vh;color:#475569">\(E\) ออกแรงไปตามแนวการกระจัด \(s_E\) ของมือหรือเชือก ส่วน \(W\) คือแรงต้านที่วัตถุเคลื่อนที่ไปได้ \(s_W\)</p>
+        <h3 style="margin-top:1vh">3) สมดุลพลังงานของเครื่องกลจริง</h3>
+        <div class="eqbox green">$$W_{\text{in}}=W_{\text{out}}+W_{\text{loss}}$$</div>
+      </div>
+      <div class="card blue scroll">
+        <h3>4) ประสิทธิภาพ (Efficiency)</h3>
+        <div class="eqbox">$$\mathrm{Eff}=\frac{W_{\text{out}}}{W_{\text{in}}}\times100\%=\frac{W\,s_W}{E\,s_E}\times100\%$$</div>
+        <div class="eqbox gold">$$W_{\text{loss}}=W_{\text{in}}-W_{\text{out}}=(1-\mathrm{Eff})W_{\text{in}}$$</div>
+        <ul class="tick" style="margin-top:.8vh">
+          <li>เครื่องกลจริงมี \(\mathrm{Eff}&lt;100\%\) เสมอ เพราะมี<b>แรงเสียดทาน</b>และน้ำหนักของชิ้นส่วนเครื่องกลเอง</li>
+          <li>\(W_{\text{loss}}\) เปลี่ยนไปเป็น<b>ความร้อนและเสียง</b> ไม่ได้หายไปจากเอกภพ</li>
+          <li>\(\mathrm{Eff}\) เป็นอัตราส่วนของงานต่องาน จึง<b>ไม่มีหน่วย</b> รายงานเป็นร้อยละ</li>
+          <li>เครื่องกลอุดมคติ \(\mathrm{Eff}=100\%\) ใช้เป็นค่าอ้างอิงที่ดีที่สุดที่เป็นไปได้</li>
+        </ul>
+        <div class="callout" style="margin-top:auto"><b>ตัวอย่างเร็ว:</b> ดึงเชือก \(E=100\) N ไป \(s_E=5\) m แล้วยกของ \(W=200\) N ขึ้น \(s_W=2\) m<br>
+        \(W_{\text{in}}=500\) J · \(W_{\text{out}}=400\) J · \(W_{\text{loss}}=100\) J · \(\mathrm{Eff}=80\%\)</div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 2 · หน้า <b>1</b>/3</span></div>
+  </section>
+
+  <!-- ============ 2.2 ============ -->
+  <section class="slide" id="f_ma" data-sec="2">
+    <div class="eyebrow">หัวข้อ 2 · การได้เปรียบเชิงกล</div>
+    <h2>M.A. จริง กับ M.A. ในอุดมคติ</h2>
+    <div class="grid g2" style="margin-top:1.2vh">
+      <div class="card accent scroll">
+        <h3>การได้เปรียบเชิงกลจริง (A.M.A.)</h3>
+        <p style="margin-top:.5vh">วัดจาก<b>แรงจริง</b>ที่ต้องออกในการใช้งาน ซึ่งรวมผลของแรงเสียดทานไว้แล้ว</p>
+        <div class="eqbox">$$\text{A.M.A.}=\frac{W}{E_{\text{actual}}}$$</div>
+        <p style="font-size:1.75vh;color:#475569;text-align:center;margin-top:-.4vh">\(E_{\text{actual}}\) = แรงพยายามจริงที่วัดได้จากการใช้งาน</p>
+        <h3 style="margin-top:.8vh">การได้เปรียบเชิงกลในอุดมคติ (I.M.A.)</h3>
+        <p style="margin-top:.5vh">คำนวณจาก<b>เรขาคณิตของเครื่องกล</b>เท่านั้น คือ อัตราส่วนของการกระจัด (บางตำราเรียก อัตราส่วนความเร็ว V.R.)</p>
+        <div class="eqbox">$$\text{I.M.A.}=\text{V.R.}=\frac{s_E}{s_W}$$</div>
+        <div class="eqbox green">$$\mathrm{Eff}=\frac{W\,s_W}{E\,s_E}=\frac{W/E}{s_E/s_W}=\frac{\text{A.M.A.}}{\text{I.M.A.}}\times100\%$$</div>
+        <p style="font-size:1.8vh;color:#475569;margin-top:.4vh">เพราะมีการสูญเสีย จึงได้ \(\text{A.M.A.}\le\text{I.M.A.}\) เสมอ</p>
+      </div>
+      <div class="card blue scroll">
+        <h3>I.M.A. ของเครื่องกลแต่ละชนิด</h3>
+        <table class="tb">
+          <tr><th style="width:28%">เครื่องกล</th><th>อัตราส่วนการกระจัด</th><th style="width:26%">I.M.A.</th></tr>
+          <tr><td>คาน</td><td>\(s_E=a\theta,\; s_W=b\theta\)</td><td>\(\dfrac{a}{b}\)</td></tr>
+          <tr><td>รอกพวง \(n\) เส้น</td><td>\(s_E=nh,\; s_W=h\)</td><td>\(n\)</td></tr>
+          <tr><td>พื้นเอียง</td><td>\(s_E=L,\; s_W=h\)</td><td>\(\dfrac{L}{h}\)</td></tr>
+          <tr><td>ลิ่ม</td><td>\(s_E=L,\; s_W=t\)</td><td>\(\dfrac{L}{t}\)</td></tr>
+          <tr><td>สกรู (1 รอบ)</td><td>\(s_E=2\pi r,\; s_W=p\)</td><td>\(\dfrac{2\pi r}{p}\)</td></tr>
+          <tr><td>ล้อและเพลา</td><td>\(s_E=R\theta,\; s_W=r\theta\)</td><td>\(\dfrac{R}{r}\)</td></tr>
+        </table>
+        <div class="callout" style="margin-top:auto"><b>ตัวอย่าง:</b> พื้นเอียง \(L=10\) m สูง \(h=3\) m ดันของหนัก 500 N ด้วยแรงจริง 200 N<br>
+        \(\text{I.M.A.}=10/3=3.33\) · \(\text{A.M.A.}=500/200=2.5\) · \(\mathrm{Eff}=2.5/3.33=75\%\)</div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 2 · หน้า <b>2</b>/3</span></div>
+  </section>
+
+  <!-- ============ 2.3 ============ -->
+  <section class="slide" id="f_sim" data-sec="2">
+    <div class="eyebrow">หัวข้อ 2 · แบบจำลองโต้ตอบ</div>
+    <h2>ทดลอง: ประสิทธิภาพของพื้นเอียงที่มีแรงเสียดทาน</h2>
+    <div class="controls" style="margin-top:.8vh">
+      <button class="btn gold" id="fPlay" onclick="toggleFSim()">▶ เข็นวัตถุ</button>
+      <button class="btn ghost small" onclick="resetFSim()">↺ รีเซ็ต</button>
+      <div class="slider-row"><span>น้ำหนัก W: <b id="fwLbl">300</b> N</span>
+        <input type="range" id="fw" min="100" max="600" step="50" value="300" oninput="onFChange()"></div>
+      <div class="slider-row"><span>ความยาว L: <b id="flLbl">6</b> m</span>
+        <input type="range" id="fl" min="3" max="10" step="1" value="6" oninput="onFChange()"></div>
+      <div class="slider-row"><span>ความสูง h: <b id="fhLbl">2</b> m</span>
+        <input type="range" id="fh" min="1" max="3" step="1" value="2" oninput="onFChange()"></div>
+      <div class="slider-row"><span>ประสิทธิภาพ Eff: <b id="feLbl">80</b> %</span>
+        <input type="range" id="fe" min="40" max="100" step="5" value="80" oninput="onFChange()"></div>
+    </div>
+    <div class="sim-canvas" style="flex:1;margin-top:.9vh">
+      <svg id="fSvg" viewBox="0 0 1000 330" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <div class="controls">
+      <div class="readout">
+        <div class="stat red"><div class="k">แรงพยายามจริง E</div><div class="v"><span id="fStatE">0</span> N</div></div>
+        <div class="stat gold"><div class="k">W<sub>in</sub> = E·s<sub>E</sub></div><div class="v"><span id="fStatIn">0</span> J</div></div>
+        <div class="stat green"><div class="k">W<sub>out</sub> = W·s<sub>W</sub></div><div class="v"><span id="fStatOut">0</span> J</div></div>
+        <div class="stat red"><div class="k">W<sub>loss</sub></div><div class="v"><span id="fStatLoss">0</span> J</div></div>
+        <div class="stat"><div class="k">A.M.A. = W/E</div><div class="v"><span id="fStatAMA">0</span></div></div>
+        <div class="stat gold"><div class="k">I.M.A. = L/h</div><div class="v"><span id="fStatIMA">0</span></div></div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 2 · หน้า <b>3</b>/3</span></div>
+  </section>
+
+  <!-- ============ 3.1 ============ -->
+  <section class="slide" id="w_concept" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · หลักการของงาน</div>
+    <h2>หลักการของงานกับเครื่องกลอย่างง่าย</h2>
+    <div class="grid g2" style="margin-top:1.2vh">
+      <div class="card accent scroll">
+        <h3>ข้อความหลัก</h3>
+        <p style="margin-top:.5vh">ถ้าไม่คิดแรงเสียดทาน (เครื่องกลอุดมคติ) <b>งานที่ให้แก่เครื่องกลเท่ากับงานที่ได้จากเครื่องกล</b></p>
+        <div class="eqbox">$$W_{\text{in}}=W_{\text{out}} \;\Longrightarrow\; E\,s_E=W\,s_W$$</div>
+        <p style="margin-top:.4vh">จัดรูปใหม่เพื่อหาแรงพยายามที่ต้องออก</p>
+        <div class="eqbox green">$$E=W\cdot\frac{s_W}{s_E}=\frac{W}{\text{I.M.A.}}$$</div>
+        <p style="font-size:1.8vh;color:#475569">ดังนั้น <b>รูปร่างของเครื่องกลเป็นตัวกำหนดว่าจะผ่อนแรงได้กี่เท่า</b> ผ่านอัตราส่วนการกระจัด \(s_E/s_W\) เท่านั้น</p>
+        <div class="callout" style="margin-top:auto"><b>ในเครื่องกลจริง</b> ต้องบวกงานที่สูญเสีย: \(E_{\text{actual}}\,s_E=W\,s_W+W_{\text{loss}}\) ทำให้ต้องออกแรงมากกว่าค่าอุดมคติเสมอ</div>
+      </div>
+      <div class="card blue scroll">
+        <h3>ทำไมจึงเป็นเช่นนั้น</h3>
+        <ul class="tick">
+          <li>เครื่องกล<b>ไม่ใช่แหล่งพลังงาน</b> พลังงานทั้งหมดมาจากคนหรือเครื่องยนต์ที่ออกแรง \(E\)</li>
+          <li>ตามกฎการอนุรักษ์พลังงาน พลังงานที่ป้อนเข้าไปจะออกมาเท่าเดิม (หักส่วนที่กลายเป็นความร้อน)</li>
+          <li>ออกแรงน้อยลง \(k\) เท่า → ต้องเคลื่อนที่ไกลขึ้น \(k\) เท่า ผลคูณ \(E\,s_E\) จึงคงที่</li>
+          <li>เครื่องกลที่ผ่อนแรงมาก ๆ จึงต้อง<b>ทำงานช้าและใช้ระยะทางมาก</b> เช่น แม่แรงยกรถต้องหมุนหลายรอบ</li>
+        </ul>
+        <div class="eqbox gold" style="margin-top:.6vh">
+          $$E\,s_E=W\,s_W=\text{constant}$$
+          <div style="font-size:1.7vh;color:#B45309;font-weight:600;margin-top:-.4vh">งานที่ให้ = งานที่ได้ = ค่าคงตัว</div>
+        </div>
+        <p style="font-size:1.8vh;color:#475569;text-align:center">หน้าถัดไปจะใช้สมการนี้ไล่วิเคราะห์เครื่องกลทีละชนิด</p>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>1</b>/3</span></div>
+  </section>
+
+  <!-- ============ 3.2 ============ -->
+  <section class="slide" id="w_sim" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · แบบจำลองโต้ตอบทุกเครื่องกล</div>
+    <h2>วิเคราะห์เครื่องกลแต่ละชนิดด้วยหลักการของงาน</h2>
+    <div class="mode-tabs" id="w3Tabs" style="margin-top:.8vh"></div>
+    <div style="flex:1;display:flex;gap:1.1vw;min-height:0;margin-top:.8vh">
+      <div style="flex:1.3;display:flex;flex-direction:column;min-height:0">
+        <div class="sim-canvas" style="flex:1"><svg id="w3Svg" viewBox="0 0 620 320" preserveAspectRatio="xMidYMid meet"></svg></div>
+        <div class="controls" id="w3CtlRow">
+          <button class="btn gold small" id="w3Play" onclick="toggleW3()">▶ เดินเครื่อง</button>
+          <button class="btn ghost small" onclick="resetW3()">↺ รีเซ็ต</button>
+          <div id="w3Ctl" style="display:flex;gap:.9vw;flex-wrap:wrap;align-items:center"></div>
+        </div>
+      </div>
+      <div class="card" style="flex:1;padding:1.4vh 1.1vw;display:flex;flex-direction:column">
+        <div id="w3Eq" style="font-size:1.7vh;flex:1;min-height:0;overflow-y:auto"></div>
+        <div id="w3Live" style="flex:none;padding-bottom:3.2vh"></div>
+      </div>
+    </div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>2</b>/3</span></div>
+  </section>
+
+  <!-- ============ 3.3 ============ -->
+  <section class="slide" id="w_examples" data-sec="3">
+    <div class="eyebrow">หัวข้อ 3 · โจทย์ตัวอย่าง</div>
+    <h2>โจทย์ฝึกคำนวณ — หลักการของงานกับเครื่องกล</h2>
+    <div class="ex-tabs" id="wExTabs" style="margin-top:1vh"></div>
+    <div class="ex-body" id="wExBody"></div>
+    <div class="botnav"><span class="pageno">หัวข้อ 3 · หน้า <b>3</b>/3</span></div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   ระบบสไลด์
+============================================================ */
+const SECTIONS=[
+  {id:1,name:'1 · เครื่องกลอย่างง่าย',first:'m_concept'},
+  {id:2,name:'2 · ประสิทธิภาพ',first:'f_work'},
+  {id:3,name:'3 · หลักการของงาน',first:'w_concept'},
+];
+const slides=[...document.querySelectorAll('.slide')];
+let cur=0;
+function fmt(n){return Math.round(n).toLocaleString();}
+function mj(el){
+  if(!(window.MathJax&&MathJax.typesetPromise))return;
+  try{ if(el&&MathJax.typesetClear)MathJax.typesetClear([el]); }catch(e){}
+  MathJax.typesetPromise(el?[el]:undefined).catch(()=>{});
+}
+
+function buildNav(){
+  const nav=document.getElementById('navTabs');nav.innerHTML='';
+  SECTIONS.forEach(s=>{
+    const t=document.createElement('div');t.className='nav-tab';t.textContent=s.name;
+    t.onclick=()=>gotoId(s.first);t.dataset.sec=s.id;nav.appendChild(t);
+  });
+}
+function startLesson(){
+  document.getElementById('topbar').style.display='flex';
+  document.getElementById('floatnav').style.display='flex';
+  gotoId('m_concept');
+}
+function gotoId(id){const i=slides.findIndex(s=>s.id===id);if(i>=0)goto(i);}
+function goto(i){
+  if(i<0||i>=slides.length)return;
+  slides[cur].classList.remove('active');cur=i;slides[cur].classList.add('active');
+  slides[cur].scrollTop=0;
+  const sec=slides[cur].dataset.sec;
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.dataset.sec===sec));
+  const id=slides[cur].id;
+  if(id==='m_sim')renderMachine();
+  if(id==='f_sim')resetFSim();
+  if(id==='w_sim')renderW3(true);
+  if(id==='w_examples')renderWEx();
+  updateFloatNav();
+}
+function updateFloatNav(){
+  const fn=document.getElementById('floatnav');if(!fn)return;
+  if(cur===0){fn.style.display='none';return;}
+  fn.style.display='flex';
+  document.getElementById('fnavPage').textContent=`${cur} / ${slides.length-1}`;
+  document.getElementById('fnavPrev').disabled=(cur<=1);
+  document.getElementById('fnavNext').disabled=(cur>=slides.length-1);
+}
+function nextSlide(){if(cur<slides.length-1)goto(cur+1)}
+function prevSlide(){if(cur>1)goto(cur-1)}
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.key==='ArrowRight')nextSlide();
+  if(e.key==='ArrowLeft')prevSlide();
+});
+function toggleFS(){
+  if(!document.fullscreenElement)document.getElementById('stage').requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+/* ============================================================
+   หัวข้อ 1: ภาพประกอบเครื่องกล 6 ชนิด (สถิต)
+============================================================ */
+function svgLever(){return `
+<line x1="0" y1="300" x2="640" y2="300" stroke="#94a3b8" stroke-width="3"/>
+<line x1="118" y1="112" x2="320" y2="112" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 5"/>
+<line x1="320" y1="112" x2="520" y2="112" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 5"/>
+<text x="219" y="104" font-family="Prompt" font-size="14" fill="#64748b" text-anchor="middle">แขนแรงต้าน b</text>
+<text x="420" y="104" font-family="Prompt" font-size="14" fill="#64748b" text-anchor="middle">แขนแรงพยายาม a</text>
+<line x1="110" y1="210" x2="530" y2="260" stroke="#1E3A8A" stroke-width="14" stroke-linecap="round"/>
+<polygon points="320,232 290,300 350,300" fill="#64748b"/>
+<rect x="82" y="150" width="74" height="54" rx="6" fill="#0A1F44"/>
+<text x="119" y="184" font-family="Prompt" font-size="18" fill="#fff" text-anchor="middle" font-weight="700">W</text>
+<line x1="520" y1="180" x2="520" y2="242" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+<polygon points="511,238 529,238 520,260" fill="#DC2626"/>
+<text x="520" y="168" font-family="Prompt" font-size="18" fill="#DC2626" text-anchor="middle" font-weight="700">E</text>
+<text x="320" y="325" font-family="Prompt" font-size="15" fill="#475569" text-anchor="middle">จุดหมุน (fulcrum)</text>`;}
+
+function svgPulley(){return `
+<rect x="150" y="36" width="340" height="16" rx="4" fill="#64748b"/>
+<line x1="320" y1="52" x2="320" y2="66" stroke="#64748b" stroke-width="6"/>
+<path d="M 278 104 A 42 42 0 0 1 362 104" stroke="#0A1F44" stroke-width="4" fill="none"/>
+<circle cx="320" cy="104" r="42" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="7"/>
+<circle cx="320" cy="104" r="8" fill="#1E3A8A"/>
+<line x1="278" y1="104" x2="278" y2="230" stroke="#0A1F44" stroke-width="4"/>
+<line x1="362" y1="104" x2="362" y2="212" stroke="#0A1F44" stroke-width="4"/>
+<rect x="240" y="230" width="76" height="58" rx="7" fill="#0A1F44"/>
+<text x="278" y="266" font-family="Prompt" font-size="18" fill="#fff" text-anchor="middle" font-weight="700">W</text>
+<line x1="362" y1="212" x2="362" y2="258" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+<polygon points="353,254 371,254 362,276" fill="#DC2626"/>
+<text x="398" y="248" font-family="Prompt" font-size="18" fill="#DC2626" font-weight="700">E</text>
+<text x="320" y="325" font-family="Prompt" font-size="15" fill="#475569" text-anchor="middle">รอกเดี่ยวตายตัว — เปลี่ยนทิศทางแรง M.A. = 1</text>`;}
+
+function svgIncline(){
+  const ang=Math.atan2(150,450)*180/Math.PI;
+  return `
+<line x1="0" y1="290" x2="640" y2="290" stroke="#94a3b8" stroke-width="3"/>
+<polygon points="90,290 540,290 540,140" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="3"/>
+<line x1="560" y1="140" x2="560" y2="290" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6 6"/>
+<text x="572" y="220" font-family="Prompt" font-size="16" fill="#B45309" font-weight="700">h</text>
+<g transform="translate(300,222) rotate(-${ang.toFixed(1)})">
+  <rect x="-34" y="-44" width="68" height="44" rx="6" fill="#0A1F44"/>
+  <text x="0" y="-15" font-family="Prompt" font-size="17" fill="#fff" text-anchor="middle" font-weight="700">W</text>
+  <line x1="42" y1="-22" x2="104" y2="-22" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+  <polygon points="100,-31 100,-13 122,-22" fill="#DC2626"/>
+  <text x="76" y="-34" font-family="Prompt" font-size="17" fill="#DC2626" text-anchor="middle" font-weight="700">E</text>
+</g>
+<text x="150" y="284" font-family="Prompt" font-size="16" fill="#1E3A8A" font-weight="700">L (ความยาวพื้นเอียง)</text>
+<text x="320" y="325" font-family="Prompt" font-size="15" fill="#475569" text-anchor="middle">ยิ่ง L ยาว ยิ่งออกแรงน้อย แต่ต้องเข็นไกลขึ้น</text>`;}
+
+function svgWedge(){return `
+<line x1="0" y1="292" x2="640" y2="292" stroke="#94a3b8" stroke-width="3"/>
+<g transform="rotate(-8 300 292)"><rect x="152" y="162" width="148" height="130" rx="4" fill="#A16207"/></g>
+<g transform="rotate(8 340 292)"><rect x="340" y="162" width="148" height="130" rx="4" fill="#A16207"/></g>
+<polygon points="320,252 297,72 343,72" fill="#CBD5E1" stroke="#475569" stroke-width="3"/>
+<rect x="288" y="54" width="64" height="20" rx="4" fill="#475569"/>
+<line x1="320" y1="8" x2="320" y2="40" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+<polygon points="311,36 329,36 320,56" fill="#DC2626"/>
+<text x="352" y="30" font-family="Prompt" font-size="18" fill="#DC2626" font-weight="700">E</text>
+<line x1="196" y1="122" x2="146" y2="122" stroke="#F59E0B" stroke-width="6" stroke-linecap="round"/>
+<polygon points="150,113 150,131 128,122" fill="#F59E0B"/>
+<line x1="444" y1="122" x2="494" y2="122" stroke="#F59E0B" stroke-width="6" stroke-linecap="round"/>
+<polygon points="490,113 490,131 512,122" fill="#F59E0B"/>
+<text x="320" y="325" font-family="Prompt" font-size="15" fill="#475569" text-anchor="middle">เปลี่ยนแรงกดลง → เป็นแรงดันออกด้านข้าง</text>`;}
+
+function svgScrew(){
+  let th='';
+  for(let i=0;i<8;i++)th+=`<line x1="290" y1="${112+i*22}" x2="350" y2="${100+i*22}" stroke="#475569" stroke-width="5"/>`;
+  return `
+<rect x="252" y="62" width="136" height="26" rx="6" fill="#475569"/>
+<rect x="290" y="88" width="60" height="180" fill="#CBD5E1" stroke="#475569" stroke-width="2"/>
+${th}
+<polygon points="290,268 350,268 320,306" fill="#CBD5E1" stroke="#475569" stroke-width="2"/>
+<line x1="368" y1="112" x2="410" y2="112" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4 4"/>
+<line x1="368" y1="134" x2="410" y2="134" stroke="#F59E0B" stroke-width="2" stroke-dasharray="4 4"/>
+<text x="418" y="130" font-family="Prompt" font-size="15" fill="#B45309" font-weight="700">p (พิตช์)</text>
+<path d="M 232 56 A 62 62 0 1 1 172 118" fill="none" stroke="#DC2626" stroke-width="5"/>
+<polygon points="163,106 181,114 169,130" fill="#DC2626"/>
+<text x="150" y="52" font-family="Prompt" font-size="17" fill="#DC2626" font-weight="700">หมุน (E)</text>
+<polygon points="430,258 570,258 570,208" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="2"/>
+<text x="500" y="284" font-family="Prompt" font-size="14" fill="#1E3A8A" text-anchor="middle">สกรู = พื้นเอียงพันรอบแกน</text>
+<text x="320" y="328" font-family="Prompt" font-size="15" fill="#475569" text-anchor="middle">หมุน 1 รอบ → เคลื่อนที่ตามแกนได้ 1 พิตช์</text>`;}
+
+function svgWheel(){return `
+<circle cx="300" cy="168" r="115" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="8"/>
+<circle cx="300" cy="168" r="46" fill="#FEF3C7" stroke="#F59E0B" stroke-width="6"/>
+<circle cx="300" cy="168" r="7" fill="#1E3A8A"/>
+<line x1="300" y1="168" x2="415" y2="168" stroke="#1E3A8A" stroke-width="2" stroke-dasharray="5 5"/>
+<text x="368" y="158" font-family="Prompt" font-size="17" fill="#1E3A8A" text-anchor="middle" font-weight="700">R</text>
+<text x="278" y="158" font-family="Prompt" font-size="17" fill="#B45309" text-anchor="middle" font-weight="700">r</text>
+<line x1="415" y1="168" x2="415" y2="284" stroke="#0A1F44" stroke-width="4"/>
+<line x1="415" y1="284" x2="415" y2="300" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+<polygon points="406,296 424,296 415,316" fill="#DC2626"/>
+<text x="442" y="292" font-family="Prompt" font-size="18" fill="#DC2626" font-weight="700">E</text>
+<line x1="254" y1="168" x2="254" y2="240" stroke="#0A1F44" stroke-width="4"/>
+<rect x="216" y="240" width="76" height="58" rx="7" fill="#0A1F44"/>
+<text x="254" y="276" font-family="Prompt" font-size="18" fill="#fff" text-anchor="middle" font-weight="700">W</text>
+<text x="320" y="330" font-family="Prompt" font-size="15" fill="#475569" text-anchor="middle">ออกแรงที่ล้อรัศมี R เพื่อยกของที่เพลารัศมี r</text>`;}
+
+const MACHINES=[
+ {tab:'🪝 คาน',name:'คาน (Lever)',svg:svgLever,
+  def:'แท่งแข็งที่วางพาดบนจุดหมุน เมื่อออกแรงที่ปลายข้างหนึ่ง จะเกิดแรงงัดที่ปลายอีกข้าง',
+  ma:'\\(\\text{M.A.}=\\dfrac{a}{b}\\)',
+  pts:['<b>คานอันดับ 1</b> จุดหมุนอยู่ระหว่าง E กับ W เช่น ไม้กระดก กรรไกร ชะแลง',
+       '<b>คานอันดับ 2</b> แรงต้านอยู่ตรงกลาง เช่น รถเข็นดิน ที่เปิดขวด',
+       '<b>คานอันดับ 3</b> แรงพยายามอยู่ตรงกลาง เช่น คีมคีบ ไม้กวาด แขนคน (ไม่ผ่อนแรง แต่ได้ระยะ)'],
+  use:'ยิ่งจับให้ไกลจากจุดหมุน ยิ่งออกแรงน้อย'},
+ {tab:'⚙️ รอก',name:'รอก (Pulley)',svg:svgPulley,
+  def:'ล้อที่มีร่องรอบขอบสำหรับคล้องเชือก ใช้เปลี่ยนทิศทางแรงหรือผ่อนแรงในการยกของ',
+  ma:'\\(\\text{M.A.}=n\\) (จำนวนเส้นเชือกที่รับน้ำหนัก)',
+  pts:['<b>รอกเดี่ยวตายตัว</b> M.A. = 1 ไม่ผ่อนแรง แต่ดึงลงสะดวกกว่ายกขึ้น',
+       '<b>รอกเดี่ยวเคลื่อนที่</b> M.A. = 2 ออกแรงครึ่งเดียว แต่ต้องดึงเชือก 2 เท่า',
+       '<b>รอกพวง</b> M.A. = n ตามจำนวนเส้นเชือกที่รับน้ำหนัก'],
+  use:'ลิฟต์ เครนก่อสร้าง รอกชักธง บ่อน้ำ'},
+ {tab:'📐 พื้นเอียง',name:'พื้นเอียง (Inclined plane)',svg:svgIncline,
+  def:'พื้นลาดที่ทำให้ยกของขึ้นที่สูงได้โดยออกแรงน้อยลง แลกกับระยะทางที่ยาวขึ้น',
+  ma:'\\(\\text{M.A.}=\\dfrac{L}{h}\\)',
+  pts:['ในอุดมคติ \\(E=\\dfrac{W h}{L}\\)','ยิ่งพื้นเอียงยาวเมื่อความสูงเท่าเดิม แรงยิ่งน้อย','งานที่ทำเท่าเดิมเสมอ คือ \\(W h\\)'],
+  use:'ทางลาดรถเข็นผู้พิการ ถนนขึ้นเขาแบบซิกแซก แผ่นไม้ขนของขึ้นรถ'},
+ {tab:'🔪 ลิ่ม',name:'ลิ่ม (Wedge)',svg:svgWedge,
+  def:'พื้นเอียงสองด้านประกบกัน ต่างจากพื้นเอียงตรงที่ "ลิ่มเป็นฝ่ายเคลื่อนที่เข้าหาวัตถุ"',
+  ma:'\\(\\text{M.A.}=\\dfrac{L}{t}\\)',
+  pts:['เปลี่ยนแรงกดตามแนวยาว ให้เป็นแรงดันออกด้านข้าง','ลิ่มยิ่งบางและยาว ยิ่งผ่อนแรงมาก (มีดคมตัดง่ายกว่ามีดทื่อ)','ในทางปฏิบัติมีแรงเสียดทานสูง ประสิทธิภาพจึงต่ำ'],
+  use:'มีด ขวาน สิ่ว ตะปู เข็ม ฟันหน้าของคน'},
+ {tab:'🔩 สกรู',name:'สกรู (Screw)',svg:svgScrew,
+  def:'พื้นเอียงที่พันรอบแกนทรงกระบอก เปลี่ยนการหมุนให้เป็นการเคลื่อนที่ตามแนวแกน',
+  ma:'\\(\\text{M.A.}=\\dfrac{2\\pi r}{p}\\)',
+  pts:['<b>พิตช์ (p)</b> คือระยะระหว่างเกลียวสองเกลียวที่อยู่ติดกัน','หมุนครบ 1 รอบ สกรูจะเคลื่อนที่ไปตามแกนเท่ากับ 1 พิตช์','เกลียวยิ่งถี่ (p น้อย) ยิ่งผ่อนแรงมาก แต่ต้องหมุนหลายรอบ'],
+  use:'น็อตสกรู แม่แรงยกรถ ฝาเกลียวขวด สว่าน'},
+ {tab:'🛞 ล้อและเพลา',name:'ล้อและเพลา (Wheel &amp; axle)',svg:svgWheel,
+  def:'ล้อรัศมีใหญ่ยึดติดแน่นกับเพลารัศมีเล็ก ทั้งสองหมุนไปพร้อมกันด้วยมุมเท่ากัน',
+  ma:'\\(\\text{M.A.}=\\dfrac{R}{r}\\)',
+  pts:['ออกแรงที่ล้อ → ผ่อนแรง แต่ต้องหมุนระยะทางไกลกว่า','ออกแรงที่เพลา → ไม่ผ่อนแรง แต่ได้ความเร็วที่ขอบล้อ','เป็นคานชนิดหนึ่งที่หมุนได้รอบตัว'],
+  use:'พวงมาลัยรถ ลูกบิดประตู ไขควงด้ามใหญ่ เฟืองจักรยาน'},
+];
+let mIdx=0;
+function renderMachine(){
+  const t=document.getElementById('mTabs');t.innerHTML='';
+  MACHINES.forEach((mc,i)=>{
+    const b=document.createElement('div');
+    b.className='mode-tab'+(i===mIdx?' active':'');
+    b.innerHTML=mc.tab;b.onclick=()=>{mIdx=i;renderMachine();};
+    t.appendChild(b);
+  });
+  const mc=MACHINES[mIdx];
+  document.getElementById('mSvg').innerHTML=mc.svg();
+  const info=document.getElementById('mInfo');
+  info.innerHTML=`
+    <h3>${mc.name}</h3>
+    <p style="margin-top:.5vh;font-size:1.8vh">${mc.def}</p>
+    <div class="eqbox" style="font-size:1.9vh">${mc.ma}</div>
+    <ul class="tick" style="margin-top:0">${mc.pts.map(p=>`<li style="font-size:1.75vh;margin-bottom:.7vh">${p}</li>`).join('')}</ul>
+    <div class="callout" style="margin-top:auto;font-size:1.7vh"><b>ตัวอย่างในชีวิตจริง:</b> ${mc.use}</div>`;
+  mj(info);
+}
+
+/* ============================================================
+   หัวข้อ 2: แบบจำลองประสิทธิภาพ (พื้นเอียงมีแรงเสียดทาน)
+============================================================ */
+let fPlaying=false,fRAF=null,fStart=0,fFrac=0;
+const F_DUR=2800;
+function fW(){return +document.getElementById('fw').value}
+function fL(){return +document.getElementById('fl').value}
+function fH(){return +document.getElementById('fh').value}
+function fEta(){return +document.getElementById('fe').value/100}
+function fCalc(){
+  const W=fW(),L=fL(),h=fH(),eta=fEta();
+  const Eideal=W*h/L, E=Eideal/eta;
+  return {W,L,h,eta,E,Eideal,IMA:L/h,AMA:W/E,outMax:W*h,inMax:E*L};
+}
+function onFChange(){
+  // ป้องกันกรณี h >= L ซึ่งทำให้พื้นเอียงกลายเป็นแนวดิ่ง
+  const Lv=+document.getElementById('fl').value;
+  if(+document.getElementById('fh').value>Lv-1)document.getElementById('fh').value=Math.max(1,Lv-1);
+  document.getElementById('fwLbl').textContent=fW();
+  document.getElementById('flLbl').textContent=fL();
+  document.getElementById('fhLbl').textContent=fH();
+  document.getElementById('feLbl').textContent=Math.round(fEta()*100);
+  drawFScene();
+}
+function drawFScene(){
+  const c=fCalc();
+  const outN=c.outMax*fFrac, innN=c.inMax*fFrac, lossN=innN-outN;
+  document.getElementById('fStatE').textContent=fmt(c.E);
+  document.getElementById('fStatIn').textContent=fmt(innN);
+  document.getElementById('fStatOut').textContent=fmt(outN);
+  document.getElementById('fStatLoss').textContent=fmt(lossN);
+  document.getElementById('fStatAMA').textContent=c.AMA.toFixed(2);
+  document.getElementById('fStatIMA').textContent=c.IMA.toFixed(2);
+
+  const px=40,x0=105,y0=286;
+  const base=Math.sqrt(Math.max(c.L*c.L-c.h*c.h,.01));
+  const x1=x0+base*px, y1=y0-c.h*px;
+  const ang=Math.atan2(y0-y1,x1-x0)*180/Math.PI;
+  let html='';
+  html+=`<line x1="0" y1="${y0}" x2="560" y2="${y0}" stroke="#94a3b8" stroke-width="3"/>`;
+  html+=`<polygon points="${x0},${y0} ${x1},${y0} ${x1},${y1}" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="3"/>`;
+  html+=`<line x1="${x1+18}" y1="${y1}" x2="${x1+18}" y2="${y0}" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6 6"/>`;
+  html+=`<text x="${x1+26}" y="${(y0+y1)/2}" font-family="Prompt" font-size="15" fill="#B45309" font-weight="700">h = ${c.h} m</text>`;
+  html+=`<text x="${(x0+x1)/2}" y="${y0-10}" font-family="Prompt" font-size="15" fill="#1E3A8A" text-anchor="middle" font-weight="700">L = ${c.L} m</text>`;
+  const bx=x0+(x1-x0)*fFrac, by=y0-(y0-y1)*fFrac;
+  html+=`<g transform="translate(${bx},${by}) rotate(-${ang.toFixed(2)})">
+    <rect x="-28" y="-38" width="56" height="38" rx="6" fill="#0A1F44"/>
+    <text x="0" y="-12" font-family="Prompt" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">${c.W} N</text>
+    <line x1="34" y1="-19" x2="80" y2="-19" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+    <polygon points="76,-28 76,-10 96,-19" fill="#DC2626"/>
+    <text x="58" y="-30" font-family="Prompt" font-size="14" fill="#DC2626" text-anchor="middle" font-weight="700">E = ${fmt(c.E)} N</text>
+    <line x1="-34" y1="-19" x2="-70" y2="-19" stroke="#7C3AED" stroke-width="5" stroke-linecap="round"/>
+    <polygon points="-66,-27 -66,-11 -86,-19" fill="#7C3AED"/>
+    <text x="-56" y="-30" font-family="Prompt" font-size="14" fill="#7C3AED" text-anchor="middle" font-weight="700">f</text>
+  </g>`;
+  html+=`<text x="14" y="30" font-family="Prompt" font-size="14" fill="#DC2626" font-weight="600">E = แรงพยายาม</text>`;
+  html+=`<text x="14" y="52" font-family="Prompt" font-size="14" fill="#7C3AED" font-weight="600">f = แรงเสียดทาน</text>`;
+  html+=`<text x="285" y="${y0+26}" font-family="Prompt" font-size="15" fill="#64748b" text-anchor="middle">s_E = ${(c.L*fFrac).toFixed(1)} m · s_W = ${(c.h*fFrac).toFixed(1)} m · Eff = ${Math.round(c.eta*100)}%</text>`;
+  html+=`<line x1="575" y1="24" x2="575" y2="316" stroke="#CBD5E1" stroke-width="2"/>`;
+
+  const bx0=650,bw=84,gap=34,baseB=280,maxH=186;
+  const ref=Math.max(c.inMax,1);
+  const bars=[{l:'W in',s:'งานที่ให้',v:innN,col:'#F59E0B'},{l:'W out',s:'งานที่ได้',v:outN,col:'#059669'},{l:'W loss',s:'สูญเสีย',v:lossN,col:'#DC2626'}];
+  html+=`<text x="${bx0+(3*bw+2*gap)/2}" y="40" font-family="Prompt" font-size="16" fill="#64748b" text-anchor="middle" font-weight="600">งาน (จูล) · Eff = ${Math.round(c.eta*100)}%</text>`;
+  bars.forEach((b,i)=>{
+    const x=bx0+i*(bw+gap);
+    const hh=Math.min(1,b.v/ref)*maxH;
+    html+=`<rect x="${x}" y="${baseB-maxH}" width="${bw}" height="${maxH}" rx="6" fill="#F1F5F9"/>`;
+    html+=`<rect x="${x}" y="${baseB-hh}" width="${bw}" height="${hh}" rx="6" fill="${b.col}"/>`;
+    html+=`<text x="${x+bw/2}" y="${baseB-hh-8}" font-family="Prompt" font-size="16" fill="${b.col}" text-anchor="middle" font-weight="700">${fmt(b.v)}</text>`;
+    html+=`<text x="${x+bw/2}" y="${baseB+22}" font-family="Prompt" font-size="15" fill="${b.col}" text-anchor="middle" font-weight="700">${b.l}</text>`;
+    html+=`<text x="${x+bw/2}" y="${baseB+40}" font-family="Prompt" font-size="13" fill="#64748b" text-anchor="middle">${b.s}</text>`;
+  });
+  document.getElementById('fSvg').innerHTML=html;
+}
+function toggleFSim(){
+  const b=document.getElementById('fPlay');
+  if(fPlaying){fPlaying=false;b.textContent='▶ เข็นวัตถุ';cancelAnimationFrame(fRAF);}
+  else{
+    if(fFrac>=1)fFrac=0;
+    fPlaying=true;b.textContent='⏸ หยุด';
+    fStart=performance.now()-fFrac*F_DUR;
+    fRAF=requestAnimationFrame(fStep);
+  }
+}
+function fStep(now){
+  const t=Math.min(1,(now-fStart)/F_DUR);
+  fFrac=t;drawFScene();
+  if(fPlaying&&t<1)fRAF=requestAnimationFrame(fStep);
+  else{fPlaying=false;fFrac=1;drawFScene();document.getElementById('fPlay').textContent='▶ เข็นวัตถุ';}
+}
+function resetFSim(){
+  fPlaying=false;fFrac=0;cancelAnimationFrame(fRAF);
+  document.getElementById('fPlay').textContent='▶ เข็นวัตถุ';
+  onFChange();
+}
+
+/* ============================================================
+   หัวข้อ 3: แบบจำลอง + สมการ ครบทั้ง 6 เครื่องกล
+============================================================ */
+const GY=286;
+function ground(w){return `<line x1="0" y1="${GY}" x2="${w||620}" y2="${GY}" stroke="#94a3b8" stroke-width="3"/>`;}
+function arrowDown(x,y,len,col,label){
+  return `<line x1="${x}" y1="${y-len}" x2="${x}" y2="${y-14}" stroke="${col}" stroke-width="6" stroke-linecap="round"/>
+  <polygon points="${x-9},${y-18} ${x+9},${y-18} ${x},${y+2}" fill="${col}"/>
+  <text x="${x}" y="${y-len-8}" font-family="Prompt" font-size="15" fill="${col}" text-anchor="middle" font-weight="700">${label}</text>`;
+}
+
+/* ---------- คาน ---------- */
+function drawLever(p,frac,c){
+  const fx=300,fy=196,px=46,th=0.25*frac;
+  const lx=fx-p.b*px*Math.cos(th), ly=fy-p.b*px*Math.sin(th);
+  const rx=fx+p.a*px*Math.cos(th), ry=fy+p.a*px*Math.sin(th);
+  let h=ground();
+  h+=`<line x1="${lx}" y1="${ly}" x2="${rx}" y2="${ry}" stroke="#1E3A8A" stroke-width="13" stroke-linecap="round"/>`;
+  h+=`<polygon points="${fx},${fy+6} ${fx-26},${GY} ${fx+26},${GY}" fill="#64748b"/>`;
+  h+=`<rect x="${lx-32}" y="${ly-46}" width="64" height="44" rx="6" fill="#0A1F44"/>`;
+  h+=`<text x="${lx}" y="${ly-18}" font-family="Prompt" font-size="15" fill="#fff" text-anchor="middle" font-weight="700">${p.W} N</text>`;
+  h+=arrowDown(rx,ry,58,'#DC2626',`E = ${fmt(c.E)} N`);
+  h+=`<line x1="${fx}" y1="92" x2="${fx-p.b*px}" y2="92" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 5"/>`;
+  h+=`<line x1="${fx}" y1="92" x2="${fx+p.a*px}" y2="92" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5 5"/>`;
+  h+=`<text x="${fx-p.b*px/2}" y="84" font-family="Prompt" font-size="13" fill="#64748b" text-anchor="middle">b = ${p.b} m</text>`;
+  h+=`<text x="${fx+p.a*px/2}" y="84" font-family="Prompt" font-size="13" fill="#64748b" text-anchor="middle">a = ${p.a} m</text>`;
+  h+=`<text x="${fx}" y="${GY+22}" font-family="Prompt" font-size="14" fill="#475569" text-anchor="middle">หมุนไปแล้ว θ = ${(0.25*frac).toFixed(3)} rad</text>`;
+  return h;
+}
+
+/* ---------- รอก ---------- */
+function drawPulley(p,frac,c){
+  const n=p.n;
+  let h=`<rect x="150" y="26" width="240" height="14" rx="4" fill="#64748b"/>`;
+  const yLoadTop=236-86*frac;
+  if(n===1){
+    h+=`<line x1="270" y1="40" x2="270" y2="52" stroke="#64748b" stroke-width="6"/>`;
+    h+=`<path d="M 240 82 A 30 30 0 0 1 300 82" fill="none" stroke="#0A1F44" stroke-width="4"/>`;
+    h+=`<circle cx="270" cy="82" r="30" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="6"/>`;
+    h+=`<circle cx="270" cy="82" r="6" fill="#1E3A8A"/>`;
+    h+=`<line x1="240" y1="82" x2="240" y2="${yLoadTop}" stroke="#0A1F44" stroke-width="4"/>`;
+    const handY=140+90*frac;
+    h+=`<line x1="300" y1="82" x2="300" y2="${handY}" stroke="#0A1F44" stroke-width="4"/>`;
+    h+=arrowDown(300,handY+46,44,'#DC2626',`E = ${fmt(c.E)} N`);
+    h+=`<rect x="200" y="${yLoadTop}" width="80" height="52" rx="7" fill="#0A1F44"/>`;
+    h+=`<text x="240" y="${yLoadTop+33}" font-family="Prompt" font-size="16" fill="#fff" text-anchor="middle" font-weight="700">${p.W} N</text>`;
+  }else{
+    const upY=54, upH=28, lowY=yLoadTop-30, bw=100, cx=270;
+    h+=`<line x1="${cx}" y1="40" x2="${cx}" y2="${upY}" stroke="#64748b" stroke-width="6"/>`;
+    for(let i=0;i<n;i++){
+      const x=cx-bw/2+(bw/(n+1))*(i+1);
+      h+=`<line x1="${x}" y1="${upY+upH}" x2="${x}" y2="${lowY}" stroke="#0A1F44" stroke-width="3"/>`;
+    }
+    h+=`<rect x="${cx-bw/2}" y="${upY}" width="${bw}" height="${upH}" rx="8" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="5"/>`;
+    h+=`<rect x="${cx-bw/2}" y="${lowY}" width="${bw}" height="${upH}" rx="8" fill="#FEF3C7" stroke="#F59E0B" stroke-width="5"/>`;
+    h+=`<text x="${cx}" y="${upY+20}" font-family="Prompt" font-size="13" fill="#1E3A8A" text-anchor="middle" font-weight="600">รอกตายตัว</text>`;
+    h+=`<text x="${cx}" y="${lowY+20}" font-family="Prompt" font-size="13" fill="#B45309" text-anchor="middle" font-weight="600">รอกเคลื่อนที่</text>`;
+    const handY=140+90*frac;
+    h+=`<line x1="${cx+bw/2+16}" y1="${upY+8}" x2="${cx+bw/2+16}" y2="${handY}" stroke="#0A1F44" stroke-width="4"/>`;
+    h+=`<line x1="${cx+bw/2}" y1="${upY+8}" x2="${cx+bw/2+16}" y2="${upY+8}" stroke="#0A1F44" stroke-width="4"/>`;
+    h+=arrowDown(cx+bw/2+16,handY+46,44,'#DC2626',`E = ${fmt(c.E)} N`);
+    h+=`<line x1="${cx}" y1="${lowY+upH}" x2="${cx}" y2="${yLoadTop}" stroke="#0A1F44" stroke-width="4"/>`;
+    h+=`<rect x="${cx-40}" y="${yLoadTop}" width="80" height="52" rx="7" fill="#0A1F44"/>`;
+    h+=`<text x="${cx}" y="${yLoadTop+33}" font-family="Prompt" font-size="16" fill="#fff" text-anchor="middle" font-weight="700">${p.W} N</text>`;
+  }
+  h+=ground();
+  h+=`<text x="310" y="${GY+22}" font-family="Prompt" font-size="14" fill="#475569" text-anchor="middle">เส้นเชือกรับน้ำหนัก n = ${n} เส้น · ยกขึ้นแล้ว ${(p.h*frac).toFixed(2)} m · ดึงเชือกแล้ว ${(p.n*p.h*frac).toFixed(2)} m</text>`;
+  return h;
+}
+
+/* ---------- พื้นเอียง ---------- */
+function drawIncline(p,frac,c){
+  const px=40,x0=60,y0=GY;
+  const base=Math.sqrt(Math.max(p.L*p.L-p.h*p.h,.01));
+  const x1=x0+base*px, y1=y0-p.h*px;
+  const ang=Math.atan2(y0-y1,x1-x0)*180/Math.PI;
+  let h=ground();
+  h+=`<polygon points="${x0},${y0} ${x1},${y0} ${x1},${y1}" fill="#DBEAFE" stroke="#1E3A8A" stroke-width="3"/>`;
+  h+=`<line x1="${x1+18}" y1="${y1}" x2="${x1+18}" y2="${y0}" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6 6"/>`;
+  h+=`<text x="${x1+26}" y="${(y0+y1)/2}" font-family="Prompt" font-size="14" fill="#B45309" font-weight="700">h = ${p.h} m</text>`;
+  h+=`<text x="${(x0+x1)/2}" y="${y0-10}" font-family="Prompt" font-size="14" fill="#1E3A8A" text-anchor="middle" font-weight="700">L = ${p.L} m</text>`;
+  const bx=x0+(x1-x0)*frac, by=y0-(y0-y1)*frac;
+  h+=`<g transform="translate(${bx},${by}) rotate(-${ang.toFixed(2)})">
+    <rect x="-28" y="-38" width="56" height="38" rx="6" fill="#0A1F44"/>
+    <text x="0" y="-12" font-family="Prompt" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">${p.W} N</text>
+    <line x1="34" y1="-19" x2="82" y2="-19" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>
+    <polygon points="78,-28 78,-10 98,-19" fill="#DC2626"/>
+    <text x="60" y="-30" font-family="Prompt" font-size="14" fill="#DC2626" text-anchor="middle" font-weight="700">E = ${fmt(c.E)} N</text>
+  </g>`;
+  h+=`<text x="310" y="${GY+22}" font-family="Prompt" font-size="14" fill="#475569" text-anchor="middle">เข็นไปแล้ว ${(p.L*frac).toFixed(2)} m · สูงขึ้น ${(p.h*frac).toFixed(2)} m</text>`;
+  return h;
+}
+
+/* ---------- ลิ่ม ---------- */
+function drawWedge(p,frac,c){
+  const cx=310, surf=150;
+  const Lh=p.L*2.0;          // ความยาวลิ่มบนจอ
+  const hw=p.t*1.5;          // ครึ่งความหนาลิ่ม
+  const apex=surf+Lh*frac;   // ปลายลิ่มจมลงไป
+  const topY=apex-Lh;
+  const sep=hw*frac;         // เนื้อไม้แยกออกข้างละเท่ากับความกว้างลิ่มที่ผิว
+  let h=ground();
+  h+=`<rect x="120" y="${surf}" width="${190-sep}" height="${GY-surf}" rx="4" fill="#A16207"/>`;
+  h+=`<rect x="${cx+sep}" y="${surf}" width="190" height="${GY-surf}" rx="4" fill="#A16207"/>`;
+  h+=`<polygon points="${cx},${apex} ${cx-hw},${topY} ${cx+hw},${topY}" fill="#CBD5E1" stroke="#475569" stroke-width="3"/>`;
+  h+=`<rect x="${cx-hw-10}" y="${topY-16}" width="${hw*2+20}" height="16" rx="4" fill="#475569"/>`;
+  h+=arrowDown(cx,topY-20,34,'#DC2626',`E = ${fmt(c.E)} N`);
+  const ay=surf+70;
+  h+=`<line x1="${cx-sep-40}" y1="${ay}" x2="${cx-sep-90}" y2="${ay}" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>`;
+  h+=`<polygon points="${cx-sep-86},${ay-8} ${cx-sep-86},${ay+8} ${cx-sep-106},${ay}" fill="#F59E0B"/>`;
+  h+=`<line x1="${cx+sep+40}" y1="${ay}" x2="${cx+sep+90}" y2="${ay}" stroke="#F59E0B" stroke-width="5" stroke-linecap="round"/>`;
+  h+=`<polygon points="${cx+sep+86},${ay-8} ${cx+sep+86},${ay+8} ${cx+sep+106},${ay}" fill="#F59E0B"/>`;
+  h+=`<text x="${cx-sep-72}" y="${ay-16}" font-family="Prompt" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">W = ${fmt(p.W)} N</text>`;
+  h+=`<text x="${cx+sep+72}" y="${ay-16}" font-family="Prompt" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">W = ${fmt(p.W)} N</text>`;
+  h+=`<text x="310" y="${GY+22}" font-family="Prompt" font-size="14" fill="#475569" text-anchor="middle">ตอกลิ่มลงไปแล้ว ${(p.L*frac).toFixed(1)} cm · เนื้อไม้แยกออกข้างละ ${(p.t*frac/2).toFixed(1)} cm</text>`;
+  return h;
+}
+
+/* ---------- สกรู (แม่แรง) ---------- */
+function drawScrew(p,frac,c){
+  const th=2*Math.PI*frac, cx=300;
+  const rise=frac*26;
+  const platY=132-rise;
+  let h=ground();
+  h+=`<rect x="190" y="${GY-26}" width="220" height="26" rx="6" fill="#475569"/>`;
+  h+=`<rect x="${cx-22}" y="${platY+18}" width="44" height="${GY-26-platY-18}" fill="#CBD5E1" stroke="#475569" stroke-width="2"/>`;
+  for(let i=0;i<7;i++){
+    const y=platY+34+i*16;
+    if(y<GY-30)h+=`<line x1="${cx-22}" y1="${y}" x2="${cx+22}" y2="${y-8}" stroke="#475569" stroke-width="4"/>`;
+  }
+  h+=`<rect x="${cx-70}" y="${platY}" width="140" height="18" rx="4" fill="#64748b"/>`;
+  h+=`<rect x="${cx-46}" y="${platY-52}" width="92" height="52" rx="6" fill="#0A1F44"/>`;
+  h+=`<text x="${cx}" y="${platY-20}" font-family="Prompt" font-size="16" fill="#fff" text-anchor="middle" font-weight="700">${p.W} N</text>`;
+  const rpx=p.r*260, hl=rpx*Math.cos(th), ry=14*Math.sin(th);
+  h+=`<ellipse cx="${cx}" cy="${GY-52}" rx="${rpx}" ry="14" fill="none" stroke="#CBD5E1" stroke-width="2" stroke-dasharray="5 5"/>`;
+  h+=`<line x1="${cx-hl}" y1="${GY-52-ry}" x2="${cx+hl}" y2="${GY-52+ry}" stroke="#DC2626" stroke-width="7" stroke-linecap="round"/>`;
+  h+=`<circle cx="${cx+hl}" cy="${GY-52+ry}" r="9" fill="#DC2626"/>`;
+  h+=`<text x="${cx+rpx+10}" y="${GY-56}" font-family="Prompt" font-size="14" fill="#DC2626" font-weight="700">E = ${c.E.toFixed(1)} N</text>`;
+  h+=`<text x="${cx-rpx-6}" y="${GY-58}" font-family="Prompt" font-size="13" fill="#64748b" text-anchor="end">r = ${p.r} m</text>`;
+  h+=`<text x="310" y="${GY+22}" font-family="Prompt" font-size="14" fill="#475569" text-anchor="middle">หมุนไปแล้ว ${(frac).toFixed(2)} รอบ · ยกสูงขึ้น ${(p.p*frac).toFixed(1)} mm</text>`;
+  return h;
+}
+
+/* ---------- ล้อและเพลา ---------- */
+function drawWheel(p,frac,c){
+  const cx=270,cy=125,th=2*Math.PI*frac;
+  const R=p.R*120, r=p.r*120;
+  let h='';
+  h+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="#EFF6FF" stroke="#1E3A8A" stroke-width="7"/>`;
+  h+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#FEF3C7" stroke="#F59E0B" stroke-width="5"/>`;
+  h+=`<line x1="${cx}" y1="${cy}" x2="${cx+R*Math.cos(th)}" y2="${cy+R*Math.sin(th)}" stroke="#1E3A8A" stroke-width="4"/>`;
+  h+=`<circle cx="${cx}" cy="${cy}" r="5" fill="#1E3A8A"/>`;
+  // ป้ายรัศมีล้อ R (ด้านขวา)
+  h+=`<line x1="${cx}" y1="${cy}" x2="${cx+R}" y2="${cy}" stroke="#1E3A8A" stroke-width="2" stroke-dasharray="5 5"/>`;
+  h+=`<text x="${cx+R/2}" y="${cy-10}" font-family="Prompt" font-size="14" fill="#1E3A8A" text-anchor="middle" font-weight="700">R = ${p.R} m</text>`;
+  // ป้ายรัศมีเพลา r (เส้นชี้ออกไปด้านซ้ายบน)
+  h+=`<line x1="${cx-r}" y1="${cy}" x2="${cx-R-30}" y2="${cy-R-26}" stroke="#B45309" stroke-width="1.5" stroke-dasharray="4 4"/>`;
+  h+=`<text x="${cx-R-34}" y="${cy-R-30}" font-family="Prompt" font-size="14" fill="#B45309" text-anchor="end" font-weight="700">r = ${p.r} m</text>`;
+  // เชือกฝั่งล้อ = แรงพยายาม
+  const handY=cy+R+22+30*frac;
+  h+=`<line x1="${cx+R}" y1="${cy}" x2="${cx+R}" y2="${handY}" stroke="#0A1F44" stroke-width="4"/>`;
+  h+=`<line x1="${cx+R}" y1="${handY}" x2="${cx+R}" y2="${handY+18}" stroke="#DC2626" stroke-width="6" stroke-linecap="round"/>`;
+  h+=`<polygon points="${cx+R-9},${handY+14} ${cx+R+9},${handY+14} ${cx+R},${handY+32}" fill="#DC2626"/>`;
+  h+=`<text x="${cx+R+16}" y="${handY+12}" font-family="Prompt" font-size="14" fill="#DC2626" font-weight="700">E = ${fmt(c.E)} N</text>`;
+  // เชือกฝั่งเพลา = แรงต้าน (วัตถุถูกยกขึ้น) วางไว้ใต้ล้อเสมอ
+  const loadTop=cy+R+46-30*frac;
+  h+=`<line x1="${cx-r}" y1="${cy}" x2="${cx-r}" y2="${loadTop}" stroke="#0A1F44" stroke-width="4"/>`;
+  h+=`<rect x="${cx-r-34}" y="${loadTop}" width="68" height="44" rx="6" fill="#0A1F44"/>`;
+  h+=`<text x="${cx-r}" y="${loadTop+28}" font-family="Prompt" font-size="15" fill="#fff" text-anchor="middle" font-weight="700">${p.W} N</text>`;
+  h+=`<text x="310" y="308" font-family="Prompt" font-size="14" fill="#475569" text-anchor="middle">หมุนไปแล้ว ${frac.toFixed(2)} รอบ (\u03b8 = ${(2*Math.PI*frac).toFixed(2)} rad) \u00b7 ล้อกวาด ${(2*Math.PI*p.R*frac).toFixed(2)} m \u00b7 เพลากวาด ${(2*Math.PI*p.r*frac).toFixed(2)} m</text>`;
+  return h;
+}
+
+/* ---------- ข้อมูลเครื่องกลสำหรับหัวข้อ 3 ---------- */
+const M3=[
+{id:'lever',tab:'🪝 คาน',
+ params:[{k:'W',label:'น้ำหนัก W',min:100,max:600,step:50,val:300,u:'N'},
+         {k:'a',label:'แขนพยายาม a',min:1,max:4,step:0.5,val:3,u:'m'},
+         {k:'b',label:'แขนแรงต้าน b',min:0.5,max:2,step:0.5,val:1,u:'m'}],
+ calc:p=>{const th=0.25;return{E:p.W*p.b/p.a,sEmax:p.a*th,sWmax:p.b*th,IMA:p.a/p.b};},
+ draw:drawLever,
+ eq:String.raw`<h3>คาน (Lever)</h3>
+<p>คานหมุนรอบจุดหมุนเป็นมุม \(\theta\) เท่ากันทั้งสองข้าง ปลายทั้งสองจึงเคลื่อนที่เป็นส่วนโค้ง</p>
+$$s_E=a\theta,\qquad s_W=b\theta$$
+$$W_{\text{in}}=E\,s_E=E\,a\theta$$
+$$W_{\text{out}}=W\,s_W=W\,b\theta$$
+<p>ในอุดมคติ \(W_{\text{in}}=W_{\text{out}}\)</p>
+$$E\,a\theta=W\,b\theta\;\Rightarrow\;E=\frac{b}{a}\,W$$
+$$\text{I.M.A.}=\frac{s_E}{s_W}=\frac{a}{b}$$`},
+
+{id:'pulley',tab:'⚙️ รอก',
+ params:[{k:'W',label:'น้ำหนัก W',min:100,max:600,step:50,val:400,u:'N'},
+         {k:'n',label:'เส้นเชือกรับน้ำหนัก n',min:1,max:5,step:1,val:2,u:'เส้น'},
+         {k:'h',label:'ระยะยก h',min:1,max:4,step:0.5,val:2,u:'m'}],
+ calc:p=>({E:p.W/p.n,sEmax:p.n*p.h,sWmax:p.h,IMA:p.n}),
+ draw:drawPulley,
+ eq:String.raw`<h3>รอก (Pulley)</h3>
+<p>ถ้ามีเส้นเชือก \(n\) เส้นช่วยกันรับน้ำหนัก การจะยกวัตถุขึ้น \(h\) ต้องเก็บเชือกเข้ามาทุกเส้น เส้นละ \(h\)</p>
+$$s_W=h,\qquad s_E=n\,h$$
+$$W_{\text{in}}=E\,(n h),\qquad W_{\text{out}}=W\,h$$
+<p>ในอุดมคติ \(W_{\text{in}}=W_{\text{out}}\)</p>
+$$E\,n h=W h\;\Rightarrow\;E=\frac{W}{n}$$
+$$\text{I.M.A.}=\frac{s_E}{s_W}=n$$
+<p style="font-size:1.7vh;color:#475569">\(n=1\) คือรอกเดี่ยวตายตัว ไม่ผ่อนแรงแต่เปลี่ยนทิศทางแรง</p>`},
+
+{id:'incline',tab:'📐 พื้นเอียง',
+ params:[{k:'W',label:'น้ำหนัก W',min:100,max:600,step:50,val:300,u:'N'},
+         {k:'L',label:'ความยาว L',min:3,max:10,step:1,val:6,u:'m'},
+         {k:'h',label:'ความสูง h',min:1,max:3,step:1,val:2,u:'m'}],
+ calc:p=>({E:p.W*p.h/p.L,sEmax:p.L,sWmax:p.h,IMA:p.L/p.h}),
+ draw:drawIncline,
+ eq:String.raw`<h3>พื้นเอียง (Inclined plane)</h3>
+<p>ดันวัตถุไปตามพื้นเอียงจนสุดความยาว \(L\) วัตถุจะสูงขึ้นเพียง \(h\) ตามแนวดิ่ง</p>
+$$s_E=L,\qquad s_W=h$$
+$$W_{\text{in}}=E\,L,\qquad W_{\text{out}}=W\,h$$
+<p>ในอุดมคติ \(W_{\text{in}}=W_{\text{out}}\)</p>
+$$E\,L=W h\;\Rightarrow\;E=\frac{h}{L}\,W=W\sin\theta$$
+$$\text{I.M.A.}=\frac{s_E}{s_W}=\frac{L}{h}$$`},
+
+{id:'wedge',tab:'🔪 ลิ่ม',
+ params:[{k:'W',label:'แรงดันข้าง W',min:500,max:3000,step:250,val:1500,u:'N'},
+         {k:'L',label:'ความยาวลิ่ม L',min:10,max:40,step:5,val:25,u:'cm'},
+         {k:'t',label:'ความหนา t',min:2,max:10,step:1,val:5,u:'cm'}],
+ calc:p=>({E:p.W*p.t/p.L,sEmax:p.L/100,sWmax:p.t/100,IMA:p.L/p.t}),
+ draw:drawWedge,
+ eq:String.raw`<h3>ลิ่ม (Wedge)</h3>
+<p>ตอกลิ่มลงไปตลอดความยาว \(L\) เนื้อวัตถุจะถูกดันแยกออกรวมเป็นระยะเท่ากับความหนา \(t\)</p>
+$$s_E=L,\qquad s_W=t$$
+$$W_{\text{in}}=E\,L,\qquad W_{\text{out}}=W\,t$$
+<p>ในอุดมคติ \(W_{\text{in}}=W_{\text{out}}\)</p>
+$$E\,L=W t\;\Rightarrow\;E=\frac{t}{L}\,W$$
+$$\text{I.M.A.}=\frac{s_E}{s_W}=\frac{L}{t}$$
+<p style="font-size:1.7vh;color:#475569">ลิ่มยิ่งยาวและบาง \(L/t\) ยิ่งมาก จึงยิ่งผ่อนแรง</p>`},
+
+{id:'screw',tab:'🔩 สกรู',
+ params:[{k:'W',label:'น้ำหนักที่ยก W',min:1000,max:8000,step:500,val:4000,u:'N'},
+         {k:'r',label:'รัศมีด้ามหมุน r',min:0.1,max:0.5,step:0.05,val:0.3,u:'m'},
+         {k:'p',label:'พิตช์ p',min:2,max:10,step:1,val:5,u:'mm'}],
+ calc:p=>({E:p.W*(p.p/1000)/(2*Math.PI*p.r),sEmax:2*Math.PI*p.r,sWmax:p.p/1000,IMA:2*Math.PI*p.r/(p.p/1000)}),
+ draw:drawScrew,
+ eq:String.raw`<h3>สกรู (Screw)</h3>
+<p>หมุนด้ามครบ 1 รอบ มือเดินทางเป็นเส้นรอบวง \(2\pi r\) แต่สกรูเลื่อนตามแกนเพียง 1 พิตช์ \(p\)</p>
+$$s_E=2\pi r,\qquad s_W=p$$
+$$W_{\text{in}}=E\,(2\pi r),\qquad W_{\text{out}}=W\,p$$
+<p>ในอุดมคติ \(W_{\text{in}}=W_{\text{out}}\)</p>
+$$E\,2\pi r=W p\;\Rightarrow\;E=\frac{p}{2\pi r}\,W$$
+$$\text{I.M.A.}=\frac{s_E}{s_W}=\frac{2\pi r}{p}$$
+<p style="font-size:1.7vh;color:#475569">นี่คือเหตุผลที่แม่แรงยกรถหนักเป็นตันได้ด้วยแรงมือ แต่ต้องหมุนหลายรอบ</p>`},
+
+{id:'wheel',tab:'🛞 ล้อและเพลา',
+ params:[{k:'W',label:'น้ำหนัก W',min:100,max:600,step:50,val:300,u:'N'},
+         {k:'R',label:'รัศมีล้อ R',min:0.2,max:0.6,step:0.05,val:0.4,u:'m'},
+         {k:'r',label:'รัศมีเพลา r',min:0.05,max:0.2,step:0.05,val:0.1,u:'m'}],
+ calc:p=>({E:p.W*p.r/p.R,sEmax:2*Math.PI*p.R,sWmax:2*Math.PI*p.r,IMA:p.R/p.r}),
+ draw:drawWheel,
+ eq:String.raw`<h3>ล้อและเพลา (Wheel &amp; axle)</h3>
+<p>ล้อกับเพลายึดติดกัน จึงหมุนไปด้วยมุม \(\theta\) เท่ากัน แต่ขอบล้อกวาดระยะไกลกว่าขอบเพลา</p>
+$$s_E=R\theta,\qquad s_W=r\theta$$
+$$W_{\text{in}}=E\,R\theta,\qquad W_{\text{out}}=W\,r\theta$$
+<p>ในอุดมคติ \(W_{\text{in}}=W_{\text{out}}\)</p>
+$$E\,R\theta=W r\theta\;\Rightarrow\;E=\frac{r}{R}\,W$$
+$$\text{I.M.A.}=\frac{s_E}{s_W}=\frac{R}{r}$$`},
+];
+
+let w3Idx=0,w3Frac=0,w3Playing=false,w3RAF=null,w3Start=0;
+const W3_DUR=3000;
+
+function w3Params(){
+  const mc=M3[w3Idx],o={};
+  mc.params.forEach(pp=>{
+    const el=document.getElementById('w3_'+pp.k);
+    o[pp.k]= el? +el.value : pp.val;
+  });
+  return o;
+}
+function buildW3Tabs(){
+  const t=document.getElementById('w3Tabs');t.innerHTML='';
+  M3.forEach((mc,i)=>{
+    const b=document.createElement('div');
+    b.className='mode-tab'+(i===w3Idx?' active':'');
+    b.innerHTML=mc.tab;
+    b.onclick=()=>{w3Idx=i;w3Frac=0;w3Playing=false;cancelAnimationFrame(w3RAF);
+      document.getElementById('w3Play').textContent='▶ เดินเครื่อง';renderW3(true);};
+    t.appendChild(b);
+  });
+}
+function buildW3Controls(){
+  const mc=M3[w3Idx];
+  document.getElementById('w3Ctl').innerHTML=mc.params.map(pp=>
+    `<div class="slider-row"><span>${pp.label}: <b id="w3lbl_${pp.k}">${pp.val}</b> ${pp.u}</span>
+     <input type="range" id="w3_${pp.k}" min="${pp.min}" max="${pp.max}" step="${pp.step}" value="${pp.val}" oninput="onW3Change()"></div>`
+  ).join('');
+}
+function onW3Change(){
+  const mc=M3[w3Idx];
+  // ข้อจำกัดเชิงเรขาคณิตของบางเครื่องกล
+  if(mc.id==='incline'){
+    const L=+document.getElementById('w3_L').value;
+    if(+document.getElementById('w3_h').value>L-1)document.getElementById('w3_h').value=Math.max(1,L-1);
+  }
+  if(mc.id==='wheel'){
+    const R=+document.getElementById('w3_R').value;
+    if(+document.getElementById('w3_r').value>R-0.05)document.getElementById('w3_r').value=Math.max(0.05,(R-0.05).toFixed(2));
+  }
+  mc.params.forEach(pp=>{
+    const el=document.getElementById('w3_'+pp.k);
+    if(el)document.getElementById('w3lbl_'+pp.k).textContent=el.value;
+  });
+  drawW3();
+}
+function drawW3(){
+  const mc=M3[w3Idx], p=w3Params(), c=mc.calc(p);
+  document.getElementById('w3Svg').innerHTML=mc.draw(p,w3Frac,c);
+  const sE=c.sEmax*w3Frac, sW=c.sWmax*w3Frac;
+  const Win=c.E*sE, Wout=p.W*sW;
+  document.getElementById('w3Live').innerHTML=`
+    <div class="lgrid">
+      <div class="lrow"><span>แรงต้าน W</span><b>${fmt(p.W)} N</b></div>
+      <div class="lrow"><span>แรงพยายาม E (อุดมคติ)</span><b class="red">${c.E<100?c.E.toFixed(1):fmt(c.E)} N</b></div>
+      <div class="lrow"><span>s<sub>E</sub> ระยะที่ออกแรง</span><b>${sE.toFixed(3)} m</b></div>
+      <div class="lrow"><span>s<sub>W</sub> ระยะที่วัตถุเคลื่อนที่</span><b>${sW.toFixed(3)} m</b></div>
+      <div class="lrow hi"><span>W<sub>in</sub> = E · s<sub>E</sub></span><b class="gold">${Win.toFixed(1)} J</b></div>
+      <div class="lrow hi"><span>W<sub>out</sub> = W · s<sub>W</sub></span><b class="green">${Wout.toFixed(1)} J</b></div>
+      <div class="lrow"><span>I.M.A. = s<sub>E</sub> / s<sub>W</sub></span><b>${c.IMA.toFixed(2)}</b></div>
+    </div>`;
+}
+function renderW3(rebuild){
+  buildW3Tabs();
+  if(rebuild){
+    buildW3Controls();
+    const eq=document.getElementById('w3Eq');
+    eq.innerHTML=M3[w3Idx].eq;
+    mj(eq);
+  }
+  drawW3();
+}
+function toggleW3(){
+  const b=document.getElementById('w3Play');
+  if(w3Playing){w3Playing=false;b.textContent='▶ เดินเครื่อง';cancelAnimationFrame(w3RAF);}
+  else{
+    if(w3Frac>=1)w3Frac=0;
+    w3Playing=true;b.textContent='⏸ หยุด';
+    w3Start=performance.now()-w3Frac*W3_DUR;
+    w3RAF=requestAnimationFrame(w3Step);
+  }
+}
+function w3Step(now){
+  const t=Math.min(1,(now-w3Start)/W3_DUR);
+  w3Frac=t;drawW3();
+  if(w3Playing&&t<1)w3RAF=requestAnimationFrame(w3Step);
+  else{w3Playing=false;w3Frac=1;drawW3();document.getElementById('w3Play').textContent='▶ เดินเครื่อง';}
+}
+function resetW3(){
+  w3Playing=false;w3Frac=0;cancelAnimationFrame(w3RAF);
+  document.getElementById('w3Play').textContent='▶ เดินเครื่อง';
+  drawW3();
+}
+
+/* ============================================================
+   โจทย์ตัวอย่าง
+============================================================ */
+const W_EXAMPLES=[
+ {lv:'easy',t:'ง่าย 1 · พื้นเอียง',
+  q:String.raw`ใช้พื้นเอียงยาว \(L=5\) m สูง \(h=2\) m ดันวัตถุน้ำหนัก \(W=200\) N ขึ้นที่สูง ถ้าไม่คิดแรงเสียดทาน จงหาแรงที่ใช้ดัน และตรวจสอบว่างานเข้าเท่ากับงานออก`,
+  sol:[String.raw`หลักการของงาน: \(E\,s_E=W\,s_W\) โดยพื้นเอียงมี \(s_E=L,\; s_W=h\)`,
+       String.raw`$$E\times 5=200\times 2=400$$`,
+       String.raw`$$E=\frac{400}{5}=80\ \text{N}$$`,
+       String.raw`ตรวจสอบ: \(W_{\text{in}}=80\times5=400\) J และ \(W_{\text{out}}=200\times2=400\) J`],
+  ans:String.raw`\(E=80\) N · \(W_{\text{in}}=W_{\text{out}}=400\) J · I.M.A. = 2.5`},
+
+ {lv:'easy',t:'ง่าย 2 · คาน',
+  q:String.raw`กดปลายคานด้วยแรง \(E=100\) N ให้เคลื่อนที่ลง \(s_E=0.6\) m ทำให้วัตถุที่ปลายอีกข้างถูกยกขึ้น \(s_W=0.2\) m จงหาน้ำหนักของวัตถุ (ไม่คิดแรงเสียดทาน)`,
+  sol:[String.raw`$$E\,s_E=W\,s_W$$`,
+       String.raw`$$100\times0.6=W\times0.2$$`,
+       String.raw`$$W=\frac{60}{0.2}=300\ \text{N}$$`],
+  ans:String.raw`\(W=300\) N · I.M.A. \(=0.6/0.2=3\)`},
+
+ {lv:'mid',t:'ปานกลาง 1 · รอกพวง',
+  q:String.raw`รอกพวงมีเส้นเชือกรับน้ำหนัก \(n=4\) เส้น ใช้ยกวัตถุหนัก \(W=800\) N ขึ้นสูง \(h=2\) m ในอุดมคติ จงหาความยาวเชือกที่ต้องดึงและแรงที่ใช้`,
+  sol:[String.raw`งานที่ได้: \(W_{\text{out}}=W h=800\times2=1{,}600\) J`,
+       String.raw`ระยะดึงเชือก: \(s_E=n h=4\times2=8\) m`,
+       String.raw`$$E\times 8=1{,}600\;\Rightarrow\;E=200\ \text{N}$$`],
+  ans:String.raw`ดึงเชือก 8 m ด้วยแรง \(E=200\) N · I.M.A. = 4`},
+
+ {lv:'mid',t:'ปานกลาง 2 · ล้อและเพลา',
+  q:String.raw`ล้อและเพลามีรัศมีล้อ \(R=0.5\) m รัศมีเพลา \(r=0.1\) m ใช้ยกถังน้ำหนัก \(W=400\) N หมุนล้อครบ 1 รอบ จงหาแรงที่ใช้ และงานเข้า–งานออก`,
+  sol:[String.raw`\(s_E=2\pi R=2\pi(0.5)=3.14\) m และ \(s_W=2\pi r=2\pi(0.1)=0.628\) m`,
+       String.raw`$$E=\frac{r}{R}W=\frac{0.1}{0.5}\times400=80\ \text{N}$$`,
+       String.raw`\(W_{\text{in}}=80\times3.14\approx251\) J`,
+       String.raw`\(W_{\text{out}}=400\times0.628\approx251\) J`],
+  ans:String.raw`\(E=80\) N · \(W_{\text{in}}=W_{\text{out}}\approx251\) J · I.M.A. = 5`},
+
+ {lv:'mid',t:'ปานกลาง 3 · สกรู',
+  q:String.raw`แม่แรงสกรูมีพิตช์ \(p=5\) mm ด้ามหมุนยาวจากแกน \(r=0.4\) m ใช้ยกรถหนัก \(W=6{,}000\) N ในอุดมคติ ต้องออกแรงที่ปลายด้ามเท่าใด`,
+  sol:[String.raw`หมุน 1 รอบ: \(s_E=2\pi r=2\pi(0.4)=2.51\) m และ \(s_W=p=0.005\) m`,
+       String.raw`$$E=\frac{p}{2\pi r}W=\frac{0.005}{2.51}\times6000$$`,
+       String.raw`$$E\approx11.9\ \text{N}$$`,
+       String.raw`ตรวจสอบ: \(W_{\text{in}}=11.9\times2.51\approx30\) J = \(W_{\text{out}}=6000\times0.005=30\) J`],
+  ans:String.raw`\(E\approx11.9\) N · I.M.A. \(\approx503\)`},
+
+ {lv:'hard',t:'ยาก · ประสิทธิภาพ',
+  q:String.raw`เข็นวัตถุมวล 50 kg ขึ้นพื้นเอียงยาว 10 m สูง 3 m ด้วยแรงจริง 200 N (\(g=10\) m/s²) จงหา \(\mathrm{Eff}\), \(W_{\text{loss}}\), A.M.A. และ I.M.A.`,
+  sol:[String.raw`\(W=mg=50\times10=500\) N`,
+       String.raw`\(W_{\text{out}}=W h=500\times3=1{,}500\) J และ \(W_{\text{in}}=E L=200\times10=2{,}000\) J`,
+       String.raw`$$\mathrm{Eff}=\frac{1500}{2000}\times100\%=75\%$$`,
+       String.raw`\(W_{\text{loss}}=2000-1500=500\) J`,
+       String.raw`\(\text{A.M.A.}=\dfrac{500}{200}=2.5\) และ \(\text{I.M.A.}=\dfrac{10}{3}=3.33\)`,
+       String.raw`ตรวจสอบ: \(\mathrm{Eff}=\dfrac{2.5}{3.33}=75\%\) ✓`],
+  ans:String.raw`\(\mathrm{Eff}=75\%\) · \(W_{\text{loss}}=500\) J · A.M.A. = 2.5 · I.M.A. = 3.33`},
+];
+let wExIdx=0;
+function renderWEx(){
+  const tabs=document.getElementById('wExTabs');tabs.innerHTML='';
+  W_EXAMPLES.forEach((ex,i)=>{
+    const b=document.createElement('div');
+    b.className='ex-tab '+ex.lv+(i===wExIdx?' active':'');
+    b.textContent=ex.t;b.onclick=()=>{wExIdx=i;renderWEx();};
+    tabs.appendChild(b);
+  });
+  const ex=W_EXAMPLES[wExIdx];
+  const lvName={easy:'ระดับง่าย',mid:'ระดับปานกลาง',hard:'ระดับยาก'}[ex.lv];
+  const body=document.getElementById('wExBody');
+  body.innerHTML=`
+    <div class="ex-card">
+      <span class="ex-level ${ex.lv}">${lvName}</span>
+      <div class="ex-q"><b>โจทย์:</b> ${ex.q}</div>
+      <button class="btn gold small" style="align-self:flex-start" onclick="toggleSol(this)">👁 ดูวิธีทำ + เฉลย</button>
+      <div class="sol">
+        ${ex.sol.map(s=>s.trim().startsWith('$$')?`<div class="step" style="text-align:center">${s}</div>`:`<div class="step">▸ ${s}</div>`).join('')}
+        <div class="ans">✓ ${ex.ans}</div>
+      </div>
+    </div>`;
+  mj(body);
+}
+function toggleSol(btn){
+  const s=btn.nextElementSibling;
+  s.classList.toggle('show');
+  btn.textContent=s.classList.contains('show')?'ซ่อนวิธีทำ ▴':'👁 ดูวิธีทำ + เฉลย';
+  if(s.classList.contains('show'))mj(s);
+}
+
+/* ===== init ===== */
+buildNav();
+renderMachine();
+onFChange();
+renderW3(true);
+renderWEx();
+</script>
+</body>
+</html>
